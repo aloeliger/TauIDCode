@@ -1,0 +1,108 @@
+#include "TROOT.h"
+
+void WJetsSimToData()
+{
+  TFile* WJetFile = new TFile("WJetsDistributions.root","READ");
+  TDirectory *WJet_PassDir = (TDirectory *) WJetFile->Get("PassRegion");
+  TDirectory* WJet_FailDir = (TDirectory *) WJetFile->Get("FailRegion");
+  
+  //pass histos
+  cout<<"Retrieving Pass Region Histograms"<<std::endl;
+  TH1F* WJets_Pass = (TH1F *) WJet_PassDir->Get("Data_Pass");
+  TH1F* DY_Pass = (TH1F *) WJet_PassDir->Get("DY_pass");
+  TH1F* TTTo2L2Nu_Pass = (TH1F *) WJet_PassDir->Get("TTTo2L2Nu_Pass");
+  TH1F* TTToHadronic_Pass = (TH1F *) WJet_PassDir->Get("TTToHadronic_Pass");
+  TH1F* TTToSemiLeptonic_Pass =  (TH1F *) WJet_PassDir->Get("TTToSemiLeptonic_Pass");
+  TH1F* W_Pass = (TH1F *) WJet_PassDir->Get("W_Pass");
+  TH1F* WW_Pass = (TH1F *) WJet_PassDir->Get("WW_Pass");
+  TH1F* WZ_Pass = (TH1F *) WJet_PassDir->Get("WZ_Pass");
+  TH1F* ZZ_Pass = (TH1F *) WJet_PassDir->Get("ZZ_Pass");
+  
+  //fail histos
+  std::cout<<"Retrieving Fail Region Histograms"<<std::endl;
+  TH1F* WJets_Fail = (TH1F *) WJet_FailDir->Get("Data_Fail");
+  TH1F* DY_Fail = (TH1F *) WJet_FailDir->Get("DY_pass");
+  TH1F* TTTo2L2Nu_Fail = (TH1F *) WJet_FailDir->Get("TTTo2L2Nu_Fail");
+  TH1F* TTToHadronic_Fail = (TH1F *) WJet_FailDir->Get("TTToHadronic_Fail");
+  TH1F* TTToSemiLeptonic_Fail =  (TH1F *) WJet_FailDir->Get("TTToSemiLeptonic_Fail");
+  TH1F* W_Fail = (TH1F *) WJet_FailDir->Get("W_Fail");
+  TH1F* WW_Fail = (TH1F *) WJet_FailDir->Get("WW_Fail");
+  TH1F* WZ_Fail = (TH1F *) WJet_FailDir->Get("WZ_Fail");
+  TH1F* ZZ_Fail = (TH1F *) WJet_FailDir->Get("ZZ_Fail");
+
+  //now we subtract off the contributions (except for the W+Jets distribution)
+  std::cout<<"Subtracting backgrounds..."<<std::endl;
+  WJets_Pass->Add(DY_Pass, -1.0);
+  WJets_Pass->Add(TTTo2L2Nu_Pass, -1.0);
+  WJets_Pass->Add(TTToHadronic_Pass, -1.0);
+  WJets_Pass->Add(TTToSemiLeptonic_Pass, -1.0);
+  WJets_Pass->Add(WW_Pass, -1.0);
+  WJets_Pass->Add(WZ_Pass, -1.0);
+  WJets_Pass->Add(ZZ_Pass, -1.0);
+  
+  WJets_Fail->Add(DY_Fail, -1.0);
+  WJets_Fail->Add(TTTo2L2Nu_Fail, -1.0);
+  WJets_Fail->Add(TTToHadronic_Fail, -1.0);
+  WJets_Fail->Add(TTToSemiLeptonic_Fail, -1.0);
+  WJets_Fail->Add(WW_Fail, -1.0);
+  WJets_Fail->Add(WZ_Fail, -1.0);
+  WJets_Fail->Add(ZZ_Fail, -1.0);
+  
+  std::cout<<"Writing Scale Factors..."<<std::endl;
+  TFile* OutFile = new TFile("TemporaryFiles/CorrectedWJetsDistributions.root","RECREATE");
+  
+  WJets_Pass->SetName("CorrectedWJetsDistribution_Pass");
+  WJets_Fail->SetName("CorrectedWJetsDistribution_Fail");
+  
+  //Let's now create a histogram where we divide the data bins by sim bins
+  //so we get a scale factor that we can apply to the other sim data
+  TH1F* ScaleFactors_Pass = new TH1F("ScaleFactors_Pass","ScaleFactors_Pass", 10, 0.0, 100.0);
+  ScaleFactors_Pass->Divide(WJets_Pass,W_Pass);
+
+  TH1F* ScaleFactors_Fail = new TH1F("ScaleFactors_Fail","ScaleFactors_Fail", 10, 0.0, 100.0);
+  ScaleFactors_Fail->Divide(WJets_Fail,W_Fail);
+  
+  ScaleFactors_Pass->SetName("ScaleFactors_Pass");
+  ScaleFactors_Pass->Write();
+  
+  ScaleFactors_Fail->SetName("ScaleFactors_Fail");
+  ScaleFactors_Fail->Write();
+  
+  //try and reweight our extant w-jets distributions and rewrite them as
+  //normalized to the distributions file.
+
+  std::cout<<"Reweighting Low Transverse Mass W+Jets..."<<std::endl;
+  TFile* PassFailFile = new TFile("PassFailOut.root","UPDATE");
+  std::cout<<"Grabbing Directories"<<std::endl;
+  TDirectory* PassFail_PassDir = (TDirectory *) PassFailFile->Get("PassRegion");
+  TDirectory* PassFail_FailDir = (TDirectory *) PassFailFile->Get("FailRegion");
+
+  std::cout<<"Grabbing Histograms"<<std::endl;
+  TH1F* PassFail_WJets_Pass = (TH1F *) PassFail_PassDir->Get("W_Pass");
+  TH1F* PassFail_WJets_Fail = (TH1F *) PassFail_FailDir->Get("W_Fail");
+  
+  std::cout<<"Creating Newly Scaled Histos"<<std::endl;
+  TH1F* Rescaled_WJets_Pass = new TH1F("Rescaled_WJets_Pass","Rescaled_WJets_Pass", 10, 0.0, 100.0);
+  TH1F* Rescaled_WJets_Fail = new TH1F("Rescaled_WJets_Fail","Rescaled_WJets_Fail", 10, 0.0, 100.0);
+
+  std::cout<<"Filling Them"<<std::endl;
+  for(int i =1; i <= 10; i++)
+    {
+      /*
+      std::cout<<"Pass Scale Factor is: "<<ScaleFactors_Pass->GetBinContent(i)<<std::endl;
+      std::cout<<"Fail Scale Factor is: "<<ScaleFactors_Fail->GetBinContent(i)<<std::endl;
+      std::cout<<"PassFail_WJets_Pass content is: "<<PassFail_WJets_Pass->GetBinContent(i)<<std::endl;
+      std::cout<<"PassFail_WJets_Pass content is: "<<PassFail_WJets_Fail->GetBinContent(i)<<std::endl;
+      */
+      Rescaled_WJets_Pass->SetBinContent(i,PassFail_WJets_Pass->GetBinContent(i)*ScaleFactors_Pass->GetBinContent(i));
+      Rescaled_WJets_Fail->SetBinContent(i,PassFail_WJets_Fail->GetBinContent(i)*ScaleFactors_Fail->GetBinContent(i));
+    }
+
+  //Shove this back into the old file, and we'll roll with that.
+  std::cout<<"Writing Newly Scaled Histos to the Pass/Fail File"<<std::endl;
+  PassFail_PassDir->cd();
+  Rescaled_WJets_Pass->Write();
+
+  PassFail_FailDir->cd();
+  Rescaled_WJets_Fail->Write();
+}

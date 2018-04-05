@@ -24,3 +24,15 @@ hadd -f WJetsDistributions.root TemporaryFiles/*WJets*
 
 root -b -q WJetsSimToData.cc
 
+root -b -q "QCDDistributionCreation.cc(\"Data\")"
+root -b -q "QCDDistributionCreation.cc(\"WW\")"
+root -b -q "QCDDistributionCreation.cc(\"WZ\")"
+root -b -q "QCDDistributionCreation.cc(\"ZZ\")"
+root -b -q "QCDDistributionCreation.cc(\"W\")"
+root -b -q "QCDDistributionCreation.cc(\"TTTo2L2Nu\")"
+root -b -q "QCDDistributionCreation.cc(\"TTToHadronic\")"
+root -b -q "QCDDistributionCreation.cc(\"TTToSemiLeptonic\")"
+root -b -q "QCDDistributionCreation.cc(\"DY\")"
+hadd -f QCDDistributions.root TemporaryFiles/*QCD*
+
+eoot -b -q FinalizeQCDBackground.cc

@@ -8,7 +8,7 @@ void CompileHistograms()
   
   writeExtraText = true;
   extraText = "Preliminary";
-  lumi_sqrtS = "46.062 fb^{-1}, 13 TeV";
+  lumi_sqrtS = "46 fb^{-1}, 13 TeV";
 
   TFile *PassFailFile = new TFile("PassFailOut.root");
   TDirectory *PassDirectory = (TDirectory*) PassFailFile->Get("PassRegion");
@@ -44,11 +44,11 @@ void CompileHistograms()
   C1->SetTickx();
   C1->SetTicky();
 
-  TH1F* DiBoson_Pass = new TH1F("DiBoson_Pass","DiBoson_Pass", 10, 0.0, 100.0);
+  TH1F* DiBoson_Pass = new TH1F("DiBoson_Pass","DiBoson_Pass", Data_Pass->GetSize()-2, Data_Pass->GetXaxis()->GetXmin(), Data_Pass->GetXaxis()->GetXmax());
   DiBoson_Pass->Add(WW_Pass,WZ_Pass);
   DiBoson_Pass->Add(ZZ_Pass);
 
-  TH1F* TT_Pass = new TH1F("TT_Pass", "TT_Pass", 10, 0.0, 100.0);
+  TH1F* TT_Pass = new TH1F("TT_Pass", "TT_Pass", Data_Pass->GetSize()-2, Data_Pass->GetXaxis()->GetXmin(), Data_Pass->GetXaxis()->GetXmax());
   TT_Pass->Add(TTTo2L2Nu_Pass,TTToHadronic_Pass);
   TT_Pass->Add(TTToSemiLeptonic_Pass);
   
@@ -71,11 +71,11 @@ void CompileHistograms()
   QCD_Pass->SetFillColor(kPink+1);
 
   THStack * PassStack = new THStack("PassStack","PassStack");
-  PassStack->Add(DY_Pass);
-  PassStack->Add(DiBoson_Pass,"hist");
-  PassStack->Add(TT_Pass,"hist");
+  PassStack->Add(QCD_Pass,"hist");  
   PassStack->Add(WJets_Pass,"hist");
-  PassStack->Add(QCD_Pass,"hist");
+  PassStack->Add(TT_Pass,"hist");
+  PassStack->Add(DY_Pass,"hist");
+  PassStack->Add(DiBoson_Pass,"hist");
 
   Data_Pass->Draw();
   PassStack->Draw("SAME");
@@ -100,11 +100,11 @@ void CompileHistograms()
   C2->SetTickx();
   C2->SetTicky();
 
-  TH1F* DiBoson_Fail = new TH1F("DiBoson_Fail","DiBoson_Fail", 10, 0.0, 100.0);
+  TH1F* DiBoson_Fail = new TH1F("DiBoson_Fail","DiBoson_Fail", Data_Fail->GetSize()-2, Data_Fail->GetXaxis()->GetXmin(), Data_Fail->GetXaxis()->GetXmax());
   DiBoson_Fail->Add(WW_Fail,WZ_Fail);
   DiBoson_Fail->Add(ZZ_Fail);
 
-  TH1F* TT_Fail = new TH1F("TT_Fail", "TT_Fail", 10, 0.0, 100.0);
+  TH1F* TT_Fail = new TH1F("TT_Fail", "TT_Fail", Data_Fail->GetSize()-2, Data_Fail->GetXaxis()->GetXmin(), Data_Fail->GetXaxis()->GetXmax());
   TT_Fail->Add(TTTo2L2Nu_Fail,TTToHadronic_Fail);
   TT_Fail->Add(TTToSemiLeptonic_Fail);
   
@@ -127,11 +127,11 @@ void CompileHistograms()
   QCD_Fail->SetFillColor(kPink+1);
 
   THStack * FailStack = new THStack("FailStack","FailStack");
-  FailStack->Add(DY_Fail);
-  FailStack->Add(DiBoson_Fail,"hist");
-  FailStack->Add(TT_Fail,"hist");
-  FailStack->Add(WJets_Fail,"hist");
   FailStack->Add(QCD_Fail,"hist");
+  FailStack->Add(WJets_Fail,"hist");
+  FailStack->Add(TT_Fail,"hist");
+  FailStack->Add(DY_Fail,"hist");
+  FailStack->Add(DiBoson_Fail,"hist");  
 
   Data_Fail->Draw();
   FailStack->Draw("SAME");

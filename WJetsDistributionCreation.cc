@@ -87,10 +87,10 @@ void WJetsDistributionCreation(std::string input)
   int NumberOfEntries = (int) Tree->GetEntries();
 
   //System mvis for data to simulation scale factors
-  TFile* PassFailFile = new TH1F("PassFailOut.root");
+  TFile* PassFailFile = new TFile("PassFailOut.root");
   TH1F* ReferenceHisto = (TH1F*)((TDirectory*)(PassFailFile->Get("PassRegion")))->Get("Data_Pass");
   TH1F* MuTauInvariantMass_Pass = new TH1F((input+"_Pass").c_str(),"MuTauInvariantMass_Pass", ReferenceHisto->GetSize()-2, ReferenceHisto->GetXaxis()->GetXmin(),ReferenceHisto->GetXaxis()->GetXmax());
-  TH1F* MuTauInvariantMass_Fail = new TH1F((input+"_Fail").c_str(),"MuTauInvariantMass_Fail",ReferenceHisto->GetSize()-2, ReferenceHisto->GetXaxis()->GetXmin(), ReferenceHisto->GetXaxis()->GetXmin());
+  TH1F* MuTauInvariantMass_Fail = new TH1F((input+"_Fail").c_str(),"MuTauInvariantMass_Fail",ReferenceHisto->GetSize()-2, ReferenceHisto->GetXaxis()->GetXmin(), ReferenceHisto->GetXaxis()->GetXmax());
 
   for(int i =0;i < NumberOfEntries; i++)
     {

@@ -64,10 +64,10 @@ void WJetsSimToData()
   
   //Let's now create a histogram where we divide the data bins by sim bins
   //so we get a scale factor that we can apply to the other sim data
-  TH1F* ScaleFactors_Pass = new TH1F("ScaleFactors_Pass","ScaleFactors_Pass", WJets_Pass->Size()-2, WJets_Pass->GetXaxis()->GetXmin(), WJets_Pass->GetXaxis()->GetXmax());
+  TH1F* ScaleFactors_Pass = new TH1F("ScaleFactors_Pass","ScaleFactors_Pass", WJets_Pass->GetSize()-2, WJets_Pass->GetXaxis()->GetXmin(), WJets_Pass->GetXaxis()->GetXmax());
   ScaleFactors_Pass->Divide(WJets_Pass,W_Pass);
 
-  TH1F* ScaleFactors_Fail = new TH1F("ScaleFactors_Fail","ScaleFactors_Fail", WJets_Fail->Size()-2, WJets_Fail->GetXaxis()->GetXmin(), WJets_Fail->GetXaxis()->GetXmax());
+  TH1F* ScaleFactors_Fail = new TH1F("ScaleFactors_Fail","ScaleFactors_Fail", WJets_Fail->GetSize()-2, WJets_Fail->GetXaxis()->GetXmin(), WJets_Fail->GetXaxis()->GetXmax());
   ScaleFactors_Fail->Divide(WJets_Fail,W_Fail);
   
   ScaleFactors_Pass->SetName("ScaleFactors_Pass");

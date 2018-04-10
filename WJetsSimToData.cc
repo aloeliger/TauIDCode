@@ -8,27 +8,29 @@ void WJetsSimToData()
   
   //pass histos
   cout<<"Retrieving Pass Region Histograms"<<std::endl;
-  TH1F* WJets_Pass = (TH1F *) WJet_PassDir->Get("Data_Pass");
-  TH1F* DY_Pass = (TH1F *) WJet_PassDir->Get("DY_pass");
-  TH1F* TTTo2L2Nu_Pass = (TH1F *) WJet_PassDir->Get("TTTo2L2Nu_Pass");
-  TH1F* TTToHadronic_Pass = (TH1F *) WJet_PassDir->Get("TTToHadronic_Pass");
-  TH1F* TTToSemiLeptonic_Pass =  (TH1F *) WJet_PassDir->Get("TTToSemiLeptonic_Pass");
-  TH1F* W_Pass = (TH1F *) WJet_PassDir->Get("W_Pass");
-  TH1F* WW_Pass = (TH1F *) WJet_PassDir->Get("WW_Pass");
-  TH1F* WZ_Pass = (TH1F *) WJet_PassDir->Get("WZ_Pass");
-  TH1F* ZZ_Pass = (TH1F *) WJet_PassDir->Get("ZZ_Pass");
+  TH1F* WJets_Pass = (TH1F *) WJet_PassDir->Get("WJets_Data_Pass");
+  TH1F* DY_Pass = (TH1F *) WJet_PassDir->Get("WJets_DY_Pass");
+  TH1F* TTTo2L2Nu_Pass = (TH1F *) WJet_PassDir->Get("WJets_TTTo2L2Nu_Pass");
+  TH1F* TTToHadronic_Pass = (TH1F *) WJet_PassDir->Get("WJets_TTToHadronic_Pass");
+  TH1F* TTToSemiLeptonic_Pass =  (TH1F *) WJet_PassDir->Get("WJets_TTToSemiLeptonic_Pass");
+  TH1F* W_Pass = (TH1F *) WJet_PassDir->Get("WJets_W_Pass");
+  TH1F* WW_Pass = (TH1F *) WJet_PassDir->Get("WJets_WW_Pass");
+  TH1F* WZ_Pass = (TH1F *) WJet_PassDir->Get("WJets_WZ_Pass");
+  TH1F* ZZ_Pass = (TH1F *) WJet_PassDir->Get("WJets_ZZ_Pass");
+  TH1F* QCD_Pass = (TH1F *) WJet_PassDir->Get("CorrectedQCDContribution_Pass");
   
   //fail histos
   std::cout<<"Retrieving Fail Region Histograms"<<std::endl;
-  TH1F* WJets_Fail = (TH1F *) WJet_FailDir->Get("Data_Fail");
-  TH1F* DY_Fail = (TH1F *) WJet_FailDir->Get("DY_pass");
-  TH1F* TTTo2L2Nu_Fail = (TH1F *) WJet_FailDir->Get("TTTo2L2Nu_Fail");
-  TH1F* TTToHadronic_Fail = (TH1F *) WJet_FailDir->Get("TTToHadronic_Fail");
-  TH1F* TTToSemiLeptonic_Fail =  (TH1F *) WJet_FailDir->Get("TTToSemiLeptonic_Fail");
-  TH1F* W_Fail = (TH1F *) WJet_FailDir->Get("W_Fail");
-  TH1F* WW_Fail = (TH1F *) WJet_FailDir->Get("WW_Fail");
-  TH1F* WZ_Fail = (TH1F *) WJet_FailDir->Get("WZ_Fail");
-  TH1F* ZZ_Fail = (TH1F *) WJet_FailDir->Get("ZZ_Fail");
+  TH1F* WJets_Fail = (TH1F *) WJet_FailDir->Get("WJets_Data_Fail");
+  TH1F* DY_Fail = (TH1F *) WJet_FailDir->Get("WJets_DY_Pass");
+  TH1F* TTTo2L2Nu_Fail = (TH1F *) WJet_FailDir->Get("WJets_TTTo2L2Nu_Fail");
+  TH1F* TTToHadronic_Fail = (TH1F *) WJet_FailDir->Get("WJets_TTToHadronic_Fail");
+  TH1F* TTToSemiLeptonic_Fail =  (TH1F *) WJet_FailDir->Get("WJets_TTToSemiLeptonic_Fail");
+  TH1F* W_Fail = (TH1F *) WJet_FailDir->Get("WJets_W_Fail");
+  TH1F* WW_Fail = (TH1F *) WJet_FailDir->Get("WJets_WW_Fail");
+  TH1F* WZ_Fail = (TH1F *) WJet_FailDir->Get("WJets_WZ_Fail");
+  TH1F* ZZ_Fail = (TH1F *) WJet_FailDir->Get("WJets_ZZ_Fail");
+  TH1F* QCD_Fail = (TH1F *) WJet_FailDir->Get("CorrectedQCDContribution_Fail");
 
   //now we subtract off the contributions (except for the W+Jets distribution)
   std::cout<<"Subtracting backgrounds..."<<std::endl;
@@ -41,6 +43,7 @@ void WJetsSimToData()
   WJets_Pass->Add(WW_Pass, -1.0);
   WJets_Pass->Add(WZ_Pass, -1.0);
   WJets_Pass->Add(ZZ_Pass, -1.0);
+  WJets_Pass->Add(QCD_Pass, -1.0);
   std::cout<<"Pass Event totals afterwards "<<WJets_Pass->Integral()<<std::endl;
   std::cout<<"Total Pass MC "<<W_Pass->Integral()<<std::endl;
   
@@ -52,6 +55,7 @@ void WJetsSimToData()
   WJets_Fail->Add(WW_Fail, -1.0);
   WJets_Fail->Add(WZ_Fail, -1.0);
   WJets_Fail->Add(ZZ_Fail, -1.0);
+  WJets_Fail->Add(QCD_Fail, -1.0);
   std::cout<<"Fail Event totals afterwards "<<WJets_Fail->Integral()<<std::endl;
   std::cout<<"Total Fail MC "<<W_Fail->Integral()<<std::endl;
   std::cout<<std::endl;
@@ -114,4 +118,9 @@ void WJetsSimToData()
 
   PassFail_FailDir->cd();
   Rescaled_WJets_Fail->Write();
+
+  std::cout<<std::endl;
+  std::cout<<"General pass scale factor would be: "<<(WJets_Pass->Integral()/W_Pass->Integral())<<std::endl;
+  std::cout<<"General fail scale factor would be: "<<(WJets_Fail->Integral()/W_Fail->Integral())<<std::endl;
+  std::cout<<"Most general possible scale factor would be: "<<(WJets_Pass->Integral() + WJets_Fail->Integral()) / (W_Pass->Integral() + W_Fail->Integral())<<std::endl;
 }

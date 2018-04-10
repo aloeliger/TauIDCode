@@ -8,29 +8,29 @@ void FinalizeQCDBackground()
   
   //pass histos
   cout<<"Retrieving Pass Region Histograms"<<std::endl;
-  TH1F* QCD_Pass = (TH1F *) QCD_PassDir->Get("Data_Pass");
-  TH1F* DY_Pass = (TH1F *) QCD_PassDir->Get("DY_pass");
-  TH1F* TTTo2L2Nu_Pass = (TH1F *) QCD_PassDir->Get("TTTo2L2Nu_Pass");
-  TH1F* TTToHadronic_Pass = (TH1F *) QCD_PassDir->Get("TTToHadronic_Pass");
-  TH1F* TTToSemiLeptonic_Pass =  (TH1F *) QCD_PassDir->Get("TTToSemiLeptonic_Pass");
-  TH1F* W_Pass = (TH1F *) QCD_PassDir->Get("W_Pass");
-  TH1F* WW_Pass = (TH1F *) QCD_PassDir->Get("WW_Pass");
-  TH1F* WZ_Pass = (TH1F *) QCD_PassDir->Get("WZ_Pass");
-  TH1F* ZZ_Pass = (TH1F *) QCD_PassDir->Get("ZZ_Pass");
+  TH1F* QCD_Pass = (TH1F *) QCD_PassDir->Get("QCD_Data_Pass");
+  TH1F* DY_Pass = (TH1F *) QCD_PassDir->Get("QCD_DY_Pass");
+  TH1F* TTTo2L2Nu_Pass = (TH1F *) QCD_PassDir->Get("QCD_TTTo2L2Nu_Pass");
+  TH1F* TTToHadronic_Pass = (TH1F *) QCD_PassDir->Get("QCD_TTToHadronic_Pass");
+  TH1F* TTToSemiLeptonic_Pass =  (TH1F *) QCD_PassDir->Get("QCD_TTToSemiLeptonic_Pass");
+  TH1F* W_Pass = (TH1F *) QCD_PassDir->Get("QCD_W_Pass");
+  TH1F* WW_Pass = (TH1F *) QCD_PassDir->Get("QCD_WW_Pass");
+  TH1F* WZ_Pass = (TH1F *) QCD_PassDir->Get("QCD_WZ_Pass");
+  TH1F* ZZ_Pass = (TH1F *) QCD_PassDir->Get("QCD_ZZ_Pass");
 
   QCD_Pass->SetName("QCD_Pass");
 
   //fail histos
   std::cout<<"Retrieving Fail Region Histograms"<<std::endl;
-  TH1F* QCD_Fail = (TH1F *) QCD_FailDir->Get("Data_Fail");
-  TH1F* DY_Fail = (TH1F *) QCD_FailDir->Get("DY_pass");
-  TH1F* TTTo2L2Nu_Fail = (TH1F *) QCD_FailDir->Get("TTTo2L2Nu_Fail");
-  TH1F* TTToHadronic_Fail = (TH1F *) QCD_FailDir->Get("TTToHadronic_Fail");
-  TH1F* TTToSemiLeptonic_Fail =  (TH1F *) QCD_FailDir->Get("TTToSemiLeptonic_Fail");
-  TH1F* W_Fail = (TH1F *) QCD_FailDir->Get("W_Fail");
-  TH1F* WW_Fail = (TH1F *) QCD_FailDir->Get("WW_Fail");
-  TH1F* WZ_Fail = (TH1F *) QCD_FailDir->Get("WZ_Fail");
-  TH1F* ZZ_Fail = (TH1F *) QCD_FailDir->Get("ZZ_Fail");
+  TH1F* QCD_Fail = (TH1F *) QCD_FailDir->Get("QCD_Data_Fail");
+  TH1F* DY_Fail = (TH1F *) QCD_FailDir->Get("QCD_DY_Fail");
+  TH1F* TTTo2L2Nu_Fail = (TH1F *) QCD_FailDir->Get("QCD_TTTo2L2Nu_Fail");
+  TH1F* TTToHadronic_Fail = (TH1F *) QCD_FailDir->Get("QCD_TTToHadronic_Fail");
+  TH1F* TTToSemiLeptonic_Fail =  (TH1F *) QCD_FailDir->Get("QCD_TTToSemiLeptonic_Fail");
+  TH1F* W_Fail = (TH1F *) QCD_FailDir->Get("QCD_W_Fail");
+  TH1F* WW_Fail = (TH1F *) QCD_FailDir->Get("QCD_WW_Fail");
+  TH1F* WZ_Fail = (TH1F *) QCD_FailDir->Get("QCD_WZ_Fail");
+  TH1F* ZZ_Fail = (TH1F *) QCD_FailDir->Get("QCD_ZZ_Fail");
 
   QCD_Fail->SetName("QCD_Fail");
 

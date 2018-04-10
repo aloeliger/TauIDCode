@@ -20,7 +20,7 @@ void CompileHistograms()
   TH1F* TTTo2L2Nu_Pass = (TH1F*) PassDirectory->Get("TTTo2L2Nu_Pass");
   TH1F* TTToHadronic_Pass = (TH1F*) PassDirectory->Get("TTToHadronic_Pass");
   TH1F* TTToSemiLeptonic_Pass = (TH1F*) PassDirectory->Get("TTToSemiLeptonic_Pass");
-  TH1F* WJets_Pass = (TH1F*) PassDirectory->Get("W_Pass"/*"Rescaled_WJets_Pass"*/);
+  TH1F* WJets_Pass = (TH1F*) PassDirectory->Get(/*"W_Pass"*/"Rescaled_WJets_Pass");
   TH1F* WW_Pass = (TH1F*) PassDirectory->Get("WW_Pass");
   TH1F* WZ_Pass = (TH1F*) PassDirectory->Get("WZ_Pass");
   TH1F* ZZ_Pass = (TH1F*) PassDirectory->Get("ZZ_Pass");
@@ -32,7 +32,7 @@ void CompileHistograms()
   TH1F* TTTo2L2Nu_Fail = (TH1F*) FailDirectory->Get("TTTo2L2Nu_Fail");
   TH1F* TTToHadronic_Fail = (TH1F*) FailDirectory->Get("TTToHadronic_Fail");
   TH1F* TTToSemiLeptonic_Fail = (TH1F*) FailDirectory->Get("TTToSemiLeptonic_Fail");
-  TH1F* WJets_Fail = (TH1F*) FailDirectory->Get("W_Fail"/*"Rescaled_WJets_Fail"*/);
+  TH1F* WJets_Fail = (TH1F*) FailDirectory->Get(/*"W_Fail"*/"Rescaled_WJets_Fail");
   TH1F* WW_Fail = (TH1F*) FailDirectory->Get("WW_Fail");
   TH1F* WZ_Fail = (TH1F*) FailDirectory->Get("WZ_Fail");
   TH1F* ZZ_Fail = (TH1F*) FailDirectory->Get("ZZ_Fail");

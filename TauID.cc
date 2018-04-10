@@ -92,8 +92,52 @@ void TauID(std::string input)
   int NumberOfEntries = (int) Tree->GetEntries();
 
   //System mvis for data to simulation scale factors
-  TH1F* MuTauInvariantMass_Pass = new TH1F((input+"_Pass").c_str(),"VisMass_Pass",15,0.0,150.0);
-  TH1F* MuTauInvariantMass_Fail = new TH1F((input+"_Fail").c_str(),"VisMass_Fail",15,0.0,150.0);
+  TH1F* SignalRegion_Pass = new TH1F((input+"_Pass").c_str(),
+				     "Signal_Pass",
+				     15,
+				     0.0,
+				     150.0);
+  TH1F* SignalRegion_Fail = new TH1F((input+"_Fail").c_str(),
+				     "Signal_Fail",
+				     15,
+				     0.0,
+				     150.0);
+
+  TH1F* WJetsRegion_Pass = new TH1F(("WJets_"+input+"_Pass").c_str(), 
+				    "WJets_Pass", 
+				    SignalRegion_Pass->GetSize()-2, 
+				    SignalRegion_Pass->GetXaxis()->GetXmin(),
+				    SignalRegion_Pass->GetXaxis()->GetXmax());
+  TH1F* WJetsRegion_Fail = new TH1F(("WJets_"+input+"_Fail").c_str(), 
+				    "WJets_Fail", 
+				    SignalRegion_Fail->GetSize()-2, 
+				    SignalRegion_Fail->GetXaxis()->GetXmin(),
+				    SignalRegion_Fail->GetXaxis()->GetXmax());
+  
+  TH1F* QCDRegion_Pass = new TH1F(("QCD_"+input+"_Pass").c_str(), 
+				  "QCD_Pass", 
+				  SignalRegion_Pass->GetSize()-2, 
+				  SignalRegion_Pass->GetXaxis()->GetXmin(),
+				  SignalRegion_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* QCDRegion_Fail = new TH1F(("QCD_"+input+"_Fail").c_str(), 
+				  "QCD_Fail", 
+				  SignalRegion_Fail->GetSize()-2, 
+				  SignalRegion_Fail->GetXaxis()->GetXmin(),
+				  SignalRegion_Fail->GetXaxis()->GetXmax());
+  
+  TH1F* QCDinWJets_Pass = new TH1F(("WJets_QCD_"+input+"_Pass").c_str(), 
+				   "WJets_QCD_Pass", 
+				   SignalRegion_Pass->GetSize()-2, 
+				   SignalRegion_Pass->GetXaxis()->GetXmin(),
+				   SignalRegion_Pass->GetXaxis()->GetXmax());
+
+  TH1F* QCDinWJets_Fail = new TH1F(("WJets_QCD_"+input+"_Fail").c_str(), 
+				   "WJets_QCD_Fail", 
+				   SignalRegion_Fail->GetSize()-2, 
+				   SignalRegion_Fail->GetXaxis()->GetXmin(),
+				   SignalRegion_Fail->GetXaxis()->GetXmax());
+  
 
   //Determine the relevant cross section or normalization
   float LHCLumi = 46.062e15;
@@ -134,49 +178,132 @@ void TauID(std::string input)
       if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronLooseMVA6_2 != 1 or againstMuonTight3_2 != 1.0) continue;
       //pair criteria
       float DeltaR = std::sqrt((eta_1-eta_2)*(eta_1-eta_2)+(phi_1-phi_2)*(phi_1-phi_2));
-      if(DeltaR < 0.5 or q_1*q_2 > 0.0) continue;
-
+      if(DeltaR <= 0.5)  continue;
+	 
       TLorentzVector MissingP;
       MissingP.SetPtEtaPhiM(met,0,metphi,0);
       
-      float TransverseMass = std::sqrt(2.0*l1.Pt()*MissingP.Pt()*(1.0-std::cos(l1.DeltaPhi(MissingP))));
-      if(TransverseMass > 40.0) continue;      
-
+      float TransverseMass = std::sqrt(2.0*l1.Pt()*MissingP.Pt()*(1.0-std::cos(l1.DeltaPhi(MissingP))));      
+      
       TVector3 ZetaUnit = l1.Vect()*(1.0/l1.Vect().Mag())+l2.Vect()*(1.0/l2.Vect().Mag());//get a bisector of the angle between mu and tau
       ZetaUnit = ZetaUnit*(1.0/ZetaUnit.Mag()); //unitize it
-
+      
       float PZetaVis = (l1.Vect()+l2.Vect()).Dot(ZetaUnit);
       float PZetaAll = (l1.Vect()+l2.Vect()+MissingP.Vect()).Dot(ZetaUnit);
       float PZeta = PZetaAll - 0.85 * PZetaVis;
-      //float DZeta = PZetaVis+PZeta;
-      if(PZeta < -25.0)	continue;     
-
+      //float DZeta = PZetaVis+PZeta;      
+      
       //check the tau iso discriminants, and divide these our events by pass/fail
       //according to 5.2.1 iso discriminants on the tau are loose: < 2.5 (GeV), medium: < 1.5 (GeV), tight: < 0.8 (GeV)
-      if(iso_2 < 0.8)
+
+      //check signs if Opposite sign is signal contribution
+      if(q_1*q_2 < 0.0)
 	{
-	  MuTauInvariantMass_Pass->Fill((l1+l2).M(),NormalizationWeight);    
+	  //Signal contribution
+	  if(TransverseMass < 40.0 and PZeta > -25.0)
+	    {
+	      if(iso_2 < 0.8)
+		{
+		  SignalRegion_Pass->Fill((l1+l2).M(),NormalizationWeight);    
+		}
+	      else
+		{
+		  SignalRegion_Fail->Fill((l1+l2).M(),NormalizationWeight);
+		}
+	    }
+	  //WJets Contribution
+	  else if(TransverseMass > 80.0)
+	    {
+	      if(iso_2 < 0.8)
+		{
+		  WJetsRegion_Pass->Fill((l1+l2).M(),NormalizationWeight);    
+		}
+	      else
+		{
+		  WJetsRegion_Fail->Fill((l1+l2).M(),NormalizationWeight);
+		}
+	    }
 	}
-      else
+      //same sign is QCD
+      else if(q_1*q_2 > 0.0)
 	{
-	  MuTauInvariantMass_Fail->Fill((l1+l2).M(),NormalizationWeight);
-	}
+	  if(TransverseMass < 40.0 and PZeta > -25.0)
+	    {
+	      if(iso_2 < 0.8)
+		{
+		  QCDRegion_Pass->Fill((l1+l2).M(),NormalizationWeight);    
+		}
+	      else
+		{
+		  QCDRegion_Fail->Fill((l1+l2).M(),NormalizationWeight);
+		}
+	    }
+	  else if(TransverseMass > 80.0)
+	    {
+	      if(iso_2 < 0.8)
+		{
+		  QCDinWJets_Pass->Fill((l1+l2).M(),NormalizationWeight);    
+		}
+	      else
+		{
+		  QCDinWJets_Fail->Fill((l1+l2).M(),NormalizationWeight);
+		} 
+	    }
+	}            
     }
   
-  std::cout<<std::endl;
-  std::cout<<"Accepted Passing Events: "<<MuTauInvariantMass_Pass->Integral()<<std::endl;
-  std::cout<<"Accepted Failing Events: "<<MuTauInvariantMass_Fail->Integral()<<std::endl;
-  std::cout<<std::endl;
-  TFile* OutFile = new TFile(("TemporaryFiles/"+input+"PassFail.root").c_str(),"RECREATE");
+  std::cout<<std::endl;  
 
-  TDirectory *PassDir = OutFile->mkdir("PassRegion");
-  PassDir->cd();
-  MuTauInvariantMass_Pass->Write();
+  //save signal distributions
+  TFile* SignalOutFile = new TFile(("TemporaryFiles/Signal_"+input+"_PassFail.root").c_str(),"RECREATE");
 
-  TDirectory *FailDir = OutFile->mkdir("FailRegion");
-  FailDir->cd();
-  MuTauInvariantMass_Fail->Write();
+  TDirectory *SignalPassDir = SignalOutFile->mkdir("PassRegion");
+  SignalPassDir->cd();
+  SignalRegion_Pass->Write();
+
+  TDirectory *SignalFailDir = SignalOutFile->mkdir("FailRegion");
+  SignalFailDir->cd();
+  SignalRegion_Fail->Write();
   
-  OutFile->Close();
+  SignalOutFile->Close();
+
+  //save WJets distributions
+  TFile* WJetsOutFile = new TFile(("TemporaryFiles/WJets_"+input+"_PassFail.root").c_str(),"RECREATE");
+
+  TDirectory *WJetsPassDir = WJetsOutFile->mkdir("PassRegion");
+  WJetsPassDir->cd();
+  WJetsRegion_Pass->Write();
+
+  TDirectory *WJetsFailDir = WJetsOutFile->mkdir("FailRegion");
+  WJetsFailDir->cd();
+  WJetsRegion_Fail->Write();
+  
+  WJetsOutFile->Close();
+
+  //save QCD distributions
+  TFile* QCDOutFile = new TFile(("TemporaryFiles/QCD_"+input+"_PassFail.root").c_str(),"RECREATE");
+
+  TDirectory *QCDPassDir = QCDOutFile->mkdir("PassRegion");
+  QCDPassDir->cd();
+  QCDRegion_Pass->Write();
+
+  TDirectory *QCDFailDir = QCDOutFile->mkdir("FailRegion");
+  QCDFailDir->cd();
+  QCDRegion_Fail->Write();
+  
+  QCDOutFile->Close();
+
+  //save the QCD Wjets contribution
+  TFile* QCDinWJetsOutFile = new TFile(("TemporaryFiles/QCDinWJets_"+input+"PassFail.root").c_str(),"RECREATE");
+
+  TDirectory *QCDinWJetsPassDir = QCDinWJetsOutFile->mkdir("PassRegion");
+  QCDinWJetsPassDir->cd();
+  QCDinWJets_Pass->Write();
+
+  TDirectory *QCDinWJetsFailDir = QCDinWJetsOutFile->mkdir("FailRegion");
+  QCDinWJetsFailDir->cd();
+  QCDinWJets_Fail->Write();
+  
+  QCDinWJetsOutFile->Close();
 
 }

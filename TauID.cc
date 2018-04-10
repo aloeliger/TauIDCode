@@ -16,11 +16,12 @@ void TauID(std::string input)
   float againstElectronLooseMVA6_2,againstElectronMediumMVA6_2,againstElectronTightMVA6_2,againstElectronVLooseMVA6_2,againstElectronVTightMVA6_2;
   float againstMuonLoose3_2,againstMuonTight3_2;
   
-  //there's a huge whack of these variables in the three I don't recognize and am not going to bother with right now
-  // to entry 45 they are declared but commented out below
-  // we pick back up at entry 71
+  //there's a huge whack of these variables in the tree I don't recognize
   /*
-  float byLooseCombinedIsolationDeltaBetaCorr3Hits_2,byMediumCombinedIsolationDeltaBetaCorr3Hits_2, byTightCombinedIsolationDeltaBetaCorr3Hits_2,byCombinedIsolationDeltaBetaCorrRaw3Hits_2,byLooseCombinedIsolationDeltaBetaCorr3HitsdR03_2,byMediumCombinedIsolationDeltaBetaCorr3HitsdR03_2,byTightCombinedIsolationDeltaBetaCorr3HitsdR03_2,byVLooseIsolationMVArun2v1DBnewDMwLT_2,byVLooseIsolationMVArun2v1DBoldDMwLT_2,byVLooseIsolationMVArun2v1DBdR03oldDMwLT_2,byLooseIsolationMVArun2v1DBnewDMwLT_2;
+  float byLooseCombinedIsolationDeltaBetaCorr3Hits_2,byMediumCombinedIsolationDeltaBetaCorr3Hits_2, byTightCombinedIsolationDeltaBetaCorr3Hits_2,byCombinedIsolationDeltaBetaCorrRaw3Hits_2;
+  float byLooseCombinedIsolationDeltaBetaCorr3HitsdR03_2,byMediumCombinedIsolationDeltaBetaCorr3HitsdR03_2,byTightCombinedIsolationDeltaBetaCorr3HitsdR03_2,byVLooseIsolationMVArun2v1DBnewDMwLT_2;
+  float byVLooseIsolationMVArun2v1DBoldDMwLT_2,byVLooseIsolationMVArun2v1DBdR03oldDMwLT_2,byLooseIsolationMVArun2v1DBnewDMwLT_2;
+  float byLooseIsolationMVArun2v1DBoldDMwLT_2, byLooseIsolationMVArun2v1DBdR03oldDMwLT_2,byMediumIsolationMVArun2v1DBnewDMwLT_2,byMediumIsolationMVArun2v1DBoldDMwLT_2;
   */
 
   float chargedIsoPtSum_2,decayModeFinding_2,decayModeFindingNewDMs_2,neutralIsoPtSum_2,puCorrPtSum_2,chargedIso_2,neutralIso_2,puIso_2,photonIso_2,trackpt_2;
@@ -91,8 +92,8 @@ void TauID(std::string input)
   int NumberOfEntries = (int) Tree->GetEntries();
 
   //System mvis for data to simulation scale factors
-  TH1F* MuTauInvariantMass_Pass = new TH1F((input+"_Pass").c_str(),"VisMass_Pass",10,0.0,100.0);
-  TH1F* MuTauInvariantMass_Fail = new TH1F((input+"_Fail").c_str(),"VisMass_Fail",10,0.0,100.0);
+  TH1F* MuTauInvariantMass_Pass = new TH1F((input+"_Pass").c_str(),"VisMass_Pass",15,0.0,150.0);
+  TH1F* MuTauInvariantMass_Fail = new TH1F((input+"_Fail").c_str(),"VisMass_Fail",15,0.0,150.0);
 
   //Determine the relevant cross section or normalization
   float LHCLumi = 46.062e15;
@@ -135,7 +136,6 @@ void TauID(std::string input)
       float DeltaR = std::sqrt((eta_1-eta_2)*(eta_1-eta_2)+(phi_1-phi_2)*(phi_1-phi_2));
       if(DeltaR < 0.5 or q_1*q_2 > 0.0) continue;
 
-      //How do we construct the missing momentum vector?
       TLorentzVector MissingP;
       MissingP.SetPtEtaPhiM(met,0,metphi,0);
       
@@ -163,6 +163,9 @@ void TauID(std::string input)
 	}
     }
   
+  std::cout<<std::endl;
+  std::cout<<"Accepted Passing Events: "<<MuTauInvariantMass_Pass->Integral()<<std::endl;
+  std::cout<<"Accepted Failing Events: "<<MuTauInvariantMass_Fail->Integral()<<std::endl;
   std::cout<<std::endl;
   TFile* OutFile = new TFile(("TemporaryFiles/"+input+"PassFail.root").c_str(),"RECREATE");
 

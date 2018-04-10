@@ -40,11 +40,16 @@ void FinalizeQCDBackground()
   TH1F* ScaleFactors_Pass = (TH1F*) ScaleFactorFile->Get("ScaleFactors_Pass");
   TH1F* ScaleFactors_Fail = (TH1F*) ScaleFactorFile->Get("ScaleFactors_Fail");
 
+  // 4/6/2018 TEMPORARY: WJets scaling is currently bugged
+  // until I sort out the issue, just use unscaled jets.
+  // the scaling is supposed to be very close to 1 anyways.
+  /*
   for(int i=1; i<= ScaleFactors_Pass->GetSize()-2; i++)
-    {
-      QCD_Pass->SetBinContent(i,QCD_Pass->GetBinContent(i)*ScaleFactors_Pass->GetBinContent(i));
-      QCD_Fail->SetBinContent(i,QCD_Fail->GetBinContent(i)*ScaleFactors_Fail->GetBinContent(i));
+    {      
+      W_Pass->SetBinContent(i,W_Pass->GetBinContent(i)*ScaleFactors_Pass->GetBinContent(i));
+      W_Fail->SetBinContent(i,W_Fail->GetBinContent(i)*ScaleFactors_Fail->GetBinContent(i));
     }
+  */
 
   //Now we just subtract all of these things from the data and we should be left with our QCD distributions
   std::cout<<"Subtracting backgrounds..."<<std::endl;
@@ -55,6 +60,7 @@ void FinalizeQCDBackground()
   QCD_Pass->Add(WW_Pass, -1.0);
   QCD_Pass->Add(WZ_Pass, -1.0);
   QCD_Pass->Add(ZZ_Pass, -1.0);
+  QCD_Pass->Add(W_Pass, -1.0);
   
   QCD_Fail->Add(DY_Fail, -1.0);
   QCD_Fail->Add(TTTo2L2Nu_Fail, -1.0);
@@ -63,6 +69,7 @@ void FinalizeQCDBackground()
   QCD_Fail->Add(WW_Fail, -1.0);
   QCD_Fail->Add(WZ_Fail, -1.0);
   QCD_Fail->Add(ZZ_Fail, -1.0);
+  QCD_Fail->Add(W_Fail, -1.0);
 
   //we've subtracted off the backgrounds, now we just scale by 1.05
   // as mentioned in the AN to go from SS to OS regions.

@@ -87,8 +87,10 @@ void WJetsDistributionCreation(std::string input)
   int NumberOfEntries = (int) Tree->GetEntries();
 
   //System mvis for data to simulation scale factors
-  TH1F* MuTauInvariantMass_Pass = new TH1F((input+"_Pass").c_str(),"MuTauInvariantMass_Pass",10,0.0,100.0);
-  TH1F* MuTauInvariantMass_Fail = new TH1F((input+"_Fail").c_str(),"MuTauInvariantMass_Fail",10,0.0,100.0);
+  TFile* PassFailFile = new TH1F("PassFailOut.root");
+  TH1F* ReferenceHisto = (TH1F*)((TDirectory*)(PassFailFile->Get("PassRegion")))->Get("Data_Pass");
+  TH1F* MuTauInvariantMass_Pass = new TH1F((input+"_Pass").c_str(),"MuTauInvariantMass_Pass", ReferenceHisto->GetSize()-2, ReferenceHisto->GetXaxis()->GetXmin(),ReferenceHisto->GetXaxis()->GetXmax());
+  TH1F* MuTauInvariantMass_Fail = new TH1F((input+"_Fail").c_str(),"MuTauInvariantMass_Fail",ReferenceHisto->GetSize()-2, ReferenceHisto->GetXaxis()->GetXmin(), ReferenceHisto->GetXaxis()->GetXmin());
 
   for(int i =0;i < NumberOfEntries; i++)
     {
@@ -101,7 +103,7 @@ void WJetsDistributionCreation(std::string input)
       
       //event selection is similar to the the other distributions but we nix
       // the Dzeta requirement and change the transverse mass requirement
-      if(pt_1 < 23.0 or std::abs(eta_1) > 2.1 /*or id_m_medium_1 != 1.0*/ or iso_1 > 0.15) continue;
+      if(pt_1 < 23.0 or std::abs(eta_1) > 2.1 or !id_m_medium_1 or iso_1 > 0.15) continue;
       if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronLooseMVA6_2 != 1 or againstMuonTight3_2 != 1.0) continue;
       float DeltaR = std::sqrt((eta_1-eta_2)*(eta_1-eta_2)+(phi_1-phi_2)*(phi_1-phi_2));
       if(DeltaR < 0.5 or q_1*q_2 > 0.0) continue;
@@ -118,7 +120,6 @@ void WJetsDistributionCreation(std::string input)
       float PZetaVis = (l1.Vect()+l2.Vect()).Dot(ZetaUnit);
       float PZetaAll = (l1.Vect()+l2.Vect()+MissingP.Vect()).Dot(ZetaUnit);
       float PZeta = PZetaAll - 0.85 * PZetaVis;
-      //float DZeta = PZetaVis+PZeta;
 
       if(iso_2 < 0.8)
 	{
@@ -130,6 +131,10 @@ void WJetsDistributionCreation(std::string input)
 	}
     }
   std::cout<<endl;
+  std::cout<<"Accepted Passing Events: "<<MuTauInvariantMass_Pass->Integral()<<std::endl;
+  std::cout<<"Accepted Failing Events: "<<MuTauInvariantMass_Fail->Integral()<<std::endl;
+  std::cout<<std::endl;
+  
   TFile* OutFile = new TFile(("TemporaryFiles/"+input+"_WJetsContribution.root").c_str(),"RECREATE");
 
   TDirectory *PassDir = OutFile->mkdir("PassRegion");

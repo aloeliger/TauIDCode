@@ -32,6 +32,8 @@ void WJetsSimToData()
 
   //now we subtract off the contributions (except for the W+Jets distribution)
   std::cout<<"Subtracting backgrounds..."<<std::endl;
+  std::cout<<"Pass Event totals beforehand "<<WJets_Pass->Integral()<<std::endl;
+  //Currently doesn't seem to be any drell yan events?
   WJets_Pass->Add(DY_Pass, -1.0);
   WJets_Pass->Add(TTTo2L2Nu_Pass, -1.0);
   WJets_Pass->Add(TTToHadronic_Pass, -1.0);
@@ -39,7 +41,10 @@ void WJetsSimToData()
   WJets_Pass->Add(WW_Pass, -1.0);
   WJets_Pass->Add(WZ_Pass, -1.0);
   WJets_Pass->Add(ZZ_Pass, -1.0);
+  std::cout<<"Pass Event totals afterwards "<<WJets_Pass->Integral()<<std::endl;
+  std::cout<<"Total Pass MC "<<W_Pass->Integral()<<std::endl;
   
+  std::cout<<"Fail Event totals beforehand "<<WJets_Fail->Integral()<<std::endl;
   WJets_Fail->Add(DY_Fail, -1.0);
   WJets_Fail->Add(TTTo2L2Nu_Fail, -1.0);
   WJets_Fail->Add(TTToHadronic_Fail, -1.0);
@@ -47,6 +52,9 @@ void WJetsSimToData()
   WJets_Fail->Add(WW_Fail, -1.0);
   WJets_Fail->Add(WZ_Fail, -1.0);
   WJets_Fail->Add(ZZ_Fail, -1.0);
+  std::cout<<"Fail Event totals afterwards "<<WJets_Fail->Integral()<<std::endl;
+  std::cout<<"Total Fail MC "<<W_Fail->Integral()<<std::endl;
+  std::cout<<std::endl;
   
   std::cout<<"Writing Scale Factors..."<<std::endl;
   TFile* OutFile = new TFile("TemporaryFiles/CorrectedWJetsDistributions.root","RECREATE");
@@ -82,15 +90,16 @@ void WJetsSimToData()
   TH1F* PassFail_WJets_Fail = (TH1F *) PassFail_FailDir->Get("W_Fail");
   
   std::cout<<"Creating Newly Scaled Histos"<<std::endl;
-  TH1F* Rescaled_WJets_Pass = new TH1F("Rescaled_WJets_Pass","Rescaled_WJets_Pass", 10, 0.0, 100.0);
-  TH1F* Rescaled_WJets_Fail = new TH1F("Rescaled_WJets_Fail","Rescaled_WJets_Fail", 10, 0.0, 100.0);
+  TH1F* Rescaled_WJets_Pass = new TH1F("Rescaled_WJets_Pass","Rescaled_WJets_Pass", PassFail_WJets_Pass->GetSize()-2, PassFail_WJets_Pass->GetXaxis()->GetXmin(), PassFail_WJets_Pass->GetXaxis()->GetXmax());
+  TH1F* Rescaled_WJets_Fail = new TH1F("Rescaled_WJets_Fail","Rescaled_WJets_Fail", PassFail_WJets_Fail->GetSize()-2, PassFail_WJets_Fail->GetXaxis()->GetXmin(), PassFail_WJets_Fail->GetXaxis()->GetXmax());
 
-  std::cout<<"Filling Them"<<std::endl;
-  for(int i =1; i <= 10; i++)
+  //std::cout<<"Filling Them"<<std::endl;
+  for(int i =1; i <= PassFail_WJets_Pass->GetSize()-2; i++)
     {
-      /*
+      std::cout<<"Bin #"<<i<<std::endl;
       std::cout<<"Pass Scale Factor is: "<<ScaleFactors_Pass->GetBinContent(i)<<std::endl;
       std::cout<<"Fail Scale Factor is: "<<ScaleFactors_Fail->GetBinContent(i)<<std::endl;
+      /*
       std::cout<<"PassFail_WJets_Pass content is: "<<PassFail_WJets_Pass->GetBinContent(i)<<std::endl;
       std::cout<<"PassFail_WJets_Pass content is: "<<PassFail_WJets_Fail->GetBinContent(i)<<std::endl;
       */

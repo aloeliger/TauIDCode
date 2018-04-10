@@ -81,8 +81,9 @@ Tree->SetBranchAddress("run",&run);
   int NumberOfEntries = (int) Tree->GetEntries();
 
   //System mvis for data to simulation scale factors
-  TH1F* MuTauInvariantMass_Pass = new TH1F((input+"_Pass").c_str(),"VisMass_Pass",10,0.0,100.0);
-  TH1F* MuTauInvariantMass_Fail = new TH1F((input+"_Fail").c_str(),"VisMass_Fail",10,0.0,100.0);
+  TH1F *ReferenceHisto = (TH1F*)((TDirectory*)(PassFailFile->Get("PassRegion")))->Get("Data_Pass");
+  TH1F* MuTauInvariantMass_Pass = new TH1F((input+"_Pass").c_str(),"VisMass_Pass",ReferenceHisto->GetSize()-2,ReferenceHisto->GetXaxis()->GetXmin(), ReferenceHisto->GetXaxis()->GetXmax());
+  TH1F* MuTauInvariantMass_Fail = new TH1F((input+"_Fail").c_str(),"VisMass_Fail",ReferenceHisto->GetSize()-2,ReferenceHisto->GetXaxis()->GetXmin(), ReferenceHisto->GetXaxis()->GetXmax());
 
   //Determine the relevant cross section or normalization
   float LHCLumi = 46.062e15;
@@ -155,6 +156,10 @@ Tree->SetBranchAddress("run",&run);
     }
   
   std::cout<<std::endl;
+  std::cout<<"Accepted Passing Events: "<<MuTauInvariantMass_Pass->Integral()<<std::endl;
+  std::cout<<"Accepted Failing Events: "<<MuTauInvariantMass_Fail->Integral()<<std::endl;
+  std::cout<<std::endl;
+  
   TFile* OutFile = new TFile(("TemporaryFiles/"+input+"_QCD.root").c_str(),"RECREATE");
 
   TDirectory *PassDir = OutFile->mkdir("PassRegion");

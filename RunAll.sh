@@ -35,4 +35,6 @@ root -b -q "QCDDistributionCreation.cc(\"TTToSemiLeptonic\")"
 root -b -q "QCDDistributionCreation.cc(\"DY\")"
 hadd -f QCDDistributions.root TemporaryFiles/*QCD*
 
-eoot -b -q FinalizeQCDBackground.cc
+root -b -q FinalizeQCDBackground.cc
+
+root -b -q CompileHistograms.cc

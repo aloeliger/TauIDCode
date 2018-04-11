@@ -2,9 +2,9 @@
 
 void EstimateQCDinWJets()
 {
-  TFile* ContributionFile = new TFile("WJetsQCDContributions.root");
-  TDirectory* Contribution_PassDir = (TDirectory *)ContributionFile->Get("PassRegion");
-  TDirectory* Contribution_FailDir = (TDirectory *)ContributionFile->Get("FailRegion");
+  TFile* ContributionFile = new TFile("Distributions/WJetsQCDContributions.root");
+  TDirectory* Contribution_PassDir = (TDirectory *)ContributionFile->Get("pass");
+  TDirectory* Contribution_FailDir = (TDirectory *)ContributionFile->Get("fail");
   
   //pass histos
   cout<<"Retrieving Pass Region Histograms"<<std::endl;
@@ -57,9 +57,9 @@ void EstimateQCDinWJets()
   Contribution_Pass->Scale(1.05);
   Contribution_Fail->Scale(1.05);
 
-  TFile* WJetsFile = new TFile("WJetsDistributions.root","UPDATE");
-  TDirectory* WJets_PassDir = (TDirectory *) WJetsFile->Get("PassRegion");
-  TDirectory* WJets_FailDir = (TDirectory *) WJetsFile->Get("FailRegion");
+  TFile* WJetsFile = new TFile("Distributions/WJetsDistributions.root","UPDATE");
+  TDirectory* WJets_PassDir = (TDirectory *) WJetsFile->Get("pass");
+  TDirectory* WJets_FailDir = (TDirectory *) WJetsFile->Get("fail");
 
   WJets_PassDir->cd();
   Contribution_Pass->Write();

@@ -10,9 +10,9 @@ void CompileHistograms()
   extraText = "Preliminary";
   lumi_sqrtS = "46 fb^{-1}, 13 TeV";
 
-  TFile *PassFailFile = new TFile("PassFailOut.root");
-  TDirectory *PassDirectory = (TDirectory*) PassFailFile->Get("PassRegion");
-  TDirectory *FailDirectory = (TDirectory*) PassFailFile->Get("FailRegion");
+  TFile *PassFailFile = new TFile("Distributions/PassFailOut.root");
+  TDirectory *PassDirectory = (TDirectory*) PassFailFile->Get("pass");
+  TDirectory *FailDirectory = (TDirectory*) PassFailFile->Get("fail");
 
   //Pass Region Plots
   TH1F* Data_Pass = (TH1F*) PassDirectory->Get("Data_Pass");
@@ -144,11 +144,11 @@ void CompileHistograms()
   Legend->Draw();
 
   //Write these to a histo file.
-  TFile* HistoFile = new TFile("HistoFile.root","RECREATE");
+  TFile* HistoFile = new TFile("Histos/HistoFile.root","RECREATE");
   C1->Write();
   C2->Write();
   HistoFile->Close();
 
-  C1->SaveAs("PassRegion.png");
-  C2->SaveAs("FailRegion.png");
+  C1->SaveAs("Histos/pass.png");
+  C2->SaveAs("Histos/fail.png");
 }

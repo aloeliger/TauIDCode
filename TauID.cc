@@ -1,4 +1,5 @@
 #include "TROOT.h"
+#include "/afs/cern.ch/user/a/aloelige/private/RootMacros/LumiReweightingStandAlone.h"
 
 void TauID(std::string input)
 {
@@ -15,15 +16,8 @@ void TauID(std::string input)
   float pt_2,phi_2,eta_2,m_2,e_2,q_2,d0_2,dZ_2,iso_2,l2_decayMode;
   float againstElectronLooseMVA6_2,againstElectronMediumMVA6_2,againstElectronTightMVA6_2,againstElectronVLooseMVA6_2,againstElectronVTightMVA6_2;
   float againstMuonLoose3_2,againstMuonTight3_2;
-  
   //there's a huge whack of these variables in the tree I don't recognize
-  /*
-  float byLooseCombinedIsolationDeltaBetaCorr3Hits_2,byMediumCombinedIsolationDeltaBetaCorr3Hits_2, byTightCombinedIsolationDeltaBetaCorr3Hits_2,byCombinedIsolationDeltaBetaCorrRaw3Hits_2;
-  float byLooseCombinedIsolationDeltaBetaCorr3HitsdR03_2,byMediumCombinedIsolationDeltaBetaCorr3HitsdR03_2,byTightCombinedIsolationDeltaBetaCorr3HitsdR03_2,byVLooseIsolationMVArun2v1DBnewDMwLT_2;
-  float byVLooseIsolationMVArun2v1DBoldDMwLT_2,byVLooseIsolationMVArun2v1DBdR03oldDMwLT_2,byLooseIsolationMVArun2v1DBnewDMwLT_2;
-  float byLooseIsolationMVArun2v1DBoldDMwLT_2, byLooseIsolationMVArun2v1DBdR03oldDMwLT_2,byMediumIsolationMVArun2v1DBnewDMwLT_2,byMediumIsolationMVArun2v1DBoldDMwLT_2;
-  */
-
+  //They are not included here
   float chargedIsoPtSum_2,decayModeFinding_2,decayModeFindingNewDMs_2,neutralIsoPtSum_2,puCorrPtSum_2,chargedIso_2,neutralIso_2,puIso_2,photonIso_2,trackpt_2;
   float numGenJets,jetPt_2,charged_signalCone_2,charged_isoCone_2;
   float matchIsoMu27_1,passIsoMu27,pt_top1,pt_top2,genweight,gen_match_2;
@@ -91,7 +85,7 @@ void TauID(std::string input)
 
   int NumberOfEntries = (int) Tree->GetEntries();
 
-  //System mvis for data to simulation scale factors
+  //System mvis
   TH1F* SignalRegion_Pass = new TH1F((input+"_Pass").c_str(),
 				     "Signal_Pass",
 				     15,
@@ -142,24 +136,35 @@ void TauID(std::string input)
   //Determine the relevant cross section or normalization
   float LHCLumi = 46.062e15;
   float NormalizationWeight;
-  if(input == "WW")NormalizationWeight = LHCLumi * 118.7e-12 / TotalNumberOfEvents;
-  else if(input == "WZ") NormalizationWeight = LHCLumi * 47.13e-12 / TotalNumberOfEvents;
-  else if(input == "ZZ") NormalizationWeight = LHCLumi * 16.523e-12 / TotalNumberOfEvents;
-  else if(input == "W") NormalizationWeight = LHCLumi * 61526.7e-12 / TotalNumberOfEvents;
-  else if(input == "TTTo2L2Nu") NormalizationWeight = LHCLumi * 88.34e-12/ TotalNumberOfEvents;
-  else if(input == "TTToHadronic") NormalizationWeight = LHCLumi * 377.96e-12 / TotalNumberOfEvents;
-  else if(input == "TTToSemiLeptonic") NormalizationWeight = LHCLumi * 365.45e-12 / TotalNumberOfEvents;
-  else if(input == "DY") NormalizationWeight = LHCLumi * 5765.4e-12 / TotalNumberOfEvents;
-  else if(input == "Data") NormalizationWeight = 1.0;
+  float XSecWeight; 
+  if(input == "WW")XSecWeight = LHCLumi * 118.7e-12 / TotalNumberOfEvents;
+  else if(input == "WZ") XSecWeight = LHCLumi * 47.13e-12 / TotalNumberOfEvents;
+  else if(input == "ZZ") XSecWeight = LHCLumi * 16.523e-12 / TotalNumberOfEvents;
+  else if(input == "W") XSecWeight = LHCLumi * 61526.7e-12 / TotalNumberOfEvents;
+  else if(input == "TTTo2L2Nu") XSecWeight = LHCLumi * 88.34e-12/ TotalNumberOfEvents;
+  else if(input == "TTToHadronic") XSecWeight = LHCLumi * 377.96e-12 / TotalNumberOfEvents;
+  else if(input == "TTToSemiLeptonic") XSecWeight = LHCLumi * 365.45e-12 / TotalNumberOfEvents;
+  else if(input == "DY") XSecWeight = LHCLumi * 5765.4e-12 / TotalNumberOfEvents;
+  else if(input == "Data") XSecWeight = 1.0;
   else
     {
       std::cout<<"ERROR! Unrecognized Sample! Defaulting to unweighted events!"<<std::endl;
-      NormalizationWeight = 1.0;
+      XSecWeight = 1.0;
     }
 
   std::cout<<"Lumi: "<<LHCLumi<<std::endl;
   std::cout<<"TotalNumberOfEvents: "<<TotalNumberOfEvents<<std::endl;
-  std::cout<<"NormalizationWeight: "<<NormalizationWeight<<std::endl;
+  //std::cout<<"NormalizationWeight: "<<NormalizationWeight<<std::endl;
+
+  reweight::LumiReWeighting* LumiWeights_12;
+  LumiWeights_12 = new reweight::LumiReWeighting(("/data/ccaillol/tauid_3mar_mt/"+input+".root").c_str(),
+						 "Weightings/MyDataPileupHistogram.root",
+						 "pileup_mc",
+						 "pileup");
+
+  TFile* IsoFile = new TFile("Weightings/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root");
+  TDirectoryFile* IsoMuDirectory = (TDirectoryFile* )IsoFile->Get("IsoMu27_PtEtaBins");
+  TH2F* IsoWeightings = (TH2F*) IsoMuDirectory->Get("abseta_pt_ratio");
   
   for(int i =0;i < NumberOfEntries; i++)
     {
@@ -190,12 +195,31 @@ void TauID(std::string input)
       
       float PZetaVis = (l1.Vect()+l2.Vect()).Dot(ZetaUnit);
       float PZetaAll = (l1.Vect()+l2.Vect()+MissingP.Vect()).Dot(ZetaUnit);
-      float PZeta = PZetaAll - 0.85 * PZetaVis;
-      //float DZeta = PZetaVis+PZeta;      
+      float PZeta = PZetaAll - 0.85 * PZetaVis;      
+
+      //Create the weighting
+      float PileupWeight = LumiWeights_12->weight(npu);
+
+      float muisoSF = IsoWeightings->GetBinContent(IsoWeightings->FindBin(fabs(l1.Eta()),l1.Pt()));
+
+      if(input == "WW")NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
+      else if(input == "WZ") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
+      else if(input == "ZZ") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
+      else if(input == "W") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
+      else if(input == "TTTo2L2Nu") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
+      else if(input == "TTToHadronic") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
+      else if(input == "TTToSemiLeptonic") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
+      else if(input == "DY") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
+      else if(input == "Data") NormalizationWeight = 1.0;
+      else
+	{
+	  std::cout<<"ERROR! Unrecognized Sample! Defaulting to unweighted events!"<<std::endl;
+	  NormalizationWeight = 1.0;
+	}
       
       //check the tau iso discriminants, and divide these our events by pass/fail
       //according to 5.2.1 iso discriminants on the tau are loose: < 2.5 (GeV), medium: < 1.5 (GeV), tight: < 0.8 (GeV)
-
+      
       //check signs if Opposite sign is signal contribution
       if(q_1*q_2 < 0.0)
 	{
@@ -257,11 +281,11 @@ void TauID(std::string input)
   //save signal distributions
   TFile* SignalOutFile = new TFile(("TemporaryFiles/Signal_"+input+"_PassFail.root").c_str(),"RECREATE");
 
-  TDirectory *SignalPassDir = SignalOutFile->mkdir("PassRegion");
+  TDirectory *SignalPassDir = SignalOutFile->mkdir("pass");
   SignalPassDir->cd();
   SignalRegion_Pass->Write();
 
-  TDirectory *SignalFailDir = SignalOutFile->mkdir("FailRegion");
+  TDirectory *SignalFailDir = SignalOutFile->mkdir("fail");
   SignalFailDir->cd();
   SignalRegion_Fail->Write();
   
@@ -270,11 +294,11 @@ void TauID(std::string input)
   //save WJets distributions
   TFile* WJetsOutFile = new TFile(("TemporaryFiles/WJets_"+input+"_PassFail.root").c_str(),"RECREATE");
 
-  TDirectory *WJetsPassDir = WJetsOutFile->mkdir("PassRegion");
+  TDirectory *WJetsPassDir = WJetsOutFile->mkdir("pass");
   WJetsPassDir->cd();
   WJetsRegion_Pass->Write();
 
-  TDirectory *WJetsFailDir = WJetsOutFile->mkdir("FailRegion");
+  TDirectory *WJetsFailDir = WJetsOutFile->mkdir("fail");
   WJetsFailDir->cd();
   WJetsRegion_Fail->Write();
   
@@ -283,11 +307,11 @@ void TauID(std::string input)
   //save QCD distributions
   TFile* QCDOutFile = new TFile(("TemporaryFiles/QCD_"+input+"_PassFail.root").c_str(),"RECREATE");
 
-  TDirectory *QCDPassDir = QCDOutFile->mkdir("PassRegion");
+  TDirectory *QCDPassDir = QCDOutFile->mkdir("pass");
   QCDPassDir->cd();
   QCDRegion_Pass->Write();
 
-  TDirectory *QCDFailDir = QCDOutFile->mkdir("FailRegion");
+  TDirectory *QCDFailDir = QCDOutFile->mkdir("fail");
   QCDFailDir->cd();
   QCDRegion_Fail->Write();
   
@@ -296,11 +320,11 @@ void TauID(std::string input)
   //save the QCD Wjets contribution
   TFile* QCDinWJetsOutFile = new TFile(("TemporaryFiles/QCDinWJets_"+input+"PassFail.root").c_str(),"RECREATE");
 
-  TDirectory *QCDinWJetsPassDir = QCDinWJetsOutFile->mkdir("PassRegion");
+  TDirectory *QCDinWJetsPassDir = QCDinWJetsOutFile->mkdir("pass");
   QCDinWJetsPassDir->cd();
   QCDinWJets_Pass->Write();
 
-  TDirectory *QCDinWJetsFailDir = QCDinWJetsOutFile->mkdir("FailRegion");
+  TDirectory *QCDinWJetsFailDir = QCDinWJetsOutFile->mkdir("fail");
   QCDinWJetsFailDir->cd();
   QCDinWJets_Fail->Write();
   

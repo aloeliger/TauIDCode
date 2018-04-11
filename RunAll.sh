@@ -9,10 +9,10 @@ root -b -q "TauID.cc(\"TTTo2L2Nu\")"
 root -b -q "TauID.cc(\"TTToHadronic\")"
 root -b -q "TauID.cc(\"TTToSemiLeptonic\")"
 root -b -q "TauID.cc(\"DY\")"
-hadd -f PassFailOut.root TemporaryFiles/Signal*.root
-hadd -f WJetsDistributions.root TemporaryFiles/WJets_*.root
-hadd -f QCDDistributions.root TemporaryFiles/QCD_*.root
-hadd -f WJetsQCDContributions.root TemporaryFiles/QCDinWJets_*.root
+hadd -f Distributions/PassFailOut.root TemporaryFiles/Signal*.root
+hadd -f Distributions/WJetsDistributions.root TemporaryFiles/WJets_*.root
+hadd -f Distributions/QCDDistributions.root TemporaryFiles/QCD_*.root
+hadd -f Distributions/WJetsQCDContributions.root TemporaryFiles/QCDinWJets_*.root
 
 root -b -q EstimateQCDinWJets.cc
 root -b -q WJetsSimToData.cc

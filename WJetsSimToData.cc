@@ -2,9 +2,9 @@
 
 void WJetsSimToData()
 {
-  TFile* WJetFile = new TFile("WJetsDistributions.root","READ");
-  TDirectory *WJet_PassDir = (TDirectory *) WJetFile->Get("PassRegion");
-  TDirectory* WJet_FailDir = (TDirectory *) WJetFile->Get("FailRegion");
+  TFile* WJetFile = new TFile("Distributions/WJetsDistributions.root","READ");
+  TDirectory *WJet_PassDir = (TDirectory *) WJetFile->Get("pass");
+  TDirectory* WJet_FailDir = (TDirectory *) WJetFile->Get("fail");
   
   //pass histos
   cout<<"Retrieving Pass Region Histograms"<<std::endl;
@@ -84,10 +84,10 @@ void WJetsSimToData()
   //normalized to the distributions file.
 
   std::cout<<"Reweighting Low Transverse Mass W+Jets..."<<std::endl;
-  TFile* PassFailFile = new TFile("PassFailOut.root","UPDATE");
+  TFile* PassFailFile = new TFile("Distributions/PassFailOut.root","UPDATE");
   std::cout<<"Grabbing Directories"<<std::endl;
-  TDirectory* PassFail_PassDir = (TDirectory *) PassFailFile->Get("PassRegion");
-  TDirectory* PassFail_FailDir = (TDirectory *) PassFailFile->Get("FailRegion");
+  TDirectory* PassFail_PassDir = (TDirectory *) PassFailFile->Get("pass");
+  TDirectory* PassFail_FailDir = (TDirectory *) PassFailFile->Get("fail");
 
   std::cout<<"Grabbing Histograms"<<std::endl;
   TH1F* PassFail_WJets_Pass = (TH1F *) PassFail_PassDir->Get("W_Pass");

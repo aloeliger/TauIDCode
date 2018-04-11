@@ -2,9 +2,9 @@
 
 void FinalizeQCDBackground()
 {
-  TFile* QCDFile = new TFile("QCDDistributions.root","READ");
-  TDirectory* QCD_PassDir = (TDirectory *) QCDFile->Get("PassRegion");
-  TDirectory* QCD_FailDir = (TDirectory *) QCDFile->Get("FailRegion");
+  TFile* QCDFile = new TFile("Distributions/QCDDistributions.root","READ");
+  TDirectory* QCD_PassDir = (TDirectory *) QCDFile->Get("pass");
+  TDirectory* QCD_FailDir = (TDirectory *) QCDFile->Get("fail");
   
   //pass histos
   cout<<"Retrieving Pass Region Histograms"<<std::endl;
@@ -78,9 +78,9 @@ void FinalizeQCDBackground()
   QCD_Fail->Scale(1.05);
   
   //now let's grab the Pass/Fail File and write all this stuff there.
-  TFile* PassFailFile = new TFile("PassFailOut.root","UPDATE");
-  TDirectory* PassFail_PassDir = (TDirectory *) PassFailFile->Get("PassRegion");
-  TDirectory* PassFail_FailDir = (TDirectory *) PassFailFile->Get("FailRegion");
+  TFile* PassFailFile = new TFile("Distributions/PassFailOut.root","UPDATE");
+  TDirectory* PassFail_PassDir = (TDirectory *) PassFailFile->Get("pass");
+  TDirectory* PassFail_FailDir = (TDirectory *) PassFailFile->Get("fail");
 
   PassFail_PassDir->cd();
   QCD_Pass->Write();

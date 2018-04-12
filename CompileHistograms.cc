@@ -40,7 +40,7 @@ void CompileHistograms()
   
   gStyle->SetOptStat(0);
 
-  TCanvas* C1 = new TCanvas("C1", "#mu#Tau Invariant Mass");
+  TCanvas* C1 = new TCanvas("C1", "#mu#tau Invariant Mass");
   C1->SetTickx();
   C1->SetTicky();
 
@@ -80,7 +80,7 @@ void CompileHistograms()
   Data_Pass->Draw();
   PassStack->Draw("SAME");
   Data_Pass->Draw("SAME");
-  Data_Pass->GetXaxis()->SetTitle("#mu#Tau Invariant Mass (GeV)");
+  Data_Pass->GetXaxis()->SetTitle("#mu#tau Invariant Mass (GeV)");
   Data_Pass->GetYaxis()->SetTitle("Events");
 
   CMS_lumi(C1,0,11);
@@ -96,7 +96,7 @@ void CompileHistograms()
   Legend->Draw();
 
   //Fail Region
-  TCanvas* C2 = new TCanvas("C2", "#mu#Tau Invariant Mass");
+  TCanvas* C2 = new TCanvas("C2", "#mu#tau Invariant Mass");
   C2->SetTickx();
   C2->SetTicky();
 
@@ -136,7 +136,7 @@ void CompileHistograms()
   Data_Fail->Draw();
   FailStack->Draw("SAME");
   Data_Fail->Draw("SAME");
-  Data_Fail->GetXaxis()->SetTitle("#mu#Tau Invariant Mass (GeV)");
+  Data_Fail->GetXaxis()->SetTitle("#mu#tau Invariant Mass (GeV)");
   Data_Fail->GetYaxis()->SetTitle("Events");
 
   CMS_lumi(C2,0,11);

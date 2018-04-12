@@ -58,58 +58,28 @@ void WJetsSimToData()
   WJets_Fail->Add(QCD_Fail, -1.0);
   std::cout<<"Fail Event totals afterwards "<<WJets_Fail->Integral()<<std::endl;
   std::cout<<"Total Fail MC "<<W_Fail->Integral()<<std::endl;
-  std::cout<<std::endl;
+  std::cout<<std::endl;  
+    
+  std::cout<<"WJets Scale Factor: "<<(WJets_Pass->Integral() + WJets_Fail->Integral()) / (W_Pass->Integral() + W_Fail->Integral())<<std::endl;
   
-  std::cout<<"Writing Scale Factors..."<<std::endl;
-  TFile* OutFile = new TFile("TemporaryFiles/CorrectedWJetsDistributions.root","RECREATE");
-  
-  WJets_Pass->SetName("CorrectedWJetsDistribution_Pass");
-  WJets_Fail->SetName("CorrectedWJetsDistribution_Fail");
-  
-  //Let's now create a histogram where we divide the data bins by sim bins
-  //so we get a scale factor that we can apply to the other sim data
-  TH1F* ScaleFactors_Pass = new TH1F("ScaleFactors_Pass","ScaleFactors_Pass", WJets_Pass->GetSize()-2, WJets_Pass->GetXaxis()->GetXmin(), WJets_Pass->GetXaxis()->GetXmax());
-  ScaleFactors_Pass->Divide(WJets_Pass,W_Pass);
+  float WJetsScaleFactor = (WJets_Pass->Integral() + WJets_Fail->Integral()) / (W_Pass->Integral() + W_Fail->Integral());
 
-  TH1F* ScaleFactors_Fail = new TH1F("ScaleFactors_Fail","ScaleFactors_Fail", WJets_Fail->GetSize()-2, WJets_Fail->GetXaxis()->GetXmin(), WJets_Fail->GetXaxis()->GetXmax());
-  ScaleFactors_Fail->Divide(WJets_Fail,W_Fail);
-  
-  ScaleFactors_Pass->SetName("ScaleFactors_Pass");
-  ScaleFactors_Pass->Write();
-  
-  ScaleFactors_Fail->SetName("ScaleFactors_Fail");
-  ScaleFactors_Fail->Write();
-  
-  //try and reweight our extant w-jets distributions and rewrite them as
-  //normalized to the distributions file.
-
-  std::cout<<"Reweighting Low Transverse Mass W+Jets..."<<std::endl;
   TFile* PassFailFile = new TFile("Distributions/PassFailOut.root","UPDATE");
-  std::cout<<"Grabbing Directories"<<std::endl;
   TDirectory* PassFail_PassDir = (TDirectory *) PassFailFile->Get("pass");
   TDirectory* PassFail_FailDir = (TDirectory *) PassFailFile->Get("fail");
 
-  std::cout<<"Grabbing Histograms"<<std::endl;
   TH1F* PassFail_WJets_Pass = (TH1F *) PassFail_PassDir->Get("W_Pass");
   TH1F* PassFail_WJets_Fail = (TH1F *) PassFail_FailDir->Get("W_Fail");
   
   std::cout<<"Creating Newly Scaled Histos"<<std::endl;
-  TH1F* Rescaled_WJets_Pass = new TH1F("Rescaled_WJets_Pass","Rescaled_WJets_Pass", PassFail_WJets_Pass->GetSize()-2, PassFail_WJets_Pass->GetXaxis()->GetXmin(), PassFail_WJets_Pass->GetXaxis()->GetXmax());
-  TH1F* Rescaled_WJets_Fail = new TH1F("Rescaled_WJets_Fail","Rescaled_WJets_Fail", PassFail_WJets_Fail->GetSize()-2, PassFail_WJets_Fail->GetXaxis()->GetXmin(), PassFail_WJets_Fail->GetXaxis()->GetXmax());
+  TH1F* Rescaled_WJets_Pass = new TH1F(*PassFail_WJets_Pass);
+  TH1F* Rescaled_WJets_Fail = new TH1F(*PassFail_WJets_Fail);
 
-  //std::cout<<"Filling Them"<<std::endl;
-  for(int i =1; i <= PassFail_WJets_Pass->GetSize()-2; i++)
-    {
-      std::cout<<"Bin #"<<i<<std::endl;
-      std::cout<<"Pass Scale Factor is: "<<ScaleFactors_Pass->GetBinContent(i)<<std::endl;
-      std::cout<<"Fail Scale Factor is: "<<ScaleFactors_Fail->GetBinContent(i)<<std::endl;
-      /*
-      std::cout<<"PassFail_WJets_Pass content is: "<<PassFail_WJets_Pass->GetBinContent(i)<<std::endl;
-      std::cout<<"PassFail_WJets_Pass content is: "<<PassFail_WJets_Fail->GetBinContent(i)<<std::endl;
-      */
-      Rescaled_WJets_Pass->SetBinContent(i,PassFail_WJets_Pass->GetBinContent(i)*ScaleFactors_Pass->GetBinContent(i));
-      Rescaled_WJets_Fail->SetBinContent(i,PassFail_WJets_Fail->GetBinContent(i)*ScaleFactors_Fail->GetBinContent(i));
-    }
+  Rescaled_WJets_Pass->Scale(WJetsScaleFactor);
+  Rescaled_WJets_Fail->Scale(WJetsScaleFactor);
+
+  Rescaled_WJets_Pass->SetName("Rescaled_WJets_Pass");
+  Rescaled_WJets_Fail->SetName("Rescaled_WJets_Fail");
 
   //Shove this back into the old file, and we'll roll with that.
   std::cout<<"Writing Newly Scaled Histos to the Pass/Fail File"<<std::endl;
@@ -117,10 +87,5 @@ void WJetsSimToData()
   Rescaled_WJets_Pass->Write();
 
   PassFail_FailDir->cd();
-  Rescaled_WJets_Fail->Write();
-
-  std::cout<<std::endl;
-  std::cout<<"General pass scale factor would be: "<<(WJets_Pass->Integral()/W_Pass->Integral())<<std::endl;
-  std::cout<<"General fail scale factor would be: "<<(WJets_Fail->Integral()/W_Fail->Integral())<<std::endl;
-  std::cout<<"Most general possible scale factor would be: "<<(WJets_Pass->Integral() + WJets_Fail->Integral()) / (W_Pass->Integral() + W_Fail->Integral())<<std::endl;
+  Rescaled_WJets_Fail->Write();  
 }

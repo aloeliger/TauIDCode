@@ -18,3 +18,4 @@ root -b -q EstimateQCDinWJets.cc
 root -b -q WJetsSimToData.cc
 root -b -q FinalizeQCDBackground.cc
 root -b -q CompileHistograms.cc
+root -b -q PrepForCombine.cc

@@ -1,3 +1,4 @@
+
 #include "TROOT.h"
 #include "/afs/cern.ch/user/a/aloelige/private/RootMacros/LumiReweightingStandAlone.h"
 
@@ -217,11 +218,14 @@ void TauID(std::string input)
 	  NormalizationWeight = 1.0;
 	}
       
+      //Data Selection
+      float Data = (l1+l2).M();
+
       //we check four things at the same time. Signal region checks, W+Jets region checks, QCD in the signal region, and QCD in the W+Jets Region.
       //check the tau iso discriminants, and divide these our events by pass/fail
       //according to 5.2.1 iso discriminants on the tau are loose: < 2.5 (GeV), medium: < 1.5 (GeV), tight: < 0.8 (GeV)
       
-      //check signs if Opposite sign is signal contribution
+      //check signs: if Opposite sign is signal contribution
       if(q_1*q_2 < 0.0)
 	{
 	  //Signal contribution
@@ -229,11 +233,11 @@ void TauID(std::string input)
 	    {
 	      if(iso_2 < 0.8)
 		{
-		  SignalRegion_Pass->Fill((l1+l2).M(),NormalizationWeight);    
+		  SignalRegion_Pass->Fill(Data,NormalizationWeight);    
 		}
 	      else
 		{
-		  SignalRegion_Fail->Fill((l1+l2).M(),NormalizationWeight);
+		  SignalRegion_Fail->Fill(Data,NormalizationWeight);
 		}
 	    }
 	  //WJets Contribution
@@ -241,11 +245,11 @@ void TauID(std::string input)
 	    {
 	      if(iso_2 < 0.8)
 		{
-		  WJetsRegion_Pass->Fill((l1+l2).M(),NormalizationWeight);    
+		  WJetsRegion_Pass->Fill(Data,NormalizationWeight);    
 		}
 	      else
 		{
-		  WJetsRegion_Fail->Fill((l1+l2).M(),NormalizationWeight);
+		  WJetsRegion_Fail->Fill(Data,NormalizationWeight);
 		}
 	    }
 	}
@@ -256,22 +260,22 @@ void TauID(std::string input)
 	    {
 	      if(iso_2 < 0.8)
 		{
-		  QCDRegion_Pass->Fill((l1+l2).M(),NormalizationWeight);    
+		  QCDRegion_Pass->Fill(Data,NormalizationWeight);    
 		}
 	      else
 		{
-		  QCDRegion_Fail->Fill((l1+l2).M(),NormalizationWeight);
+		  QCDRegion_Fail->Fill(Data,NormalizationWeight);
 		}
 	    }
 	  else if(TransverseMass > 80.0)
 	    {
 	      if(iso_2 < 0.8)
 		{
-		  QCDinWJets_Pass->Fill((l1+l2).M(),NormalizationWeight);    
+		  QCDinWJets_Pass->Fill(Data,NormalizationWeight);    
 		}
 	      else
 		{
-		  QCDinWJets_Fail->Fill((l1+l2).M(),NormalizationWeight);
+		  QCDinWJets_Fail->Fill(Data,NormalizationWeight);
 		} 
 	    }
 	}            

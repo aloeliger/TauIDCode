@@ -225,13 +225,15 @@ void TauID(std::string input)
       //check the tau iso discriminants, and divide these our events by pass/fail
       //according to 5.2.1 iso discriminants on the tau are loose: < 2.5 (GeV), medium: < 1.5 (GeV), tight: < 0.8 (GeV)
       
+      float TauIsoDiscrim = 1.5;
+
       //check signs: if Opposite sign is signal contribution
       if(q_1*q_2 < 0.0)
 	{
 	  //Signal contribution
 	  if(TransverseMass < 40.0 and PZeta > -25.0)
 	    {
-	      if(iso_2 < 0.8)
+	      if(iso_2 < TauIsoDiscrim)
 		{
 		  SignalRegion_Pass->Fill(Data,NormalizationWeight);    
 		}
@@ -243,7 +245,7 @@ void TauID(std::string input)
 	  //WJets Contribution
 	  else if(TransverseMass > 80.0)
 	    {
-	      if(iso_2 < 0.8)
+	      if(iso_2 < TauIsoDiscrim)
 		{
 		  WJetsRegion_Pass->Fill(Data,NormalizationWeight);    
 		}
@@ -258,7 +260,7 @@ void TauID(std::string input)
 	{
 	  if(TransverseMass < 40.0 and PZeta > -25.0)
 	    {
-	      if(iso_2 < 0.8)
+	      if(iso_2 < TauIsoDiscrim)
 		{
 		  QCDRegion_Pass->Fill(Data,NormalizationWeight);    
 		}
@@ -269,7 +271,7 @@ void TauID(std::string input)
 	    }
 	  else if(TransverseMass > 80.0)
 	    {
-	      if(iso_2 < 0.8)
+	      if(iso_2 < TauIsoDiscrim)
 		{
 		  QCDinWJets_Pass->Fill(Data,NormalizationWeight);    
 		}

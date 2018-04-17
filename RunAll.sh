@@ -5,10 +5,18 @@ root -b -q "TauID.cc(\"WW\")"
 root -b -q "TauID.cc(\"WZ\")"
 root -b -q "TauID.cc(\"ZZ\")"
 root -b -q "TauID.cc(\"W\")" #is this the W+jets low Mt sample?
+#root -b -q "TauID.cc(\"W1\")"
+#root -b -q "TauID.cc(\"W2\")"
+#root -b -q "TauID.cc(\"W3\")"
+#root -b -q "TauID.cc(\"W4\")"
 root -b -q "TauID.cc(\"TTTo2L2Nu\")"
 root -b -q "TauID.cc(\"TTToHadronic\")"
 root -b -q "TauID.cc(\"TTToSemiLeptonic\")"
 root -b -q "TauID.cc(\"DY\")"
+#root -b -q "TauID>cc(\"DY1\")"
+#root -b -q "TauID>cc(\"DY2\")"
+#root -b -q "TauID>cc(\"DY3\")"
+#root -b -q "TauID>cc(\"DY4\")"
 hadd -f Distributions/PassFailOut.root TemporaryFiles/Signal*.root
 hadd -f Distributions/WJetsDistributions.root TemporaryFiles/WJets_*.root
 hadd -f Distributions/QCDDistributions.root TemporaryFiles/QCD_*.root

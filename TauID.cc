@@ -59,7 +59,8 @@ void TauID(std::string input)
   Tree->SetBranchAddress("phi_2",&phi_2);
   Tree->SetBranchAddress("eta_2",&eta_2);
   Tree->SetBranchAddress("m_2",&m_2);
-  Tree->SetBranchAddress("e_2",&q_2);
+  Tree->SetBranchAddress("e_2",&e_2);
+  Tree->SetBranchAddress("q_2",&q_2);
   Tree->SetBranchAddress("d0_2",&d0_2);
   Tree->SetBranchAddress("dZ_2",&dZ_2);
   Tree->SetBranchAddress("iso_2",&iso_2);
@@ -266,27 +267,36 @@ void TauID(std::string input)
 	}
       
       //Data Selection
-      float Data = (l1+l2).M();
+      float Var = (l1+l2).M();
 
       //we check four things at the same time. Signal region checks, W+Jets region checks, QCD in the signal region, and QCD in the W+Jets Region.
       //check the tau iso discriminants, and divide these our events by pass/fail
       //according to 5.2.1 iso discriminants on the tau are loose: < 2.5 (GeV), medium: < 1.5 (GeV), tight: < 0.8 (GeV)
       
       bool TauIsoDiscrim = (bool) byTightIsolationMVArun2v1DBoldDMwLT_2;
+      /*
+      std::cout<<std::endl;
+      std::cout<<"q_1: "<<q_1<<" q_2: "<<q_2<<std::endl;
+      std::cout<<"q_1*q_2 > 0.0: "<<(q_1*q_2 > 0.0)<<std::endl;
+      std::cout<<"q_1*q_2 < 0.0: "<<(q_1*q_2 < 0.0)<<std::endl;
+      std::cout<<"TransverseMass: "<<TransverseMass<<std::endl;
+      std::cout<<"PZeta: "<<PZeta<<std::endl;
+      std::cout<<std::endl;
+      */
 
       //check signs: if Opposite sign is signal contribution
-      if(q_1*q_2 < 0.0)
+      if(q_1 * q_2 < 0.0)
 	{
 	  //Signal contribution
 	  if(TransverseMass < 40.0 and PZeta > -25.0)
 	    {
 	      if(TauIsoDiscrim)
 		{
-		  SignalRegion_Pass->Fill(Data,NormalizationWeight);    
+		  SignalRegion_Pass->Fill(Var,NormalizationWeight);    
 		}
 	      else
 		{
-		  SignalRegion_Fail->Fill(Data,NormalizationWeight);
+		  SignalRegion_Fail->Fill(Var,NormalizationWeight);
 		}
 	    }
 	  //WJets Contribution
@@ -294,37 +304,39 @@ void TauID(std::string input)
 	    {
 	      if(TauIsoDiscrim)
 		{
-		  WJetsRegion_Pass->Fill(Data,NormalizationWeight);    
+		  WJetsRegion_Pass->Fill(Var,NormalizationWeight);    
 		}
 	      else
 		{
-		  WJetsRegion_Fail->Fill(Data,NormalizationWeight);
+		  WJetsRegion_Fail->Fill(Var,NormalizationWeight);
 		}
 	    }
 	}
       //same sign is QCD
-      else if(q_1*q_2 > 0.0)
+      else if(q_1 * q_2 > 0.0)
 	{
+	  //QCD in the signal region
 	  if(TransverseMass < 40.0 and PZeta > -25.0)
 	    {
 	      if(TauIsoDiscrim)
 		{
-		  QCDRegion_Pass->Fill(Data,NormalizationWeight);    
+		  QCDRegion_Pass->Fill(Var,NormalizationWeight);    
 		}
 	      else
 		{
-		  QCDRegion_Fail->Fill(Data,NormalizationWeight);
+		  QCDRegion_Fail->Fill(Var,NormalizationWeight);
 		}
 	    }
+	  //QCD present in the W+Jets estimation region
 	  else if(TransverseMass > 80.0)
 	    {
 	      if(TauIsoDiscrim)
 		{
-		  QCDinWJets_Pass->Fill(Data,NormalizationWeight);    
+		  QCDinWJets_Pass->Fill(Var,NormalizationWeight);    
 		}
 	      else
 		{
-		  QCDinWJets_Fail->Fill(Data,NormalizationWeight);
+		  QCDinWJets_Fail->Fill(Var,NormalizationWeight);
 		} 
 	    }
 	}            

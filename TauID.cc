@@ -1,4 +1,10 @@
-
+//Selection code for the Tau ID Efficiency measurements.
+//Seperates the events into 4 different categories
+// and then each of those categroies into pass/fail
+// 1.) The Signal region
+// 2.) High transverse mass region (W+Jets region)
+// 3.) same sign region (for estimating QCD in the signal region
+// 4.) same sign high transverse mass region (for estimating QCD in W+Jets region)
 #include "TROOT.h"
 #include "/afs/cern.ch/user/a/aloelige/private/RootMacros/LumiReweightingStandAlone.h"
 
@@ -195,9 +201,18 @@ void TauID(std::string input)
   else if(input == "TTToSemiLeptonic") XSecWeight = LHCLumi * 365.45e-12 / TotalNumberOfEvents;
   else if(input == "DY") XSecWeight = LHCLumi * 5765.4e-12 / TotalNumberOfEvents;
   else if(input == "Data") XSecWeight = 1.0;
+  //additional cross section weights taken from the excel file.
+  else if(input == "DY1") XSecWeight = LHCLumi * 1178.29e-12 /TotalNumberOfEvents;
+  else if(input == "DY2") XSecWeight = LHCLumi * 387.34e-12 /TotalNumberOfEvents;
+  else if(input == "DY3") XSecWeight = LHCLumi * 118.429e-12 /TotalNumberOfEvents;
+  else if(input == "DY4") XSecWeight = LHCLumi * 63.73e-12 /TotalNumberOfEvents;
+  else if(input == "W1") XSecWeight = LHCLumi * 11778.36e-12 /TotalNumberOfEvents;
+  else if(input == "W2") XSecWeight = LHCLumi * 3840.22e-12 /TotalNumberOfEvents;
+  else if(input == "W3") XSecWeight = LHCLumi * 1166.05e-12 /TotalNumberOfEvents;
+  else if(input == "W4") XSecWeight = LHCLumi * 593.055e-12 /TotalNumberOfEvents;
   else
     {
-      std::cout<<"ERROR! Unrecognized Sample! Defaulting to unweighted events!"<<std::endl;
+      std::cout<<"ERROR! Unrecognized Sample! Defaulting to no cross section weighting!"<<std::endl;
       XSecWeight = 1.0;
     }
 
@@ -239,7 +254,7 @@ void TauID(std::string input)
       
       float TransverseMass = std::sqrt(2.0*l1.Pt()*MissingP.Pt()*(1.0-std::cos(l1.DeltaPhi(MissingP))));      
       
-      TVector3 ZetaUnit = l1.Vect()*(1.0/l1.Vect().Mag())+l2.Vect()*(1.0/l2.Vect().Mag());//get a bisector of the angle between mu and tau
+      TVector3 ZetaUnit = l1.Vect()*l2.Vect().Mag()+l2.Vect()*l1.Vect().Mag();//get a bisector of the angle between mu and tau
       ZetaUnit = ZetaUnit*(1.0/ZetaUnit.Mag()); //unitize it
       
       float PZetaVis = (l1.Vect()+l2.Vect()).Dot(ZetaUnit);
@@ -254,12 +269,42 @@ void TauID(std::string input)
       if(input == "WW")NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
       else if(input == "WZ") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
       else if(input == "ZZ") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
-      else if(input == "W") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
+      //TODO: Figure out if this is the correct way to apply the weights 
+      // from the excel file.
+      else if(input == "W"
+	      or input == "W1"
+	      or input == "W2"
+	      or input == "W3"
+	      or input == "W4") 
+	{
+	  NormalizationWeight = /*XSecWeight**/PileupWeight*muisoSF;	  
+	  
+	  if(numGenJets==0) NormalizationWeight = NormalizationWeight*121.94;
+	  if(numGenJets==1) NormalizationWeight = NormalizationWeight*15.747;
+	  if(numGenJets==2) NormalizationWeight = NormalizationWeight*8.2675;
+	  if(numGenJets==3) NormalizationWeight = NormalizationWeight*2.6741;
+	  else if(numGenJets==4) NormalizationWeight = NormalizationWeight*2.3734;
+	  
+	}
       else if(input == "TTTo2L2Nu") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
       else if(input == "TTToHadronic") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
       else if(input == "TTToSemiLeptonic") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
-      else if(input == "DY") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
-      else if(input == "Data") NormalizationWeight = 1.0;
+      else if(input == "DY"
+	      or input == "DY1"
+	      or input == "DY2"
+	      or input == "DY3"
+	      or input == "DY4")
+	{
+	  NormalizationWeight = /*XSecWeight**/PileupWeight*muisoSF;
+	  
+	  if(numGenJets==0) NormalizationWeight = NormalizationWeight*2.754;
+	  else if(numGenJets==1) NormalizationWeight = NormalizationWeight*0.6264;
+	  else if(numGenJets==2) NormalizationWeight = NormalizationWeight*0.6431;
+	  else if(numGenJets==3) NormalizationWeight = NormalizationWeight*0.8070;
+	  else if(numGenJets==4) NormalizationWeight = NormalizationWeight*0.5432;
+	  
+	}
+      else if(input == "Data") NormalizationWeight = 1.0;          
       else
 	{
 	  std::cout<<"ERROR! Unrecognized Sample! Defaulting to unweighted events!"<<std::endl;
@@ -268,22 +313,10 @@ void TauID(std::string input)
       
       //Data Selection
       float Var = (l1+l2).M();
-
-      //we check four things at the same time. Signal region checks, W+Jets region checks, QCD in the signal region, and QCD in the W+Jets Region.
-      //check the tau iso discriminants, and divide these our events by pass/fail
-      //according to 5.2.1 iso discriminants on the tau are loose: < 2.5 (GeV), medium: < 1.5 (GeV), tight: < 0.8 (GeV)
       
+      //we check four things at the same time. Signal region checks, W+Jets region checks, QCD in the signal region, and QCD in the W+Jets Region.
+      //check the tau iso discriminants, and divide these our events by pass/fail            
       bool TauIsoDiscrim = (bool) byTightIsolationMVArun2v1DBoldDMwLT_2;
-      /*
-      std::cout<<std::endl;
-      std::cout<<"q_1: "<<q_1<<" q_2: "<<q_2<<std::endl;
-      std::cout<<"q_1*q_2 > 0.0: "<<(q_1*q_2 > 0.0)<<std::endl;
-      std::cout<<"q_1*q_2 < 0.0: "<<(q_1*q_2 < 0.0)<<std::endl;
-      std::cout<<"TransverseMass: "<<TransverseMass<<std::endl;
-      std::cout<<"PZeta: "<<PZeta<<std::endl;
-      std::cout<<std::endl;
-      */
-
       //check signs: if Opposite sign is signal contribution
       if(q_1 * q_2 < 0.0)
 	{

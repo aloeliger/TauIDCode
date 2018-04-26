@@ -79,6 +79,7 @@ void CompileHistograms()
 
   Data_Pass->Draw();
   PassStack->Draw("SAME");
+  Data_Pass->SetTitle("#mu#tau Invariant Mass Pass");
   Data_Pass->Draw("SAME");
   Data_Pass->GetXaxis()->SetTitle("#mu#tau Invariant Mass (GeV)");
   Data_Pass->GetYaxis()->SetTitle("Events");
@@ -135,6 +136,7 @@ void CompileHistograms()
 
   Data_Fail->Draw();
   FailStack->Draw("SAME");
+  Data_Fail->SetTitle("#mu#tau Invariant Mass Fail");
   Data_Fail->Draw("SAME");
   Data_Fail->GetXaxis()->SetTitle("#mu#tau Invariant Mass (GeV)");
   Data_Fail->GetYaxis()->SetTitle("Events");

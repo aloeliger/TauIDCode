@@ -11,10 +11,12 @@ void EstimateQCDinWJets()
   cout<<"Retrieving Pass Region Histograms"<<std::endl;
   TH1F* Contribution_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_Data_Pass");
   TH1F* DY_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_DY_Pass");
+
   TH1F* DY1_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_DY1_Pass");
   TH1F* DY2_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_DY2_Pass");
   TH1F* DY3_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_DY3_Pass");
   TH1F* DY4_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_DY4_Pass");
+
   TH1F* TTTo2L2Nu_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_TTTo2L2Nu_Pass");
   TH1F* TTToHadronic_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_TTToHadronic_Pass");
   TH1F* TTToSemiLeptonic_Pass =  (TH1F *) Contribution_PassDir->Get("WJets_QCD_TTToSemiLeptonic_Pass");
@@ -33,10 +35,12 @@ void EstimateQCDinWJets()
   std::cout<<"Retrieving Fail Region Histograms"<<std::endl;
   TH1F* Contribution_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_Data_Fail");
   TH1F* DY_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_DY_Fail");
+
   TH1F* DY1_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_DY1_Fail");
   TH1F* DY2_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_DY2_Fail");
   TH1F* DY3_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_DY3_Fail");
   TH1F* DY4_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_DY4_Fail");
+
   TH1F* TTTo2L2Nu_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_TTTo2L2Nu_Fail");
   TH1F* TTToHadronic_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_TTToHadronic_Fail");
   TH1F* TTToSemiLeptonic_Fail =  (TH1F *) Contribution_FailDir->Get("WJets_QCD_TTToSemiLeptonic_Fail");
@@ -53,10 +57,12 @@ void EstimateQCDinWJets()
 
   std::cout<<"Subtracting Pass backgrounds..."<<std::endl;
   Contribution_Pass->Add(DY_Pass, -1.0);
+
   Contribution_Pass->Add(DY1_Pass, -1.0);
   Contribution_Pass->Add(DY2_Pass, -1.0);
   Contribution_Pass->Add(DY3_Pass, -1.0);
   Contribution_Pass->Add(DY4_Pass, -1.0);
+
   Contribution_Pass->Add(TTTo2L2Nu_Pass, -1.0);
   Contribution_Pass->Add(TTToHadronic_Pass, -1.0);
   Contribution_Pass->Add(TTToSemiLeptonic_Pass, -1.0);
@@ -71,10 +77,12 @@ void EstimateQCDinWJets()
   
   std::cout<<"Subtracting Fail backgrounds..."<<std::endl;
   Contribution_Fail->Add(DY_Fail, -1.0);
+
   Contribution_Fail->Add(DY1_Fail, -1.0);
   Contribution_Fail->Add(DY2_Fail, -1.0);
   Contribution_Fail->Add(DY3_Fail, -1.0);
   Contribution_Fail->Add(DY4_Fail, -1.0);
+
   Contribution_Fail->Add(TTTo2L2Nu_Fail, -1.0);
   Contribution_Fail->Add(TTToHadronic_Fail, -1.0);
   Contribution_Fail->Add(TTToSemiLeptonic_Fail, -1.0);

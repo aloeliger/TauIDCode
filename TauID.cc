@@ -7,11 +7,12 @@
 // 4.) same sign high transverse mass region (for estimating QCD in W+Jets region)
 #include "TROOT.h"
 #include "/afs/cern.ch/user/a/aloelige/private/RootMacros/LumiReweightingStandAlone.h"
+#include <cmath>
 
 void TauID(std::string input)
 {
   //get the tree that we're going to run
-  TFile *MyFile = new TFile(("/data/ccaillol/tauid_3mar_mt/"+input+".root").c_str());
+  TFile *MyFile = new TFile(("/data/ccaillol/tauid_19may_mt/"+input+".root").c_str());
   TTree *Tree = (TTree*) MyFile->Get("mutau_tree");
   TH1F* nevents = (TH1F*) MyFile->Get("nevents");
   float TotalNumberOfEvents = nevents->GetBinContent(1);
@@ -35,6 +36,8 @@ void TauID(std::string input)
   float byIsolationMVA3oldDMwoLTraw_2,byIsolationMVA3oldDMwLTraw_2,byIsolationMVA3newDMwoLTraw_2,byIsolationMVA3newDMwLTraw_2;
   float byVLooseIsolationRerunMVArun2v1DBoldDMwLT_2,byLooseIsolationRerunMVArun2v1DBoldDMwLT_2,byMediumIsolationRerunMVArun2v1DBoldDMwLT_2,byTightIsolationRerunMVArun2v1DBoldDMwLT_2,byVTightIsolationRerunMVArun2v1DBoldDMwLT_2,byVVTightIsolationRerunMVArun2v1DBoldDMwLT_2;
   float byIsolationRerunMVA3oldDMwLTraw_2;
+
+  float byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2,byLooseIsolationRerunMVArun2v2DBoldDMwLT_2,byMediumIsolationRerunMVArun2v2DBoldDMwLT_2,byTightIsolationRerunMVArun2v2DBoldDMwLT_2,byVTightIsolationRerunMVArun2v2DBoldDMwLT_2,byVVTightIsolationRerunMVArun2v2DBoldDMwLT_2,byIsolationRerunMVA3oldDMwLTrawv2_2;
 
   float chargedIsoPtSum_2,decayModeFinding_2,decayModeFindingNewDMs_2,neutralIsoPtSum_2,puCorrPtSum_2,chargedIso_2,neutralIso_2,puIso_2,photonIso_2,trackpt_2;
   float numGenJets,jetPt_2,charged_signalCone_2,charged_isoCone_2;
@@ -114,6 +117,13 @@ void TauID(std::string input)
   Tree->SetBranchAddress("byVTightIsolationRerunMVArun2v1DBoldDMwLT_2",&byVTightIsolationRerunMVArun2v1DBoldDMwLT_2);
   Tree->SetBranchAddress("byVVTightIsolationRerunMVArun2v1DBoldDMwLT_2",&byVVTightIsolationRerunMVArun2v1DBoldDMwLT_2);
   Tree->SetBranchAddress("byIsolationRerunMVA3oldDMwLTraw_2",&byIsolationRerunMVA3oldDMwLTraw_2);
+  Tree->SetBranchAddress("byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2",&byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2);
+  Tree->SetBranchAddress("byLooseIsolationRerunMVArun2v2DBoldDMwLT_2",&byLooseIsolationRerunMVArun2v2DBoldDMwLT_2);
+  Tree->SetBranchAddress("byMediumIsolationRerunMVArun2v2DBoldDMwLT_2",&byMediumIsolationRerunMVArun2v2DBoldDMwLT_2);
+  Tree->SetBranchAddress("byTightIsolationRerunMVArun2v2DBoldDMwLT_2",&byTightIsolationRerunMVArun2v2DBoldDMwLT_2);
+  Tree->SetBranchAddress("byVTightIsolationRerunMVArun2v2DBoldDMwLT_2",&byVTightIsolationRerunMVArun2v2DBoldDMwLT_2);
+  Tree->SetBranchAddress("byVVTightIsolationRerunMVArun2v2DBoldDMwLT_2",&byVVTightIsolationRerunMVArun2v2DBoldDMwLT_2);
+  Tree->SetBranchAddress("byIsolationRerunMVA3oldDMwLTrawv2_2",&byIsolationRerunMVA3oldDMwLTrawv2_2);
   Tree->SetBranchAddress("chargedIsoPtSum_2",&chargedIsoPtSum_2);
   Tree->SetBranchAddress("decayModeFinding_2",&decayModeFinding_2);
   Tree->SetBranchAddress("decayModeFindingNewDMs_2",&decayModeFindingNewDMs_2);
@@ -143,13 +153,13 @@ void TauID(std::string input)
   //System mvis
   TH1F* SignalRegion_Pass = new TH1F((input+"_Pass").c_str(),
 				     "Signal_Pass",
-				     15,
-				     0.0,
+				     20,
+				     50.0,
 				     150.0);
   TH1F* SignalRegion_Fail = new TH1F((input+"_Fail").c_str(),
 				     "Signal_Fail",
-				     15,
-				     0.0,
+				     20,
+				     50.0,
 				     150.0);
 
   TH1F* WJetsRegion_Pass = new TH1F(("WJets_"+input+"_Pass").c_str(), 
@@ -189,7 +199,7 @@ void TauID(std::string input)
   
 
   //Determine the relevant cross section or normalization
-  float LHCLumi = 46.062e15;
+  float LHCLumi = 41.370e15;
   float NormalizationWeight;
   float XSecWeight; 
   if(input == "WW")XSecWeight = LHCLumi * 118.7e-12 / TotalNumberOfEvents;
@@ -238,15 +248,20 @@ void TauID(std::string input)
 
       //make the necessary 4 vectors      
       TLorentzVector l1; l1.SetPtEtaPhiE(pt_1, eta_1, phi_1, e_1); //muon
-      TLorentzVector l2; l2.SetPtEtaPhiM(pt_2, eta_2, phi_2, m_2); //tau
+      TLorentzVector l2; l2.SetPtEtaPhiE(pt_2, eta_2, phi_2, e_2); //tau
 
       //Event selection
       //muon criteria
-      if(pt_1 < 23.0 or std::abs(eta_1) > 2.1 or !id_m_medium_1 or iso_1 > 0.15) continue;
+      // added the dz criteria and matchisomu catches the matching to triger objects
+      // potentially have the dxy requirement taken care of?      
+      if(pt_1 < 23.0 or std::abs(eta_1) > 2.1 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
       //tau criteria
-      if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronLooseMVA6_2 != 1 or againstMuonTight3_2 != 1.0) continue;
-      //pair criteria
-      float DeltaR = std::sqrt((eta_1-eta_2)*(eta_1-eta_2)+(phi_1-phi_2)*(phi_1-phi_2));
+      //added the decaymodefinding_2 which catches the old decay mode finding.
+      if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronLooseMVA6_2 != 1 or againstMuonTight3_2 != 1 or !decayModeFinding_2) continue;
+      //pair criteria            
+      float deltaphi = std::abs(phi_1-phi_2);
+      if (deltaphi > M_PI) deltaphi-=2.0*M_PI;
+      float DeltaR = std::sqrt((eta_1-eta_2)*(eta_1-eta_2)+deltaphi*deltaphi);
       if(DeltaR <= 0.5)  continue;
 	 
       TLorentzVector MissingP;
@@ -254,8 +269,25 @@ void TauID(std::string input)
       
       float TransverseMass = std::sqrt(2.0*l1.Pt()*MissingP.Pt()*(1.0-std::cos(l1.DeltaPhi(MissingP))));      
       
+      //look at this, the AN says specifically that zeta is defined to be the bisector of the momenta IN THE TRANSVERSE PLANE of the visible decay products.
       TVector3 ZetaUnit = l1.Vect()*l2.Vect().Mag()+l2.Vect()*l1.Vect().Mag();//get a bisector of the angle between mu and tau
-      ZetaUnit = ZetaUnit*(1.0/ZetaUnit.Mag()); //unitize it
+
+      //get a bisector in the plane?
+      /*
+      TVector3 ZetaUnit;
+      float BisectorAngle = (l1.Vect().Phi() + l2.Vect().Phi())/2.0;
+      ZetaUnit.SetPhi(BisectorAngle);
+      ZetaUnit = ZetaUnit.Unit();
+      //correct it if it faces the wrong direction
+      if(ZetaUnit.Dot(l1.Vect()) < 0.0 or ZetaUnit.Dot(l2.Vect()) < 0.0)
+	{
+	  if(BisectorAngle >= 0.0) BisectorAngle -= M_PI;
+	  else BisectorAngle += M_PI;
+	}
+      ZetaUnit.SetPhi(BisectorAngle);
+      */
+      
+      ZetaUnit = ZetaUnit.Unit();      
       
       float PZetaVis = (l1.Vect()+l2.Vect()).Dot(ZetaUnit);
       float PZetaAll = (l1.Vect()+l2.Vect()+MissingP.Vect()).Dot(ZetaUnit);
@@ -265,10 +297,10 @@ void TauID(std::string input)
       float PileupWeight = LumiWeights_12->weight(npu);
 
       float muisoSF = IsoWeightings->GetBinContent(IsoWeightings->FindBin(fabs(l1.Eta()),l1.Pt()));
-
+      
       if(input == "WW")NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
       else if(input == "WZ") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
-      else if(input == "ZZ") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
+      else if(input == "ZZ") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;      
       //TODO: Figure out if this is the correct way to apply the weights 
       // from the excel file.
       else if(input == "W"
@@ -277,32 +309,31 @@ void TauID(std::string input)
 	      or input == "W3"
 	      or input == "W4") 
 	{
-	  NormalizationWeight = /*XSecWeight**/PileupWeight*muisoSF;	  
+	  NormalizationWeight = PileupWeight*muisoSF;	  
 	  
-	  if(numGenJets==0) NormalizationWeight = NormalizationWeight*121.94;
-	  if(numGenJets==1) NormalizationWeight = NormalizationWeight*15.747;
-	  if(numGenJets==2) NormalizationWeight = NormalizationWeight*8.2675;
-	  if(numGenJets==3) NormalizationWeight = NormalizationWeight*2.6741;
-	  else if(numGenJets==4) NormalizationWeight = NormalizationWeight*2.3734;
-	  
+	  if(numGenJets==0) NormalizationWeight = NormalizationWeight*110.1887;
+	  if(numGenJets==1) NormalizationWeight = NormalizationWeight*14.1549;
+	  if(numGenJets==2) NormalizationWeight = NormalizationWeight*7.42847;
+	  if(numGenJets==3) NormalizationWeight = NormalizationWeight*2.40205;
+	  if(numGenJets==4) NormalizationWeight = NormalizationWeight*2.140756;
 	}
       else if(input == "TTTo2L2Nu") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
       else if(input == "TTToHadronic") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
       else if(input == "TTToSemiLeptonic") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
+
       else if(input == "DY"
 	      or input == "DY1"
 	      or input == "DY2"
 	      or input == "DY3"
 	      or input == "DY4")
-	{
-	  NormalizationWeight = /*XSecWeight**/PileupWeight*muisoSF;
+	{	  
+	  NormalizationWeight = PileupWeight*muisoSF;//*XSecWeight;
 	  
-	  if(numGenJets==0) NormalizationWeight = NormalizationWeight*2.754;
-	  else if(numGenJets==1) NormalizationWeight = NormalizationWeight*0.6264;
-	  else if(numGenJets==2) NormalizationWeight = NormalizationWeight*0.6431;
-	  else if(numGenJets==3) NormalizationWeight = NormalizationWeight*0.8070;
-	  else if(numGenJets==4) NormalizationWeight = NormalizationWeight*0.5432;
-	  
+	  if(numGenJets==0) NormalizationWeight = NormalizationWeight*3.009;
+	  if(numGenJets==1) NormalizationWeight = NormalizationWeight*0.589;
+	  if(numGenJets==2) NormalizationWeight = NormalizationWeight*0.612;
+	  if(numGenJets==3) NormalizationWeight = NormalizationWeight*0.767;
+	  if(numGenJets==4) NormalizationWeight = NormalizationWeight*0.690;
 	}
       else if(input == "Data") NormalizationWeight = 1.0;          
       else
@@ -310,13 +341,13 @@ void TauID(std::string input)
 	  std::cout<<"ERROR! Unrecognized Sample! Defaulting to unweighted events!"<<std::endl;
 	  NormalizationWeight = 1.0;
 	}
-      
+
       //Data Selection
       float Var = (l1+l2).M();
       
       //we check four things at the same time. Signal region checks, W+Jets region checks, QCD in the signal region, and QCD in the W+Jets Region.
       //check the tau iso discriminants, and divide these our events by pass/fail            
-      bool TauIsoDiscrim = (bool) byTightIsolationMVArun2v1DBoldDMwLT_2;
+      bool TauIsoDiscrim = (bool) byTightIsolationRerunMVArun2v2DBoldDMwLT_2;
       //check signs: if Opposite sign is signal contribution
       if(q_1 * q_2 < 0.0)
 	{

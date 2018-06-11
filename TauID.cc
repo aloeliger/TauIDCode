@@ -8,6 +8,7 @@
 #include "TROOT.h"
 #include "/afs/cern.ch/user/a/aloelige/private/RootMacros/LumiReweightingStandAlone.h"
 #include <cmath>
+#include <string>
 
 void TauID(std::string input, float ShapeUncertainty = 1.0)
 {
@@ -150,95 +151,100 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 
   int NumberOfEntries = (int) Tree->GetEntries();
 
-  //System mvis
-  TH1F* SignalRegion_Pass = new TH1F((input+"_Pass").c_str(),
+  //generate the relevant name
+  std::string name;
+  if(ShapeUncertainty != 1.0) name = (input+"_"+std::to_string(ShapeUncertainty));
+  else name = input;
+
+  //Relevant Histos
+  TH1F* SignalRegion_Pass = new TH1F((name+"_Pass").c_str(),
 				     "Signal_Pass",
 				     20,
 				     50.0,
 				     150.0);
-  TH1F* SignalRegion_Fail = new TH1F((input+"_Fail").c_str(),
+  TH1F* SignalRegion_Fail = new TH1F((name+"_Fail").c_str(),
 				     "Signal_Fail",
 				     20,
 				     50.0,
 				     150.0);
 
-  TH1F* WJetsRegion_Pass = new TH1F(("WJets_"+input+"_Pass").c_str(), 
+  TH1F* WJetsRegion_Pass = new TH1F(("WJets_"+name+"_Pass").c_str(), 
 				    "WJets_Pass", 
 				    SignalRegion_Pass->GetSize()-2, 
 				    SignalRegion_Pass->GetXaxis()->GetXmin(),
 				    SignalRegion_Pass->GetXaxis()->GetXmax());
-  TH1F* WJetsRegion_Fail = new TH1F(("WJets_"+input+"_Fail").c_str(), 
+  TH1F* WJetsRegion_Fail = new TH1F(("WJets_"+name+"_Fail").c_str(), 
 				    "WJets_Fail", 
 				    SignalRegion_Fail->GetSize()-2, 
 				    SignalRegion_Fail->GetXaxis()->GetXmin(),
 				    SignalRegion_Fail->GetXaxis()->GetXmax());
   
-  TH1F* QCDRegion_Pass = new TH1F(("QCD_"+input+"_Pass").c_str(), 
+  TH1F* QCDRegion_Pass = new TH1F(("QCD_"+name+"_Pass").c_str(), 
 				  "QCD_Pass", 
 				  SignalRegion_Pass->GetSize()-2, 
 				  SignalRegion_Pass->GetXaxis()->GetXmin(),
 				  SignalRegion_Pass->GetXaxis()->GetXmax());
   
-  TH1F* QCDRegion_Fail = new TH1F(("QCD_"+input+"_Fail").c_str(), 
+  TH1F* QCDRegion_Fail = new TH1F(("QCD_"+name+"_Fail").c_str(), 
 				  "QCD_Fail", 
 				  SignalRegion_Fail->GetSize()-2, 
 				  SignalRegion_Fail->GetXaxis()->GetXmin(),
 				  SignalRegion_Fail->GetXaxis()->GetXmax());
   
-  TH1F* QCDinWJets_Pass = new TH1F(("WJets_QCD_"+input+"_Pass").c_str(), 
+  TH1F* QCDinWJets_Pass = new TH1F(("WJets_QCD_"+name+"_Pass").c_str(), 
 				   "WJets_QCD_Pass", 
 				   SignalRegion_Pass->GetSize()-2, 
 				   SignalRegion_Pass->GetXaxis()->GetXmin(),
 				   SignalRegion_Pass->GetXaxis()->GetXmax());
 
-  TH1F* QCDinWJets_Fail = new TH1F(("WJets_QCD_"+input+"_Fail").c_str(), 
+  TH1F* QCDinWJets_Fail = new TH1F(("WJets_QCD_"+name+"_Fail").c_str(), 
 				   "WJets_QCD_Fail", 
 				   SignalRegion_Fail->GetSize()-2, 
 				   SignalRegion_Fail->GetXaxis()->GetXmin(),
 				   SignalRegion_Fail->GetXaxis()->GetXmax());
 
   //we'll use this for determining our Z->tautau signal
-  TH1F* GenMatch_SignalRegion_Pass = new TH1F(("GenMatch_"+input+"_Pass").c_str(),
+  TH1F* GenMatch_SignalRegion_Pass = new TH1F(("GenMatch_"+name+"_Pass").c_str(),
 				     "Signal_Pass",
 				     20,
 				     50.0,
 				     150.0);
-  TH1F* GenMatch_SignalRegion_Fail = new TH1F(("GenMatch_"+input+"_Fail").c_str(),
+  TH1F* GenMatch_SignalRegion_Fail = new TH1F(("GenMatch_"+name+"_Fail").c_str(),
 				     "Signal_Fail",
 				     20,
 				     50.0,
 				     150.0);
 
-  TH1F* GenMatch_WJetsRegion_Pass = new TH1F(("WJets_GenMatch_"+input+"_Pass").c_str(), 
+  TH1F* GenMatch_WJetsRegion_Pass = new TH1F(("WJets_GenMatch_"+name+"_Pass").c_str(), 
 				    "WJets_Pass", 
 				    SignalRegion_Pass->GetSize()-2, 
 				    SignalRegion_Pass->GetXaxis()->GetXmin(),
 				    SignalRegion_Pass->GetXaxis()->GetXmax());
-  TH1F* GenMatch_WJetsRegion_Fail = new TH1F(("WJets_GenMatch_"+input+"_Fail").c_str(), 
+  TH1F* GenMatch_WJetsRegion_Fail = new TH1F(("WJets_GenMatch_"+name+"_Fail").c_str(), 
 				    "WJets_Fail", 
 				    SignalRegion_Fail->GetSize()-2, 
 				    SignalRegion_Fail->GetXaxis()->GetXmin(),
 				    SignalRegion_Fail->GetXaxis()->GetXmax());
   
-  TH1F* GenMatch_QCDRegion_Pass = new TH1F(("QCD_GenMatch_"+input+"_Pass").c_str(), 
+  TH1F* GenMatch_QCDRegion_Pass = new TH1F(("QCD_GenMatch_"+name+"_Pass").c_str(), 
 				  "QCD_Pass", 
 				  SignalRegion_Pass->GetSize()-2, 
 				  SignalRegion_Pass->GetXaxis()->GetXmin(),
 				  SignalRegion_Pass->GetXaxis()->GetXmax());
   
-  TH1F* GenMatch_QCDRegion_Fail = new TH1F(("QCD_GenMatch_"+input+"_Fail").c_str(), 
+  TH1F* GenMatch_QCDRegion_Fail = new TH1F(("QCD_GenMatch_"+name+"_Fail").c_str(), 
 				  "QCD_Fail", 
 				  SignalRegion_Fail->GetSize()-2, 
 				  SignalRegion_Fail->GetXaxis()->GetXmin(),
 				  SignalRegion_Fail->GetXaxis()->GetXmax());
   
-  TH1F* GenMatch_QCDinWJets_Pass = new TH1F(("WJets_QCD_GenMatch_"+input+"_Pass").c_str(), 
+  TH1F* GenMatch_QCDinWJets_Pass = new TH1F(("WJets_QCD_GenMatch_"+name+"_Pass").c_str(), 
 				   "WJets_QCD_Pass", 
 				   SignalRegion_Pass->GetSize()-2, 
 				   SignalRegion_Pass->GetXaxis()->GetXmin(),
 				   SignalRegion_Pass->GetXaxis()->GetXmax());
 
-  TH1F* GenMatch_QCDinWJets_Fail = new TH1F(("WJets_QCD_GenMatch_"+input+"_Fail").c_str(), 
+  TH1F* GenMatch_QCDinWJets_Fail = new TH1F(("WJets_QCD_GenMatch_"+name+"_Fail").c_str(), 
 				   "WJets_QCD_Fail", 
 				   SignalRegion_Fail->GetSize()-2, 
 				   SignalRegion_Fail->GetXaxis()->GetXmin(),
@@ -301,6 +307,8 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
       //make the necessary 4 vectors      
       TLorentzVector l1; l1.SetPtEtaPhiE(pt_1, eta_1, phi_1, e_1); //muon
       TLorentzVector l2; l2.SetPtEtaPhiE(pt_2, eta_2, phi_2, e_2); //tau
+      //Handle the shape uncertainty
+      l2 = l2*ShapeUncertainty;
 
       //Event selection
       //muon criteria
@@ -566,7 +574,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
   std::cout<<std::endl;  
 
   //save signal distributions
-  TFile* SignalOutFile = new TFile(("TemporaryFiles/Signal_"+input+"_PassFail.root").c_str(),"RECREATE");
+  TFile* SignalOutFile = new TFile(("TemporaryFiles/Signal_"+name+"_PassFail.root").c_str(),"RECREATE");
 
   TDirectory *SignalPassDir = SignalOutFile->mkdir("pass");
   SignalPassDir->cd();
@@ -579,7 +587,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
   SignalOutFile->Close();
 
   //save WJets distributions
-  TFile* WJetsOutFile = new TFile(("TemporaryFiles/WJets_"+input+"_PassFail.root").c_str(),"RECREATE");
+  TFile* WJetsOutFile = new TFile(("TemporaryFiles/WJets_"+name+"_PassFail.root").c_str(),"RECREATE");
 
   TDirectory *WJetsPassDir = WJetsOutFile->mkdir("pass");
   WJetsPassDir->cd();
@@ -592,7 +600,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
   WJetsOutFile->Close();
 
   //save QCD distributions
-  TFile* QCDOutFile = new TFile(("TemporaryFiles/QCD_"+input+"_PassFail.root").c_str(),"RECREATE");
+  TFile* QCDOutFile = new TFile(("TemporaryFiles/QCD_"+name+"_PassFail.root").c_str(),"RECREATE");
 
   TDirectory *QCDPassDir = QCDOutFile->mkdir("pass");
   QCDPassDir->cd();
@@ -605,7 +613,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
   QCDOutFile->Close();
 
   //save the QCD Wjets contribution
-  TFile* QCDinWJetsOutFile = new TFile(("TemporaryFiles/QCDinWJets_"+input+"PassFail.root").c_str(),"RECREATE");
+  TFile* QCDinWJetsOutFile = new TFile(("TemporaryFiles/QCDinWJets_"+name+"PassFail.root").c_str(),"RECREATE");
 
   TDirectory *QCDinWJetsPassDir = QCDinWJetsOutFile->mkdir("pass");
   QCDinWJetsPassDir->cd();
@@ -624,7 +632,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
       or input == "DY3"
       or input == "DY4")
     {
-      TFile* GenMatchedSignalOutFile = new TFile(("TemporaryFiles/Signal_GenMatch_"+input+"_Passfail.root").c_str(),"RECREATE");
+      TFile* GenMatchedSignalOutFile = new TFile(("TemporaryFiles/Signal_GenMatch_"+name+"_Passfail.root").c_str(),"RECREATE");
       
       TDirectory *GenMatchSignalPassDir = GenMatchedSignalOutFile->mkdir("pass");
       GenMatchSignalPassDir->cd();
@@ -637,7 +645,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
       GenMatchedSignalOutFile->Close();
       
       //save WJets distributions
-      TFile* GenMatchedWJetsOutFile = new TFile(("TemporaryFiles/WJets_GenMatch_"+input+"_PassFail.root").c_str(),"RECREATE");
+      TFile* GenMatchedWJetsOutFile = new TFile(("TemporaryFiles/WJets_GenMatch_"+name+"_PassFail.root").c_str(),"RECREATE");
       
       TDirectory *GenMatchWJetsPassDir = GenMatchedWJetsOutFile->mkdir("pass");
       GenMatchWJetsPassDir->cd();
@@ -650,7 +658,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
       GenMatchedWJetsOutFile->Close();
       
       //save QCD distributions
-      TFile* GenMatchedQCDOutFile = new TFile(("TemporaryFiles/QCD_GenMatch_"+input+"_PassFail.root").c_str(),"RECREATE");
+      TFile* GenMatchedQCDOutFile = new TFile(("TemporaryFiles/QCD_GenMatch_"+name+"_PassFail.root").c_str(),"RECREATE");
       
       TDirectory *GenMatchQCDPassDir = GenMatchedQCDOutFile->mkdir("pass");
       GenMatchQCDPassDir->cd();
@@ -663,7 +671,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
       GenMatchedQCDOutFile->Close();
       
       //save the QCD Wjets contribution
-      TFile* GenMatchedQCDinWJetsOutFile = new TFile(("TemporaryFiles/QCDinWJets_GenMatch_"+input+"PassFail.root").c_str(),"RECREATE");
+      TFile* GenMatchedQCDinWJetsOutFile = new TFile(("TemporaryFiles/QCDinWJets_GenMatch_"+name+"PassFail.root").c_str(),"RECREATE");
       
       TDirectory *GenMatchQCDinWJetsPassDir = GenMatchedQCDinWJetsOutFile->mkdir("pass");
       GenMatchQCDinWJetsPassDir->cd();

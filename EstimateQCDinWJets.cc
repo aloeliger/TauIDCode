@@ -28,6 +28,12 @@ void EstimateQCDinWJets()
   TH1F* WW_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_WW_Pass");
   TH1F* WZ_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_WZ_Pass");
   TH1F* ZZ_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_ZZ_Pass");
+  TH1F* ZTauTau_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY_Pass");
+  TH1F* ZTauTau1_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY1_Pass");
+  TH1F* ZTauTau2_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY2_Pass");
+  TH1F* ZTauTau3_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY3_Pass");
+  TH1F* ZTauTau4_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY4_Pass");
+  
 
   Contribution_Pass->SetName("CorrectedQCDContribution_Pass");
 
@@ -52,16 +58,25 @@ void EstimateQCDinWJets()
   TH1F* WW_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_WW_Fail");
   TH1F* WZ_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_WZ_Fail");
   TH1F* ZZ_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_ZZ_Fail");
+  TH1F* ZTauTau_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY_Fail");
+  TH1F* ZTauTau1_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY1_Fail");
+  TH1F* ZTauTau2_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY2_Fail");
+  TH1F* ZTauTau3_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY3_Fail");
+  TH1F* ZTauTau4_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY4_Fail");
 
   Contribution_Fail->SetName("CorrectedQCDContribution_Fail");
 
   std::cout<<"Subtracting Pass backgrounds..."<<std::endl;
   Contribution_Pass->Add(DY_Pass, -1.0);
-
   Contribution_Pass->Add(DY1_Pass, -1.0);
   Contribution_Pass->Add(DY2_Pass, -1.0);
   Contribution_Pass->Add(DY3_Pass, -1.0);
   Contribution_Pass->Add(DY4_Pass, -1.0);
+  Contribution_Pass->Add(ZTauTau_Pass, -1.0);
+  Contribution_Pass->Add(ZTauTau1_Pass, -1.0);
+  Contribution_Pass->Add(ZTauTau2_Pass, -1.0);
+  Contribution_Pass->Add(ZTauTau3_Pass, -1.0);
+  Contribution_Pass->Add(ZTauTau4_Pass, -1.0);
 
   Contribution_Pass->Add(TTTo2L2Nu_Pass, -1.0);
   Contribution_Pass->Add(TTToHadronic_Pass, -1.0);
@@ -82,6 +97,11 @@ void EstimateQCDinWJets()
   Contribution_Fail->Add(DY2_Fail, -1.0);
   Contribution_Fail->Add(DY3_Fail, -1.0);
   Contribution_Fail->Add(DY4_Fail, -1.0);
+  Contribution_Pass->Add(ZTauTau_Fail, -1.0);
+  Contribution_Pass->Add(ZTauTau1_Fail, -1.0);
+  Contribution_Pass->Add(ZTauTau2_Fail, -1.0);
+  Contribution_Pass->Add(ZTauTau3_Fail, -1.0);
+  Contribution_Pass->Add(ZTauTau4_Fail, -1.0);
 
   Contribution_Fail->Add(TTTo2L2Nu_Fail, -1.0);
   Contribution_Fail->Add(TTToHadronic_Fail, -1.0);

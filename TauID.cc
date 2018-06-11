@@ -9,7 +9,7 @@
 #include "/afs/cern.ch/user/a/aloelige/private/RootMacros/LumiReweightingStandAlone.h"
 #include <cmath>
 
-void TauID(std::string input)
+void TauID(std::string input, float ShapeUncertainty = 1.0)
 {
   //get the tree that we're going to run
   TFile *MyFile = new TFile(("/data/ccaillol/tauid_19may_mt/"+input+".root").c_str());
@@ -196,7 +196,53 @@ void TauID(std::string input)
 				   SignalRegion_Fail->GetSize()-2, 
 				   SignalRegion_Fail->GetXaxis()->GetXmin(),
 				   SignalRegion_Fail->GetXaxis()->GetXmax());
+
+  //we'll use this for determining our Z->tautau signal
+  TH1F* GenMatch_SignalRegion_Pass = new TH1F(("GenMatch_"+input+"_Pass").c_str(),
+				     "Signal_Pass",
+				     20,
+				     50.0,
+				     150.0);
+  TH1F* GenMatch_SignalRegion_Fail = new TH1F(("GenMatch_"+input+"_Fail").c_str(),
+				     "Signal_Fail",
+				     20,
+				     50.0,
+				     150.0);
+
+  TH1F* GenMatch_WJetsRegion_Pass = new TH1F(("WJets_GenMatch_"+input+"_Pass").c_str(), 
+				    "WJets_Pass", 
+				    SignalRegion_Pass->GetSize()-2, 
+				    SignalRegion_Pass->GetXaxis()->GetXmin(),
+				    SignalRegion_Pass->GetXaxis()->GetXmax());
+  TH1F* GenMatch_WJetsRegion_Fail = new TH1F(("WJets_GenMatch_"+input+"_Fail").c_str(), 
+				    "WJets_Fail", 
+				    SignalRegion_Fail->GetSize()-2, 
+				    SignalRegion_Fail->GetXaxis()->GetXmin(),
+				    SignalRegion_Fail->GetXaxis()->GetXmax());
   
+  TH1F* GenMatch_QCDRegion_Pass = new TH1F(("QCD_GenMatch_"+input+"_Pass").c_str(), 
+				  "QCD_Pass", 
+				  SignalRegion_Pass->GetSize()-2, 
+				  SignalRegion_Pass->GetXaxis()->GetXmin(),
+				  SignalRegion_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* GenMatch_QCDRegion_Fail = new TH1F(("QCD_GenMatch_"+input+"_Fail").c_str(), 
+				  "QCD_Fail", 
+				  SignalRegion_Fail->GetSize()-2, 
+				  SignalRegion_Fail->GetXaxis()->GetXmin(),
+				  SignalRegion_Fail->GetXaxis()->GetXmax());
+  
+  TH1F* GenMatch_QCDinWJets_Pass = new TH1F(("WJets_QCD_GenMatch_"+input+"_Pass").c_str(), 
+				   "WJets_QCD_Pass", 
+				   SignalRegion_Pass->GetSize()-2, 
+				   SignalRegion_Pass->GetXaxis()->GetXmin(),
+				   SignalRegion_Pass->GetXaxis()->GetXmax());
+
+  TH1F* GenMatch_QCDinWJets_Fail = new TH1F(("WJets_QCD_GenMatch_"+input+"_Fail").c_str(), 
+				   "WJets_QCD_Fail", 
+				   SignalRegion_Fail->GetSize()-2, 
+				   SignalRegion_Fail->GetXaxis()->GetXmin(),
+				   SignalRegion_Fail->GetXaxis()->GetXmax());
 
   //Determine the relevant cross section or normalization
   float LHCLumi = 41.370e15;
@@ -236,9 +282,15 @@ void TauID(std::string input)
 						 "pileup_mc",
 						 "pileup");
 
-  TFile* IsoFile = new TFile("Weightings/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root");
-  TDirectoryFile* IsoMuDirectory = (TDirectoryFile* )IsoFile->Get("IsoMu27_PtEtaBins");
-  TH2F* IsoWeightings = (TH2F*) IsoMuDirectory->Get("abseta_pt_ratio");
+  TFile* TriggerFile = new TFile("Weightings/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root");
+  TDirectoryFile* TriggerMuDirectory = (TDirectoryFile* )TriggerFile->Get("IsoMu27_PtEtaBins");
+  TH2F* TriggerWeightings = (TH2F*) TriggerMuDirectory->Get("abseta_pt_ratio");
+
+  TFile* IDFile = new TFile("Weightings/RunBCDEF_SF_ID.root");
+  TH2F* IDWeightings = (TH2F*) IDFile->Get("NUM_MediumID_DEN_genTracks_pt_abseta");
+  
+  TFile* ISOFile = new TFile("Weightings/RunBCDEF_SF_ISO.root");
+  TH2F* ISOWeightings = (TH2F*) ISOFile->Get("NUM_TightRelIso_DEN_MediumID_pt_abseta");
   
   for(int i =0;i < NumberOfEntries; i++)
     {
@@ -254,7 +306,7 @@ void TauID(std::string input)
       //muon criteria
       // added the dz criteria and matchisomu catches the matching to triger objects
       // potentially have the dxy requirement taken care of?      
-      if(pt_1 < 23.0 or std::abs(eta_1) > 2.1 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
+      if(pt_1 < 29.0 or std::abs(eta_1) > 2.1 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
       //tau criteria
       //added the decaymodefinding_2 which catches the old decay mode finding.
       if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronLooseMVA6_2 != 1 or againstMuonTight3_2 != 1 or !decayModeFinding_2) continue;
@@ -295,12 +347,14 @@ void TauID(std::string input)
 
       //Create the weighting
       float PileupWeight = LumiWeights_12->weight(npu);
-
-      float muisoSF = IsoWeightings->GetBinContent(IsoWeightings->FindBin(fabs(l1.Eta()),l1.Pt()));
       
-      if(input == "WW")NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
-      else if(input == "WZ") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
-      else if(input == "ZZ") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;      
+      float muTriggerSF = TriggerWeightings->GetBinContent(TriggerWeightings->FindBin(fabs(l1.Eta()),l1.Pt()));
+      float muIDSF =  IDWeightings->GetBinContent(IDWeightings->FindBin(l1.Pt(),fabs(l1.Eta())));
+      float muISOSF =  ISOWeightings->GetBinContent(ISOWeightings->FindBin(l1.Pt(),fabs(l1.Eta())));
+
+      if(input == "WW")NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
+      else if(input == "WZ") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
+      else if(input == "ZZ") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;      
       //TODO: Figure out if this is the correct way to apply the weights 
       // from the excel file.
       else if(input == "W"
@@ -309,7 +363,7 @@ void TauID(std::string input)
 	      or input == "W3"
 	      or input == "W4") 
 	{
-	  NormalizationWeight = PileupWeight*muisoSF;	  
+	  NormalizationWeight = PileupWeight*muTriggerSF*muIDSF*muISOSF;	  
 	  
 	  if(numGenJets==0) NormalizationWeight = NormalizationWeight*110.1887;
 	  if(numGenJets==1) NormalizationWeight = NormalizationWeight*14.1549;
@@ -317,9 +371,9 @@ void TauID(std::string input)
 	  if(numGenJets==3) NormalizationWeight = NormalizationWeight*2.40205;
 	  if(numGenJets==4) NormalizationWeight = NormalizationWeight*2.140756;
 	}
-      else if(input == "TTTo2L2Nu") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
-      else if(input == "TTToHadronic") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
-      else if(input == "TTToSemiLeptonic") NormalizationWeight = XSecWeight*PileupWeight*muisoSF;
+      else if(input == "TTTo2L2Nu") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
+      else if(input == "TTToHadronic") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
+      else if(input == "TTToSemiLeptonic") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
 
       else if(input == "DY"
 	      or input == "DY1"
@@ -327,7 +381,7 @@ void TauID(std::string input)
 	      or input == "DY3"
 	      or input == "DY4")
 	{	  
-	  NormalizationWeight = PileupWeight*muisoSF;//*XSecWeight;
+	  NormalizationWeight = PileupWeight*muTriggerSF*muIDSF*muISOSF;
 	  
 	  if(numGenJets==0) NormalizationWeight = NormalizationWeight*3.009;
 	  if(numGenJets==1) NormalizationWeight = NormalizationWeight*0.589;
@@ -348,6 +402,7 @@ void TauID(std::string input)
       //we check four things at the same time. Signal region checks, W+Jets region checks, QCD in the signal region, and QCD in the W+Jets Region.
       //check the tau iso discriminants, and divide these our events by pass/fail            
       bool TauIsoDiscrim = (bool) byTightIsolationRerunMVArun2v2DBoldDMwLT_2;
+      // 6/8/2018 EDIT: We're going to do a very rough hack here to include the genmatching
       //check signs: if Opposite sign is signal contribution
       if(q_1 * q_2 < 0.0)
 	{
@@ -355,24 +410,75 @@ void TauID(std::string input)
 	  if(TransverseMass < 40.0 and PZeta > -25.0)
 	    {
 	      if(TauIsoDiscrim)
-		{
-		  SignalRegion_Pass->Fill(Var,NormalizationWeight);    
+		{		  
+		  //seperate out our signal region in the drell yan histos
+		  if((input == "DY"
+		      or input == "DY1"
+		      or input == "DY2"
+		      or input == "DY3"
+		      or input == "DY4") and gen_match_2 == 5)
+		    {
+		      GenMatch_SignalRegion_Pass->Fill(Var,NormalizationWeight);    
+		    }
+		  //Literally everything else
+		  else
+		    {
+		      SignalRegion_Pass->Fill(Var,NormalizationWeight);    
+		    }
 		}
 	      else
-		{
-		  SignalRegion_Fail->Fill(Var,NormalizationWeight);
+		{		  
+		  //seperate out the Z->tautau stuff
+		  if((input == "DY"
+		      or input == "DY1"
+		      or input == "DY2"
+		      or input == "DY3"
+		      or input == "DY4") and gen_match_2 == 5)
+		    {
+		      GenMatch_SignalRegion_Fail->Fill(Var,NormalizationWeight);
+		    }
+		  //Literally everything else
+		  else
+		    {
+		      SignalRegion_Fail->Fill(Var,NormalizationWeight);
+		    }
 		}
 	    }
 	  //WJets Contribution
 	  else if(TransverseMass > 80.0)
 	    {
 	      if(TauIsoDiscrim)
-		{
-		  WJetsRegion_Pass->Fill(Var,NormalizationWeight);    
+		{		  
+		  //seperate out the Z->tau tau stuff
+		  if((input == "DY"
+		      or input == "DY1"
+		      or input == "DY2"
+		      or input == "DY3"
+		      or input == "DY4") and gen_match_2 == 5)
+		    {
+		      GenMatch_WJetsRegion_Pass->Fill(Var,NormalizationWeight);
+		    }
+		  //Literally everything else
+		  {
+		    WJetsRegion_Pass->Fill(Var,NormalizationWeight);
+		  }
 		}
 	      else
-		{
-		  WJetsRegion_Fail->Fill(Var,NormalizationWeight);
+		{		  
+		  //seperate out the Z->tau tau stuff
+		  if((input == "DY"
+		      or input == "DY1"
+		      or input == "DY2"
+		      or input == "DY3"
+		      or input == "DY4") and gen_match_2 == 5)
+		    {
+		      GenMatch_WJetsRegion_Fail->Fill(Var,NormalizationWeight);
+		    }
+		  //Literally everything else
+		  else
+		    {
+		      WJetsRegion_Fail->Fill(Var,NormalizationWeight);
+		    }
 		}
 	    }
 	}
@@ -383,24 +489,75 @@ void TauID(std::string input)
 	  if(TransverseMass < 40.0 and PZeta > -25.0)
 	    {
 	      if(TauIsoDiscrim)
-		{
-		  QCDRegion_Pass->Fill(Var,NormalizationWeight);    
+		{		  
+		  //seperate out the Z->tautau stuff
+		  if((input == "DY"
+		      or input == "DY1"
+		      or input == "DY2"
+		      or input == "DY3"
+		      or input == "DY4") and gen_match_2 == 5)
+		    {
+		      GenMatch_QCDRegion_Pass->Fill(Var,NormalizationWeight);
+		    }
+		  else
+		    {
+		      QCDRegion_Pass->Fill(Var,NormalizationWeight);
+		    }
 		}
 	      else
-		{
-		  QCDRegion_Fail->Fill(Var,NormalizationWeight);
+		{		  
+		  //seperate out the Z->tau tau stuff
+		  if((input == "DY"
+		      or input == "DY1"
+		      or input == "DY2"
+		      or input == "DY3"
+		      or input == "DY4") and gen_match_2 == 5)
+		    {
+		      GenMatch_QCDRegion_Fail->Fill(Var,NormalizationWeight);
+		    }
+		  //Literally Everything Else
+		  else
+		    {
+		      QCDRegion_Fail->Fill(Var,NormalizationWeight);
+		    }
 		}
 	    }
 	  //QCD present in the W+Jets estimation region
 	  else if(TransverseMass > 80.0)
 	    {
 	      if(TauIsoDiscrim)
-		{
-		  QCDinWJets_Pass->Fill(Var,NormalizationWeight);    
+		{		  
+		  //Seperate out the Z->tautau stuff
+		  if((input == "DY"
+		      or input == "DY1"
+		      or input == "DY2"
+		      or input == "DY3"
+		      or input == "DY4") and gen_match_2 == 5)
+		    {
+		      GenMatch_QCDinWJets_Pass->Fill(Var,NormalizationWeight);    
+		    }
+		  //Literally everything else
+		  else
+		    {
+		      QCDinWJets_Pass->Fill(Var,NormalizationWeight);    
+		    }
 		}
 	      else
 		{
-		  QCDinWJets_Fail->Fill(Var,NormalizationWeight);
+		  //Seperate out the Z->tautau signal
+		  if((input == "DY"
+		      or input == "DY1"
+		      or input == "DY2"
+		      or input == "DY3"
+		      or input == "DY4") and gen_match_2 == 5)
+		    {
+		      GenMatch_QCDinWJets_Fail->Fill(Var,NormalizationWeight);
+		    }
+		  //Literally everything else
+		  else
+		    {
+		      QCDinWJets_Fail->Fill(Var,NormalizationWeight);
+		    }
 		} 
 	    }
 	}            
@@ -460,4 +617,62 @@ void TauID(std::string input)
   
   QCDinWJetsOutFile->Close();
 
+  //if we are in the drell yan we need to write out the signal files also.
+  if(input == "DY"
+      or input == "DY1"
+      or input == "DY2"
+      or input == "DY3"
+      or input == "DY4")
+    {
+      TFile* GenMatchedSignalOutFile = new TFile(("TemporaryFiles/Signal_GenMatch_"+input+"_Passfail.root").c_str(),"RECREATE");
+      
+      TDirectory *GenMatchSignalPassDir = GenMatchedSignalOutFile->mkdir("pass");
+      GenMatchSignalPassDir->cd();
+      GenMatch_SignalRegion_Pass->Write();
+      
+      TDirectory *GenMatchSignalFailDir = GenMatchedSignalOutFile->mkdir("fail");
+      GenMatchSignalFailDir->cd();
+      GenMatch_SignalRegion_Fail->Write();
+      
+      GenMatchedSignalOutFile->Close();
+      
+      //save WJets distributions
+      TFile* GenMatchedWJetsOutFile = new TFile(("TemporaryFiles/WJets_GenMatch_"+input+"_PassFail.root").c_str(),"RECREATE");
+      
+      TDirectory *GenMatchWJetsPassDir = GenMatchedWJetsOutFile->mkdir("pass");
+      GenMatchWJetsPassDir->cd();
+      GenMatch_WJetsRegion_Pass->Write();
+      
+      TDirectory *GenMatchWJetsFailDir = GenMatchedWJetsOutFile->mkdir("fail");
+      GenMatchWJetsFailDir->cd();
+      GenMatch_WJetsRegion_Fail->Write();
+      
+      GenMatchedWJetsOutFile->Close();
+      
+      //save QCD distributions
+      TFile* GenMatchedQCDOutFile = new TFile(("TemporaryFiles/QCD_GenMatch_"+input+"_PassFail.root").c_str(),"RECREATE");
+      
+      TDirectory *GenMatchQCDPassDir = GenMatchedQCDOutFile->mkdir("pass");
+      GenMatchQCDPassDir->cd();
+      GenMatch_QCDRegion_Pass->Write();
+      
+      TDirectory *GenMatchQCDFailDir = GenMatchedQCDOutFile->mkdir("fail");
+      GenMatchQCDFailDir->cd();
+      GenMatch_QCDRegion_Fail->Write();
+      
+      GenMatchedQCDOutFile->Close();
+      
+      //save the QCD Wjets contribution
+      TFile* GenMatchedQCDinWJetsOutFile = new TFile(("TemporaryFiles/QCDinWJets_GenMatch_"+input+"PassFail.root").c_str(),"RECREATE");
+      
+      TDirectory *GenMatchQCDinWJetsPassDir = GenMatchedQCDinWJetsOutFile->mkdir("pass");
+      GenMatchQCDinWJetsPassDir->cd();
+      GenMatch_QCDinWJets_Pass->Write();
+      
+      TDirectory *GenMatchQCDinWJetsFailDir = GenMatchedQCDinWJetsOutFile->mkdir("fail");
+      GenMatchQCDinWJetsFailDir->cd();
+      GenMatch_QCDinWJets_Fail->Write();
+      
+      GenMatchedQCDinWJetsOutFile->Close();
+    }
 }

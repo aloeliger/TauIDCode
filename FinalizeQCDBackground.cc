@@ -10,12 +10,17 @@ void FinalizeQCDBackground()
   //pass histos
   cout<<"Retrieving Pass Region Histograms"<<std::endl;
   TH1F* QCD_Pass = (TH1F *) QCD_PassDir->Get("QCD_Data_Pass");
+  
   TH1F* DY_Pass = (TH1F *) QCD_PassDir->Get("QCD_DY_Pass");
-
   TH1F* DY1_Pass = (TH1F *) QCD_PassDir->Get("QCD_DY1_Pass");
   TH1F* DY2_Pass = (TH1F *) QCD_PassDir->Get("QCD_DY2_Pass");
   TH1F* DY3_Pass = (TH1F *) QCD_PassDir->Get("QCD_DY3_Pass");
   TH1F* DY4_Pass = (TH1F *) QCD_PassDir->Get("QCD_DY4_Pass");
+  TH1F* ZTauTau_Pass = (TH1F *) QCD_PassDir->Get("QCD_GenMatch_DY_Pass");
+  TH1F* ZTauTau1_Pass = (TH1F *) QCD_PassDir->Get("QCD_GenMatch_DY1_Pass");
+  TH1F* ZTauTau2_Pass = (TH1F *) QCD_PassDir->Get("QCD_GenMatch_DY2_Pass");
+  TH1F* ZTauTau3_Pass = (TH1F *) QCD_PassDir->Get("QCD_GenMatch_DY3_Pass");
+  TH1F* ZTauTau4_Pass = (TH1F *) QCD_PassDir->Get("QCD_GenMatch_DY4_Pass");
 
   TH1F* TTTo2L2Nu_Pass = (TH1F *) QCD_PassDir->Get("QCD_TTTo2L2Nu_Pass");
   TH1F* TTToHadronic_Pass = (TH1F *) QCD_PassDir->Get("QCD_TTToHadronic_Pass");
@@ -34,12 +39,17 @@ void FinalizeQCDBackground()
   //fail histos
   std::cout<<"Retrieving Fail Region Histograms"<<std::endl;
   TH1F* QCD_Fail = (TH1F *) QCD_FailDir->Get("QCD_Data_Fail");
+  
   TH1F* DY_Fail = (TH1F *) QCD_FailDir->Get("QCD_DY_Fail");
-
   TH1F* DY1_Fail = (TH1F *) QCD_FailDir->Get("QCD_DY1_Fail");
   TH1F* DY2_Fail = (TH1F *) QCD_FailDir->Get("QCD_DY2_Fail");
   TH1F* DY3_Fail = (TH1F *) QCD_FailDir->Get("QCD_DY3_Fail");
   TH1F* DY4_Fail = (TH1F *) QCD_FailDir->Get("QCD_DY4_Fail");
+  TH1F* ZTauTau_Fail = (TH1F *) QCD_FailDir->Get("QCD_GenMatch_DY_Fail");
+  TH1F* ZTauTau1_Fail = (TH1F *) QCD_FailDir->Get("QCD_GenMatch_DY1_Fail");
+  TH1F* ZTauTau2_Fail = (TH1F *) QCD_FailDir->Get("QCD_GenMatch_DY2_Fail");
+  TH1F* ZTauTau3_Fail = (TH1F *) QCD_FailDir->Get("QCD_GenMatch_DY3_Fail");
+  TH1F* ZTauTau4_Fail = (TH1F *) QCD_FailDir->Get("QCD_GenMatch_DY4_Fail");
 
   TH1F* TTTo2L2Nu_Fail = (TH1F *) QCD_FailDir->Get("QCD_TTTo2L2Nu_Fail");
   TH1F* TTToHadronic_Fail = (TH1F *) QCD_FailDir->Get("QCD_TTToHadronic_Fail");
@@ -60,11 +70,15 @@ void FinalizeQCDBackground()
 
   std::cout<<"Subtracting backgrounds..."<<std::endl;
   QCD_Pass->Add(DY_Pass, -1.0);
-
   QCD_Pass->Add(DY1_Pass, -1.0);
   QCD_Pass->Add(DY2_Pass, -1.0);
   QCD_Pass->Add(DY3_Pass, -1.0);
   QCD_Pass->Add(DY4_Pass, -1.0);
+  QCD_Pass->Add(ZTauTau_Pass, -1.0);
+  QCD_Pass->Add(ZTauTau1_Pass, -1.0);
+  QCD_Pass->Add(ZTauTau2_Pass, -1.0);
+  QCD_Pass->Add(ZTauTau3_Pass, -1.0);
+  QCD_Pass->Add(ZTauTau4_Pass, -1.0);
 
   QCD_Pass->Add(TTTo2L2Nu_Pass, -1.0);
   QCD_Pass->Add(TTToHadronic_Pass, -1.0);
@@ -79,11 +93,15 @@ void FinalizeQCDBackground()
   QCD_Pass->Add(W4_Pass, -1.0);
   
   QCD_Fail->Add(DY_Fail, -1.0);
-
   QCD_Fail->Add(DY1_Fail, -1.0);
   QCD_Fail->Add(DY2_Fail, -1.0);
   QCD_Fail->Add(DY3_Fail, -1.0);
   QCD_Fail->Add(DY4_Fail, -1.0);
+  QCD_Fail->Add(ZTauTau_Fail, -1.0);
+  QCD_Fail->Add(ZTauTau1_Fail, -1.0);
+  QCD_Fail->Add(ZTauTau2_Fail, -1.0);
+  QCD_Fail->Add(ZTauTau3_Fail, -1.0);
+  QCD_Fail->Add(ZTauTau4_Fail, -1.0);
 
   QCD_Fail->Add(TTTo2L2Nu_Fail, -1.0);
   QCD_Fail->Add(TTToHadronic_Fail, -1.0);

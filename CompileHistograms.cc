@@ -21,6 +21,11 @@ void CompileHistograms()
   TH1F* DY2_Pass = (TH1F*) PassDirectory->Get("DY2_Pass");
   TH1F* DY3_Pass = (TH1F*) PassDirectory->Get("DY3_Pass");
   TH1F* DY4_Pass = (TH1F*) PassDirectory->Get("DY4_Pass");
+  TH1F* ZTauTau_Pass = (TH1F*) PassDirectory->Get("GenMatch_DY_Pass");
+  TH1F* ZTauTau1_Pass = (TH1F*) PassDirectory->Get("GenMatch_DY1_Pass");
+  TH1F* ZTauTau2_Pass = (TH1F*) PassDirectory->Get("GenMatch_DY2_Pass");
+  TH1F* ZTauTau3_Pass = (TH1F*) PassDirectory->Get("GenMatch_DY3_Pass");
+  TH1F* ZTauTau4_Pass = (TH1F*) PassDirectory->Get("GenMatch_DY4_Pass");
   TH1F* TTTo2L2Nu_Pass = (TH1F*) PassDirectory->Get("TTTo2L2Nu_Pass");
   TH1F* TTToHadronic_Pass = (TH1F*) PassDirectory->Get("TTToHadronic_Pass");
   TH1F* TTToSemiLeptonic_Pass = (TH1F*) PassDirectory->Get("TTToSemiLeptonic_Pass");
@@ -37,6 +42,11 @@ void CompileHistograms()
   TH1F* DY2_Fail = (TH1F*) FailDirectory->Get("DY2_Fail");
   TH1F* DY3_Fail = (TH1F*) FailDirectory->Get("DY3_Fail");
   TH1F* DY4_Fail = (TH1F*) FailDirectory->Get("DY4_Fail");
+  TH1F* ZTauTau_Fail = (TH1F*) FailDirectory->Get("GenMatch_DY_Fail");
+  TH1F* ZTauTau1_Fail = (TH1F*) FailDirectory->Get("GenMatch_DY1_Fail");
+  TH1F* ZTauTau2_Fail = (TH1F*) FailDirectory->Get("GenMatch_DY2_Fail");
+  TH1F* ZTauTau3_Fail = (TH1F*) FailDirectory->Get("GenMatch_DY3_Fail");
+  TH1F* ZTauTau4_Fail = (TH1F*) FailDirectory->Get("GenMatch_DY4_Fail");
   TH1F* TTTo2L2Nu_Fail = (TH1F*) FailDirectory->Get("TTTo2L2Nu_Fail");
   TH1F* TTToHadronic_Fail = (TH1F*) FailDirectory->Get("TTToHadronic_Fail");
   TH1F* TTToSemiLeptonic_Fail = (TH1F*) FailDirectory->Get("TTToSemiLeptonic_Fail");
@@ -46,7 +56,7 @@ void CompileHistograms()
   TH1F* ZZ_Fail = (TH1F*) FailDirectory->Get("ZZ_Fail");
   TH1F* QCD_Fail = (TH1F*) FailDirectory->Get("QCD_Fail");
 
-  //haha
+  //haha, totally forgot this and looked stupid for weeks on end.
   DY_Pass->Add(DY1_Pass);
   DY_Pass->Add(DY2_Pass);
   DY_Pass->Add(DY3_Pass);
@@ -56,6 +66,16 @@ void CompileHistograms()
   DY_Fail->Add(DY2_Fail);
   DY_Fail->Add(DY3_Fail);
   DY_Fail->Add(DY4_Fail);
+
+  ZTauTau_Pass->Add(ZTauTau1_Pass);
+  ZTauTau_Pass->Add(ZTauTau2_Pass);
+  ZTauTau_Pass->Add(ZTauTau3_Pass);
+  ZTauTau_Pass->Add(ZTauTau4_Pass);
+
+  ZTauTau_Fail->Add(ZTauTau1_Fail);
+  ZTauTau_Fail->Add(ZTauTau2_Fail);
+  ZTauTau_Fail->Add(ZTauTau3_Fail);
+  ZTauTau_Fail->Add(ZTauTau4_Fail);
   
   
   gStyle->SetOptStat(0);
@@ -75,6 +95,9 @@ void CompileHistograms()
   Data_Pass->SetMarkerStyle(20);
   Data_Pass->Sumw2();
   
+  ZTauTau_Pass->SetLineColor(kBlack);
+  ZTauTau_Pass->SetFillColor(kYellow);
+
   DY_Pass->SetLineColor(kBlack);
   DY_Pass->SetFillColor(kAzure-3);
 
@@ -93,6 +116,7 @@ void CompileHistograms()
   THStack * PassStack = new THStack("PassStack","PassStack");
   PassStack->Add(QCD_Pass,"hist");  
   PassStack->Add(WJets_Pass,"hist");
+  PassStack->Add(ZTauTau_Pass,"hist");
   PassStack->Add(DY_Pass,"hist");
   PassStack->Add(TT_Pass,"hist");
   PassStack->Add(DiBoson_Pass,"hist");
@@ -104,11 +128,12 @@ void CompileHistograms()
   Data_Pass->GetXaxis()->SetTitle("#mu#tau Invariant Mass (GeV)");
   Data_Pass->GetYaxis()->SetTitle("Events");
 
-  CMS_lumi(C1,0,11);
+  CMS_lumi(C1,0,33);
   
-  TLegend* Legend = new TLegend(0.7, 0.7, 0.88, 0.88);
+  TLegend* Legend = new TLegend(0.7, 0.5, 0.88, 0.68);
   Legend->AddEntry(Data_Pass, "Data", "ep");
-  Legend->AddEntry(DY_Pass, "Drell-Yan", "f");
+  Legend->AddEntry(ZTauTau_Pass,"Z #rightarrow #tau#tau", "f");
+  Legend->AddEntry(DY_Pass, "Other Drell-Yan", "f");
   Legend->AddEntry(DiBoson_Pass, "DiBoson", "f");
   Legend->AddEntry(TT_Pass, "t#bar{t}","f");
   Legend->AddEntry(WJets_Pass, "W+Jets","f");
@@ -132,6 +157,9 @@ void CompileHistograms()
   Data_Fail->SetMarkerStyle(20);
   Data_Fail->Sumw2();
   
+  ZTauTau_Fail->SetLineColor(kBlack);
+  ZTauTau_Fail->SetFillColor(kYellow);
+
   DY_Fail->SetLineColor(kBlack);
   DY_Fail->SetFillColor(kAzure-3);
 
@@ -150,6 +178,7 @@ void CompileHistograms()
   THStack * FailStack = new THStack("FailStack","FailStack");
   FailStack->Add(QCD_Fail,"hist");
   FailStack->Add(WJets_Fail,"hist");
+  FailStack->Add(ZTauTau_Fail,"hist");
   FailStack->Add(DY_Fail,"hist");
   FailStack->Add(TT_Fail,"hist");
   FailStack->Add(DiBoson_Fail,"hist");  
@@ -161,78 +190,19 @@ void CompileHistograms()
   Data_Fail->GetXaxis()->SetTitle("#mu#tau Invariant Mass (GeV)");
   Data_Fail->GetYaxis()->SetTitle("Events");
 
-  CMS_lumi(C2,0,11);
+  CMS_lumi(C2,0,33);
 
   Legend->Draw();
-
-  TCanvas* C3 = new TCanvas("C3", "#mu#tau Invariant Mass");
-  C3->SetTickx();
-  C3->SetTicky();
-
-  TH1F* Data = new TH1F("Data","Data",Data_Fail->GetSize()-2,Data_Fail->GetXaxis()->GetXmin(),Data_Fail->GetXaxis()->GetXmax());
-  Data->Add(Data_Fail, Data_Pass);
   
-  TH1F* DY = new TH1F("DY","DY",Data_Fail->GetSize()-2,Data_Fail->GetXaxis()->GetXmin(),Data_Fail->GetXaxis()->GetXmax());
-  DY->Add(DY_Fail, DY_Pass);
-
-  TH1F* DiBoson = new TH1F("DiBoson","DiBoson",Data_Fail->GetSize()-2,Data_Fail->GetXaxis()->GetXmin(),Data_Fail->GetXaxis()->GetXmax());
-  DiBoson->Add(DiBoson_Fail, DiBoson_Pass);
-
-  TH1F* TT = new TH1F("TT","TT",Data_Fail->GetSize()-2,Data_Fail->GetXaxis()->GetXmin(),Data_Fail->GetXaxis()->GetXmax());
-  TT->Add(TT_Fail,TT_Pass);
-  
-  TH1F* WJets = new TH1F("WJets","WJets",Data_Fail->GetSize()-2,Data_Fail->GetXaxis()->GetXmin(),Data_Fail->GetXaxis()->GetXmax());
-  WJets->Add(WJets_Fail,WJets_Pass);  
-  
-  TH1F* QCD = new TH1F("QCD","QCD",Data_Fail->GetSize()-2,Data_Fail->GetXaxis()->GetXmin(),Data_Fail->GetXaxis()->GetXmax());
-  QCD->Add(QCD_Fail,QCD_Pass);
-
-  Data->SetMarkerStyle(20);
-  Data->Sumw2();
-  
-  DY->SetLineColor(kBlack);
-  DY->SetFillColor(kAzure-3);
-
-  DiBoson->SetLineColor(kBlack);
-  DiBoson->SetFillColor(kPink-3);
-
-  TT->SetLineColor(kBlack);
-  TT->SetFillColor(kViolet-3);
-
-  WJets->SetLineColor(kBlack);
-  WJets->SetFillColor(kGreen-3);
-
-  QCD->SetLineColor(kBlack);
-  QCD->SetFillColor(kPink+1);
-
-  THStack* TotalStack = new THStack("TotalStack","TotalStack");
-  TotalStack->Add(QCD,"hist");
-  TotalStack->Add(WJets,"hist");
-  TotalStack->Add(DY,"hist");
-  TotalStack->Add(TT,"hist");
-  TotalStack->Add(DiBoson,"hist");  
-
-  Data->Draw();
-  TotalStack->Draw("SAME");
-  Data->SetTitle("#mu#tau Invariant Mass");
-  Data->Draw("SAME");
-  Data->GetXaxis()->SetTitle("#mu#tau Invariant Mass (GeV)");
-  Data->GetYaxis()->SetTitle("Events");
-
-  CMS_lumi(C3,0,11);
-
-  Legend->Draw();
 
   //Write these to a histo file.
   TFile* HistoFile = new TFile("Histos/HistoFile.root","RECREATE");
   C1->Write();
   C2->Write();
-  C3->Write();
   HistoFile->Close();
 
   C1->SaveAs("Histos/pass.png");
   C2->SaveAs("Histos/fail.png");
-  C3->SaveAs("Histos/total.png");
 
   std::cout<<std::endl;
   std::cout<<"Integrals: "<<std::endl;

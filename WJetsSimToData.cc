@@ -10,17 +10,22 @@ void WJetsSimToData()
   //pass histos
   cout<<"Retrieving Pass Region Histograms"<<std::endl;
   TH1F* DataEstimated_WJets_Pass = (TH1F *) WJet_PassDir->Get("WJets_Data_Pass");
-  
-  TH1F* DY_Pass = (TH1F *) WJet_PassDir->Get("WJets_DY_Pass");
-  TH1F* DY1_Pass = (TH1F *) WJet_PassDir->Get("WJets_DY1_Pass");
-  TH1F* DY2_Pass = (TH1F *) WJet_PassDir->Get("WJets_DY2_Pass");
-  TH1F* DY3_Pass = (TH1F *) WJet_PassDir->Get("WJets_DY3_Pass");
-  TH1F* DY4_Pass = (TH1F *) WJet_PassDir->Get("WJets_DY4_Pass");
+    
   TH1F* ZTauTau_Pass = (TH1F *) WJet_PassDir->Get("WJets_GenMatch_DY_Pass");
   TH1F* ZTauTau1_Pass = (TH1F *) WJet_PassDir->Get("WJets_GenMatch_DY1_Pass");
   TH1F* ZTauTau2_Pass = (TH1F *) WJet_PassDir->Get("WJets_GenMatch_DY2_Pass");
   TH1F* ZTauTau3_Pass = (TH1F *) WJet_PassDir->Get("WJets_GenMatch_DY3_Pass");
   TH1F* ZTauTau4_Pass = (TH1F *) WJet_PassDir->Get("WJets_GenMatch_DY4_Pass");
+  TH1F* LowGenMatch_DY_Pass = (TH1F *) WJet_PassDir->Get("WJets_LowGenMatch_DY_Pass");
+  TH1F* LowGenMatch_DY1_Pass = (TH1F *) WJet_PassDir->Get("WJets_LowGenMatch_DY1_Pass");
+  TH1F* LowGenMatch_DY2_Pass = (TH1F *) WJet_PassDir->Get("WJets_LowGenMatch_DY2_Pass");
+  TH1F* LowGenMatch_DY3_Pass = (TH1F *) WJet_PassDir->Get("WJets_LowGenMatch_DY3_Pass");
+  TH1F* LowGenMatch_DY4_Pass = (TH1F *) WJet_PassDir->Get("WJets_LowGenMatch_DY4_Pass");
+  TH1F* HighGenMatch_DY_Pass = (TH1F *) WJet_PassDir->Get("WJets_HighGenMatch_DY_Pass");
+  TH1F* HighGenMatch_DY1_Pass = (TH1F *) WJet_PassDir->Get("WJets_HighGenMatch_DY1_Pass");
+  TH1F* HighGenMatch_DY2_Pass = (TH1F *) WJet_PassDir->Get("WJets_HighGenMatch_DY2_Pass");
+  TH1F* HighGenMatch_DY3_Pass = (TH1F *) WJet_PassDir->Get("WJets_HighGenMatch_DY3_Pass");
+  TH1F* HighGenMatch_DY4_Pass = (TH1F *) WJet_PassDir->Get("WJets_HighGenMatch_DY4_Pass");
   
 
   TH1F* TTTo2L2Nu_Pass = (TH1F *) WJet_PassDir->Get("WJets_TTTo2L2Nu_Pass");
@@ -40,16 +45,21 @@ void WJetsSimToData()
   std::cout<<"Retrieving Fail Region Histograms"<<std::endl;
   TH1F* DataEstimated_WJets_Fail = (TH1F *) WJet_FailDir->Get("WJets_Data_Fail");
   
-  TH1F* DY_Fail = (TH1F *) WJet_FailDir->Get("WJets_DY_Fail");
-  TH1F* DY1_Fail = (TH1F *) WJet_FailDir->Get("WJets_DY1_Fail");
-  TH1F* DY2_Fail = (TH1F *) WJet_FailDir->Get("WJets_DY2_Fail");
-  TH1F* DY3_Fail = (TH1F *) WJet_FailDir->Get("WJets_DY3_Fail");
-  TH1F* DY4_Fail = (TH1F *) WJet_FailDir->Get("WJets_DY4_Fail");
   TH1F* ZTauTau_Fail = (TH1F *) WJet_FailDir->Get("WJets_GenMatch_DY_Fail");
   TH1F* ZTauTau1_Fail = (TH1F *) WJet_FailDir->Get("WJets_GenMatch_DY1_Fail");
   TH1F* ZTauTau2_Fail = (TH1F *) WJet_FailDir->Get("WJets_GenMatch_DY2_Fail");
   TH1F* ZTauTau3_Fail = (TH1F *) WJet_FailDir->Get("WJets_GenMatch_DY3_Fail");
   TH1F* ZTauTau4_Fail = (TH1F *) WJet_FailDir->Get("WJets_GenMatch_DY4_Fail");
+  TH1F* LowGenMatch_DY_Fail = (TH1F *) WJet_FailDir->Get("WJets_LowGenMatch_DY_Fail");
+  TH1F* LowGenMatch_DY1_Fail = (TH1F *) WJet_FailDir->Get("WJets_LowGenMatch_DY1_Fail");
+  TH1F* LowGenMatch_DY2_Fail = (TH1F *) WJet_FailDir->Get("WJets_LowGenMatch_DY2_Fail");
+  TH1F* LowGenMatch_DY3_Fail = (TH1F *) WJet_FailDir->Get("WJets_LowGenMatch_DY3_Fail");
+  TH1F* LowGenMatch_DY4_Fail = (TH1F *) WJet_FailDir->Get("WJets_LowGenMatch_DY4_Fail");
+  TH1F* HighGenMatch_DY_Fail = (TH1F *) WJet_FailDir->Get("WJets_HighGenMatch_DY_Fail");
+  TH1F* HighGenMatch_DY1_Fail = (TH1F *) WJet_FailDir->Get("WJets_HighGenMatch_DY1_Fail");
+  TH1F* HighGenMatch_DY2_Fail = (TH1F *) WJet_FailDir->Get("WJets_HighGenMatch_DY2_Fail");
+  TH1F* HighGenMatch_DY3_Fail = (TH1F *) WJet_FailDir->Get("WJets_HighGenMatch_DY3_Fail");
+  TH1F* HighGenMatch_DY4_Fail = (TH1F *) WJet_FailDir->Get("WJets_HighGenMatch_DY4_Fail");
 
   TH1F* TTTo2L2Nu_Fail = (TH1F *) WJet_FailDir->Get("WJets_TTTo2L2Nu_Fail");
   TH1F* TTToHadronic_Fail = (TH1F *) WJet_FailDir->Get("WJets_TTToHadronic_Fail");
@@ -70,16 +80,22 @@ void WJetsSimToData()
   //now we subtract off the contributions (except for the W+Jets distribution)
   std::cout<<"Subtracting backgrounds..."<<std::endl;
   std::cout<<"Pass Event totals beforehand "<<DataEstimated_WJets_Pass->Integral()<<std::endl;
-  DataEstimated_WJets_Pass->Add(DY_Pass, -1.0);
-  DataEstimated_WJets_Pass->Add(DY1_Pass, -1.0);
-  DataEstimated_WJets_Pass->Add(DY2_Pass, -1.0);
-  DataEstimated_WJets_Pass->Add(DY3_Pass, -1.0);
-  DataEstimated_WJets_Pass->Add(DY4_Pass, -1.0);
+  
   DataEstimated_WJets_Pass->Add(ZTauTau_Pass, -1.0);
   DataEstimated_WJets_Pass->Add(ZTauTau1_Pass, -1.0);
   DataEstimated_WJets_Pass->Add(ZTauTau2_Pass, -1.0);
   DataEstimated_WJets_Pass->Add(ZTauTau3_Pass, -1.0);
   DataEstimated_WJets_Pass->Add(ZTauTau4_Pass, -1.0);
+  DataEstimated_WJets_Pass->Add(LowGenMatch_DY_Pass, -1.0);
+  DataEstimated_WJets_Pass->Add(LowGenMatch_DY1_Pass, -1.0);
+  DataEstimated_WJets_Pass->Add(LowGenMatch_DY2_Pass, -1.0);
+  DataEstimated_WJets_Pass->Add(LowGenMatch_DY3_Pass, -1.0);
+  DataEstimated_WJets_Pass->Add(LowGenMatch_DY4_Pass, -1.0);
+  DataEstimated_WJets_Pass->Add(HighGenMatch_DY_Pass, -1.0);
+  DataEstimated_WJets_Pass->Add(HighGenMatch_DY1_Pass, -1.0);
+  DataEstimated_WJets_Pass->Add(HighGenMatch_DY2_Pass, -1.0);
+  DataEstimated_WJets_Pass->Add(HighGenMatch_DY3_Pass, -1.0);
+  DataEstimated_WJets_Pass->Add(HighGenMatch_DY4_Pass, -1.0);
 
   DataEstimated_WJets_Pass->Add(TTTo2L2Nu_Pass, -1.0);
   DataEstimated_WJets_Pass->Add(TTToHadronic_Pass, -1.0);
@@ -97,16 +113,22 @@ void WJetsSimToData()
   std::cout<<"Total Pass MC "<<W_Pass->Integral()<<std::endl;
   
   std::cout<<"Fail Event totals beforehand "<<DataEstimated_WJets_Fail->Integral()<<std::endl;
-  DataEstimated_WJets_Fail->Add(DY_Fail, -1.0);
-  DataEstimated_WJets_Fail->Add(DY1_Fail, -1.0);
-  DataEstimated_WJets_Fail->Add(DY2_Fail, -1.0);
-  DataEstimated_WJets_Fail->Add(DY3_Fail, -1.0);
-  DataEstimated_WJets_Fail->Add(DY4_Fail, -1.0);
+  
   DataEstimated_WJets_Fail->Add(ZTauTau_Fail, -1.0);
   DataEstimated_WJets_Fail->Add(ZTauTau1_Fail, -1.0);
   DataEstimated_WJets_Fail->Add(ZTauTau2_Fail, -1.0);
   DataEstimated_WJets_Fail->Add(ZTauTau3_Fail, -1.0);
   DataEstimated_WJets_Fail->Add(ZTauTau4_Fail, -1.0);
+  DataEstimated_WJets_Fail->Add(LowGenMatch_DY_Fail, -1.0);
+  DataEstimated_WJets_Fail->Add(LowGenMatch_DY1_Fail, -1.0);
+  DataEstimated_WJets_Fail->Add(LowGenMatch_DY2_Fail, -1.0);
+  DataEstimated_WJets_Fail->Add(LowGenMatch_DY3_Fail, -1.0);
+  DataEstimated_WJets_Fail->Add(LowGenMatch_DY4_Fail, -1.0);
+  DataEstimated_WJets_Fail->Add(HighGenMatch_DY_Fail, -1.0);
+  DataEstimated_WJets_Fail->Add(HighGenMatch_DY1_Fail, -1.0);
+  DataEstimated_WJets_Fail->Add(HighGenMatch_DY2_Fail, -1.0);
+  DataEstimated_WJets_Fail->Add(HighGenMatch_DY3_Fail, -1.0);
+  DataEstimated_WJets_Fail->Add(HighGenMatch_DY4_Fail, -1.0);
 
   DataEstimated_WJets_Fail->Add(TTTo2L2Nu_Fail, -1.0);
   DataEstimated_WJets_Fail->Add(TTToHadronic_Fail, -1.0);

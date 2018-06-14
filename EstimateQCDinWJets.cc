@@ -10,12 +10,23 @@ void EstimateQCDinWJets()
   //pass histos
   cout<<"Retrieving Pass Region Histograms"<<std::endl;
   TH1F* Contribution_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_Data_Pass");
-  TH1F* DY_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_DY_Pass");
+  
+  TH1F* ZTauTau_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY_Pass");
+  TH1F* ZTauTau1_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY1_Pass");
+  TH1F* ZTauTau2_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY2_Pass");
+  TH1F* ZTauTau3_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY3_Pass");
+  TH1F* ZTauTau4_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY4_Pass");
+  TH1F* LowGenMatch_DY_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_LowGenMatch_DY_Pass");
+  TH1F* LowGenMatch_DY1_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_LowGenMatch_DY1_Pass");
+  TH1F* LowGenMatch_DY2_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_LowGenMatch_DY2_Pass");
+  TH1F* LowGenMatch_DY3_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_LowGenMatch_DY3_Pass");
+  TH1F* LowGenMatch_DY4_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_LowGenMatch_DY4_Pass");
+  TH1F* HighGenMatch_DY_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_HighGenMatch_DY_Pass");
+  TH1F* HighGenMatch_DY1_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_HighGenMatch_DY1_Pass");
+  TH1F* HighGenMatch_DY2_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_HighGenMatch_DY2_Pass");
+  TH1F* HighGenMatch_DY3_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_HighGenMatch_DY3_Pass");
+  TH1F* HighGenMatch_DY4_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_HighGenMatch_DY4_Pass");
 
-  TH1F* DY1_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_DY1_Pass");
-  TH1F* DY2_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_DY2_Pass");
-  TH1F* DY3_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_DY3_Pass");
-  TH1F* DY4_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_DY4_Pass");
 
   TH1F* TTTo2L2Nu_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_TTTo2L2Nu_Pass");
   TH1F* TTToHadronic_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_TTToHadronic_Pass");
@@ -27,12 +38,7 @@ void EstimateQCDinWJets()
   TH1F* W4_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_W4_Pass");
   TH1F* WW_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_WW_Pass");
   TH1F* WZ_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_WZ_Pass");
-  TH1F* ZZ_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_ZZ_Pass");
-  TH1F* ZTauTau_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY_Pass");
-  TH1F* ZTauTau1_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY1_Pass");
-  TH1F* ZTauTau2_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY2_Pass");
-  TH1F* ZTauTau3_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY3_Pass");
-  TH1F* ZTauTau4_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_GenMatch_DY4_Pass");
+  TH1F* ZZ_Pass = (TH1F *) Contribution_PassDir->Get("WJets_QCD_ZZ_Pass");  
   
 
   Contribution_Pass->SetName("CorrectedQCDContribution_Pass");
@@ -40,12 +46,22 @@ void EstimateQCDinWJets()
   //fail histos
   std::cout<<"Retrieving Fail Region Histograms"<<std::endl;
   TH1F* Contribution_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_Data_Fail");
-  TH1F* DY_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_DY_Fail");
-
-  TH1F* DY1_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_DY1_Fail");
-  TH1F* DY2_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_DY2_Fail");
-  TH1F* DY3_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_DY3_Fail");
-  TH1F* DY4_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_DY4_Fail");
+    
+  TH1F* ZTauTau_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY_Fail");
+  TH1F* ZTauTau1_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY1_Fail");
+  TH1F* ZTauTau2_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY2_Fail");
+  TH1F* ZTauTau3_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY3_Fail");
+  TH1F* ZTauTau4_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY4_Fail");
+  TH1F* LowGenMatch_DY_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_LowGenMatch_DY_Fail");
+  TH1F* LowGenMatch_DY1_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_LowGenMatch_DY1_Fail");
+  TH1F* LowGenMatch_DY2_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_LowGenMatch_DY2_Fail");
+  TH1F* LowGenMatch_DY3_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_LowGenMatch_DY3_Fail");
+  TH1F* LowGenMatch_DY4_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_LowGenMatch_DY4_Fail");
+  TH1F* HighGenMatch_DY_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_HighGenMatch_DY_Fail");
+  TH1F* HighGenMatch_DY1_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_HighGenMatch_DY1_Fail");
+  TH1F* HighGenMatch_DY2_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_HighGenMatch_DY2_Fail");
+  TH1F* HighGenMatch_DY3_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_HighGenMatch_DY3_Fail");
+  TH1F* HighGenMatch_DY4_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_HighGenMatch_DY4_Fail");
 
   TH1F* TTTo2L2Nu_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_TTTo2L2Nu_Fail");
   TH1F* TTToHadronic_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_TTToHadronic_Fail");
@@ -57,21 +73,21 @@ void EstimateQCDinWJets()
   TH1F* W4_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_W4_Fail");
   TH1F* WW_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_WW_Fail");
   TH1F* WZ_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_WZ_Fail");
-  TH1F* ZZ_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_ZZ_Fail");
-  TH1F* ZTauTau_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY_Fail");
-  TH1F* ZTauTau1_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY1_Fail");
-  TH1F* ZTauTau2_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY2_Fail");
-  TH1F* ZTauTau3_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY3_Fail");
-  TH1F* ZTauTau4_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_GenMatch_DY4_Fail");
+  TH1F* ZZ_Fail = (TH1F *) Contribution_FailDir->Get("WJets_QCD_ZZ_Fail");  
 
   Contribution_Fail->SetName("CorrectedQCDContribution_Fail");
 
-  std::cout<<"Subtracting Pass backgrounds..."<<std::endl;
-  Contribution_Pass->Add(DY_Pass, -1.0);
-  Contribution_Pass->Add(DY1_Pass, -1.0);
-  Contribution_Pass->Add(DY2_Pass, -1.0);
-  Contribution_Pass->Add(DY3_Pass, -1.0);
-  Contribution_Pass->Add(DY4_Pass, -1.0);
+  std::cout<<"Subtracting Pass backgrounds..."<<std::endl;  
+  Contribution_Pass->Add(LowGenMatch_DY_Pass, -1.0);
+  Contribution_Pass->Add(LowGenMatch_DY1_Pass, -1.0);
+  Contribution_Pass->Add(LowGenMatch_DY2_Pass, -1.0);
+  Contribution_Pass->Add(LowGenMatch_DY3_Pass, -1.0);
+  Contribution_Pass->Add(LowGenMatch_DY4_Pass, -1.0);
+  Contribution_Pass->Add(HighGenMatch_DY_Pass, -1.0);
+  Contribution_Pass->Add(HighGenMatch_DY1_Pass, -1.0);
+  Contribution_Pass->Add(HighGenMatch_DY2_Pass, -1.0);
+  Contribution_Pass->Add(HighGenMatch_DY3_Pass, -1.0);
+  Contribution_Pass->Add(HighGenMatch_DY4_Pass, -1.0);
   Contribution_Pass->Add(ZTauTau_Pass, -1.0);
   Contribution_Pass->Add(ZTauTau1_Pass, -1.0);
   Contribution_Pass->Add(ZTauTau2_Pass, -1.0);
@@ -90,18 +106,22 @@ void EstimateQCDinWJets()
   Contribution_Pass->Add(W3_Pass, -1.0);
   Contribution_Pass->Add(W4_Pass, -1.0);
   
-  std::cout<<"Subtracting Fail backgrounds..."<<std::endl;
-  Contribution_Fail->Add(DY_Fail, -1.0);
-
-  Contribution_Fail->Add(DY1_Fail, -1.0);
-  Contribution_Fail->Add(DY2_Fail, -1.0);
-  Contribution_Fail->Add(DY3_Fail, -1.0);
-  Contribution_Fail->Add(DY4_Fail, -1.0);
-  Contribution_Pass->Add(ZTauTau_Fail, -1.0);
-  Contribution_Pass->Add(ZTauTau1_Fail, -1.0);
-  Contribution_Pass->Add(ZTauTau2_Fail, -1.0);
-  Contribution_Pass->Add(ZTauTau3_Fail, -1.0);
-  Contribution_Pass->Add(ZTauTau4_Fail, -1.0);
+  std::cout<<"Subtracting Fail backgrounds..."<<std::endl;  
+  Contribution_Fail->Add(LowGenMatch_DY_Fail, -1.0);
+  Contribution_Fail->Add(LowGenMatch_DY1_Fail, -1.0);
+  Contribution_Fail->Add(LowGenMatch_DY2_Fail, -1.0);
+  Contribution_Fail->Add(LowGenMatch_DY3_Fail, -1.0);
+  Contribution_Fail->Add(LowGenMatch_DY4_Fail, -1.0);
+  Contribution_Fail->Add(HighGenMatch_DY_Fail, -1.0);
+  Contribution_Fail->Add(HighGenMatch_DY1_Fail, -1.0);
+  Contribution_Fail->Add(HighGenMatch_DY2_Fail, -1.0);
+  Contribution_Fail->Add(HighGenMatch_DY3_Fail, -1.0);
+  Contribution_Fail->Add(HighGenMatch_DY4_Fail, -1.0);
+  Contribution_Fail->Add(ZTauTau_Fail, -1.0);
+  Contribution_Fail->Add(ZTauTau1_Fail, -1.0);
+  Contribution_Fail->Add(ZTauTau2_Fail, -1.0);
+  Contribution_Fail->Add(ZTauTau3_Fail, -1.0);
+  Contribution_Fail->Add(ZTauTau4_Fail, -1.0);
 
   Contribution_Fail->Add(TTTo2L2Nu_Fail, -1.0);
   Contribution_Fail->Add(TTToHadronic_Fail, -1.0);

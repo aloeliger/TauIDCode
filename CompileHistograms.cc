@@ -16,16 +16,23 @@ void CompileHistograms()
 
   //Pass Region Plots
   TH1F* Data_Pass = (TH1F*) PassDirectory->Get("Data_Pass");
-  TH1F* DY_Pass = (TH1F*) PassDirectory->Get("DY_Pass");
-  TH1F* DY1_Pass = (TH1F*) PassDirectory->Get("DY1_Pass");
-  TH1F* DY2_Pass = (TH1F*) PassDirectory->Get("DY2_Pass");
-  TH1F* DY3_Pass = (TH1F*) PassDirectory->Get("DY3_Pass");
-  TH1F* DY4_Pass = (TH1F*) PassDirectory->Get("DY4_Pass");
+  
   TH1F* ZTauTau_Pass = (TH1F*) PassDirectory->Get("GenMatch_DY_Pass");
   TH1F* ZTauTau1_Pass = (TH1F*) PassDirectory->Get("GenMatch_DY1_Pass");
   TH1F* ZTauTau2_Pass = (TH1F*) PassDirectory->Get("GenMatch_DY2_Pass");
   TH1F* ZTauTau3_Pass = (TH1F*) PassDirectory->Get("GenMatch_DY3_Pass");
   TH1F* ZTauTau4_Pass = (TH1F*) PassDirectory->Get("GenMatch_DY4_Pass");
+  TH1F* LowGenMatch_DY_Pass = (TH1F*) PassDirectory->Get("LowGenMatch_DY_Pass");
+  TH1F* LowGenMatch_DY1_Pass = (TH1F*) PassDirectory->Get("LowGenMatch_DY1_Pass");
+  TH1F* LowGenMatch_DY2_Pass = (TH1F*) PassDirectory->Get("LowGenMatch_DY2_Pass");
+  TH1F* LowGenMatch_DY3_Pass = (TH1F*) PassDirectory->Get("LowGenMatch_DY3_Pass");
+  TH1F* LowGenMatch_DY4_Pass = (TH1F*) PassDirectory->Get("LowGenMatch_DY4_Pass");
+  TH1F* HighGenMatch_DY_Pass = (TH1F*) PassDirectory->Get("HighGenMatch_DY_Pass");
+  TH1F* HighGenMatch_DY1_Pass = (TH1F*) PassDirectory->Get("HighGenMatch_DY1_Pass");
+  TH1F* HighGenMatch_DY2_Pass = (TH1F*) PassDirectory->Get("HighGenMatch_DY2_Pass");
+  TH1F* HighGenMatch_DY3_Pass = (TH1F*) PassDirectory->Get("HighGenMatch_DY3_Pass");
+  TH1F* HighGenMatch_DY4_Pass = (TH1F*) PassDirectory->Get("HighGenMatch_DY4_Pass");
+
   TH1F* TTTo2L2Nu_Pass = (TH1F*) PassDirectory->Get("TTTo2L2Nu_Pass");
   TH1F* TTToHadronic_Pass = (TH1F*) PassDirectory->Get("TTToHadronic_Pass");
   TH1F* TTToSemiLeptonic_Pass = (TH1F*) PassDirectory->Get("TTToSemiLeptonic_Pass");
@@ -37,16 +44,23 @@ void CompileHistograms()
 
   //Fail Region Plots
   TH1F* Data_Fail = (TH1F*) FailDirectory->Get("Data_Fail");
-  TH1F* DY_Fail = (TH1F*) FailDirectory->Get("DY_Fail");
-  TH1F* DY1_Fail = (TH1F*) FailDirectory->Get("DY1_Fail");
-  TH1F* DY2_Fail = (TH1F*) FailDirectory->Get("DY2_Fail");
-  TH1F* DY3_Fail = (TH1F*) FailDirectory->Get("DY3_Fail");
-  TH1F* DY4_Fail = (TH1F*) FailDirectory->Get("DY4_Fail");
+  
   TH1F* ZTauTau_Fail = (TH1F*) FailDirectory->Get("GenMatch_DY_Fail");
   TH1F* ZTauTau1_Fail = (TH1F*) FailDirectory->Get("GenMatch_DY1_Fail");
   TH1F* ZTauTau2_Fail = (TH1F*) FailDirectory->Get("GenMatch_DY2_Fail");
   TH1F* ZTauTau3_Fail = (TH1F*) FailDirectory->Get("GenMatch_DY3_Fail");
   TH1F* ZTauTau4_Fail = (TH1F*) FailDirectory->Get("GenMatch_DY4_Fail");
+  TH1F* LowGenMatch_DY_Fail = (TH1F*) FailDirectory->Get("LowGenMatch_DY_Fail");
+  TH1F* LowGenMatch_DY1_Fail = (TH1F*) FailDirectory->Get("LowGenMatch_DY1_Fail");
+  TH1F* LowGenMatch_DY2_Fail = (TH1F*) FailDirectory->Get("LowGenMatch_DY2_Fail");
+  TH1F* LowGenMatch_DY3_Fail = (TH1F*) FailDirectory->Get("LowGenMatch_DY3_Fail");
+  TH1F* LowGenMatch_DY4_Fail = (TH1F*) FailDirectory->Get("LowGenMatch_DY4_Fail");
+  TH1F* HighGenMatch_DY_Fail = (TH1F*) FailDirectory->Get("HighGenMatch_DY_Fail");
+  TH1F* HighGenMatch_DY1_Fail = (TH1F*) FailDirectory->Get("HighGenMatch_DY1_Fail");
+  TH1F* HighGenMatch_DY2_Fail = (TH1F*) FailDirectory->Get("HighGenMatch_DY2_Fail");
+  TH1F* HighGenMatch_DY3_Fail = (TH1F*) FailDirectory->Get("HighGenMatch_DY3_Fail");
+  TH1F* HighGenMatch_DY4_Fail = (TH1F*) FailDirectory->Get("HighGenMatch_DY4_Fail");
+
   TH1F* TTTo2L2Nu_Fail = (TH1F*) FailDirectory->Get("TTTo2L2Nu_Fail");
   TH1F* TTToHadronic_Fail = (TH1F*) FailDirectory->Get("TTToHadronic_Fail");
   TH1F* TTToSemiLeptonic_Fail = (TH1F*) FailDirectory->Get("TTToSemiLeptonic_Fail");
@@ -56,16 +70,26 @@ void CompileHistograms()
   TH1F* ZZ_Fail = (TH1F*) FailDirectory->Get("ZZ_Fail");
   TH1F* QCD_Fail = (TH1F*) FailDirectory->Get("QCD_Fail");
 
-  //haha, totally forgot this and looked stupid for weeks on end.
-  DY_Pass->Add(DY1_Pass);
-  DY_Pass->Add(DY2_Pass);
-  DY_Pass->Add(DY3_Pass);
-  DY_Pass->Add(DY4_Pass);
-
-  DY_Fail->Add(DY1_Fail);
-  DY_Fail->Add(DY2_Fail);
-  DY_Fail->Add(DY3_Fail);
-  DY_Fail->Add(DY4_Fail);
+  //New way ofd doing DY backgrounds, but we'll just compile them together here.
+  LowGenMatch_DY_Pass->Add(LowGenMatch_DY1_Pass);
+  LowGenMatch_DY_Pass->Add(LowGenMatch_DY2_Pass);
+  LowGenMatch_DY_Pass->Add(LowGenMatch_DY3_Pass);
+  LowGenMatch_DY_Pass->Add(LowGenMatch_DY4_Pass);
+  LowGenMatch_DY_Pass->Add(HighGenMatch_DY_Pass);
+  LowGenMatch_DY_Pass->Add(HighGenMatch_DY1_Pass);
+  LowGenMatch_DY_Pass->Add(HighGenMatch_DY2_Pass);
+  LowGenMatch_DY_Pass->Add(HighGenMatch_DY3_Pass);
+  LowGenMatch_DY_Pass->Add(HighGenMatch_DY4_Pass);
+  
+  LowGenMatch_DY_Fail->Add(LowGenMatch_DY1_Fail);
+  LowGenMatch_DY_Fail->Add(LowGenMatch_DY2_Fail);
+  LowGenMatch_DY_Fail->Add(LowGenMatch_DY3_Fail);
+  LowGenMatch_DY_Fail->Add(LowGenMatch_DY4_Fail);
+  LowGenMatch_DY_Fail->Add(HighGenMatch_DY_Fail);
+  LowGenMatch_DY_Fail->Add(HighGenMatch_DY1_Fail);
+  LowGenMatch_DY_Fail->Add(HighGenMatch_DY2_Fail);
+  LowGenMatch_DY_Fail->Add(HighGenMatch_DY3_Fail);
+  LowGenMatch_DY_Fail->Add(HighGenMatch_DY4_Fail);
 
   ZTauTau_Pass->Add(ZTauTau1_Pass);
   ZTauTau_Pass->Add(ZTauTau2_Pass);
@@ -98,8 +122,8 @@ void CompileHistograms()
   ZTauTau_Pass->SetLineColor(kBlack);
   ZTauTau_Pass->SetFillColor(kYellow);
 
-  DY_Pass->SetLineColor(kBlack);
-  DY_Pass->SetFillColor(kAzure-3);
+  LowGenMatch_DY_Pass->SetLineColor(kBlack);
+  LowGenMatch_DY_Pass->SetFillColor(kAzure-3);
 
   DiBoson_Pass->SetLineColor(kBlack);
   DiBoson_Pass->SetFillColor(kPink-3);
@@ -117,7 +141,7 @@ void CompileHistograms()
   PassStack->Add(QCD_Pass,"hist");  
   PassStack->Add(WJets_Pass,"hist");
   PassStack->Add(ZTauTau_Pass,"hist");
-  PassStack->Add(DY_Pass,"hist");
+  PassStack->Add(LowGenMatch_DY_Pass,"hist");
   PassStack->Add(TT_Pass,"hist");
   PassStack->Add(DiBoson_Pass,"hist");
 
@@ -133,7 +157,7 @@ void CompileHistograms()
   TLegend* Legend = new TLegend(0.7, 0.5, 0.88, 0.68);
   Legend->AddEntry(Data_Pass, "Data", "ep");
   Legend->AddEntry(ZTauTau_Pass,"Z #rightarrow #tau#tau", "f");
-  Legend->AddEntry(DY_Pass, "Other Drell-Yan", "f");
+  Legend->AddEntry(LowGenMatch_DY_Pass, "Other Drell-Yan", "f");
   Legend->AddEntry(DiBoson_Pass, "DiBoson", "f");
   Legend->AddEntry(TT_Pass, "t#bar{t}","f");
   Legend->AddEntry(WJets_Pass, "W+Jets","f");
@@ -160,8 +184,8 @@ void CompileHistograms()
   ZTauTau_Fail->SetLineColor(kBlack);
   ZTauTau_Fail->SetFillColor(kYellow);
 
-  DY_Fail->SetLineColor(kBlack);
-  DY_Fail->SetFillColor(kAzure-3);
+  LowGenMatch_DY_Fail->SetLineColor(kBlack);
+  LowGenMatch_DY_Fail->SetFillColor(kAzure-3);
 
   DiBoson_Fail->SetLineColor(kBlack);
   DiBoson_Fail->SetFillColor(kPink-3);
@@ -179,7 +203,7 @@ void CompileHistograms()
   FailStack->Add(QCD_Fail,"hist");
   FailStack->Add(WJets_Fail,"hist");
   FailStack->Add(ZTauTau_Fail,"hist");
-  FailStack->Add(DY_Fail,"hist");
+  FailStack->Add(LowGenMatch_DY_Fail,"hist");
   FailStack->Add(TT_Fail,"hist");
   FailStack->Add(DiBoson_Fail,"hist");  
 
@@ -202,15 +226,5 @@ void CompileHistograms()
   HistoFile->Close();
 
   C1->SaveAs("Histos/pass.png");
-  C2->SaveAs("Histos/fail.png");
-
-  std::cout<<std::endl;
-  std::cout<<"Integrals: "<<std::endl;
-  std::cout<<"Data Pass: "<<Data_Pass->Integral()<<std::endl;
-  float PassStackIntegral = QCD_Pass->Integral()+WJets_Pass->Integral()+DY_Pass->Integral()+TT_Pass->Integral()+DiBoson_Pass->Integral();    
-  std::cout<<"Pass Stack: "<<PassStackIntegral<<std::endl;  
-  std::cout<<"Data Fail: "<<Data_Fail->Integral()<<std::endl;
-  float FailStackIntegral = QCD_Fail->Integral()+WJets_Fail->Integral()+DY_Fail->Integral()+TT_Fail->Integral()+DiBoson_Fail->Integral();    
-  std::cout<<"Fail Stack: "<<FailStackIntegral<<std::endl;
-  std::cout<<std::endl;
+  C2->SaveAs("Histos/fail.png");  
 }

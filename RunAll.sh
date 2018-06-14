@@ -48,3 +48,6 @@ root -b -q WJetsSimToData.cc
 root -b -q FinalizeQCDBackground.cc
 root -b -q CompileHistograms.cc
 root -b -q PrepForCombine.cc
+#because I can't get combine to compile properly on the lxplus servers
+# we now turn this over to the Wiscosin computers.
+cp Distributions/CombineFile.root /afs/cern.ch/user/a/aloelige/public/

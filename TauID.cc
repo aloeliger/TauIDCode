@@ -204,6 +204,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 				   SignalRegion_Fail->GetXaxis()->GetXmax());
 
   //we'll use this for determining our Z->tautau signal
+  //For genmatch == 5
   TH1F* GenMatch_SignalRegion_Pass = new TH1F(("GenMatch_"+name+"_Pass").c_str(),
 				     "Signal_Pass",
 				     20,
@@ -245,6 +246,98 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 				   SignalRegion_Pass->GetXaxis()->GetXmax());
 
   TH1F* GenMatch_QCDinWJets_Fail = new TH1F(("WJets_QCD_GenMatch_"+name+"_Fail").c_str(), 
+				   "WJets_QCD_Fail", 
+				   SignalRegion_Fail->GetSize()-2, 
+				   SignalRegion_Fail->GetXaxis()->GetXmin(),
+				   SignalRegion_Fail->GetXaxis()->GetXmax());
+  //for genmatch < 5
+  TH1F* LowGenMatch_SignalRegion_Pass = new TH1F(("LowGenMatch_"+name+"_Pass").c_str(),
+				     "Signal_Pass",
+				     20,
+				     50.0,
+				     150.0);
+  TH1F* LowGenMatch_SignalRegion_Fail = new TH1F(("LowGenMatch_"+name+"_Fail").c_str(),
+				     "Signal_Fail",
+				     20,
+				     50.0,
+				     150.0);
+
+  TH1F* LowGenMatch_WJetsRegion_Pass = new TH1F(("WJets_LowGenMatch_"+name+"_Pass").c_str(), 
+				    "WJets_Pass", 
+				    SignalRegion_Pass->GetSize()-2, 
+				    SignalRegion_Pass->GetXaxis()->GetXmin(),
+				    SignalRegion_Pass->GetXaxis()->GetXmax());
+  TH1F* LowGenMatch_WJetsRegion_Fail = new TH1F(("WJets_LowGenMatch_"+name+"_Fail").c_str(), 
+				    "WJets_Fail", 
+				    SignalRegion_Fail->GetSize()-2, 
+				    SignalRegion_Fail->GetXaxis()->GetXmin(),
+				    SignalRegion_Fail->GetXaxis()->GetXmax());
+  
+  TH1F* LowGenMatch_QCDRegion_Pass = new TH1F(("QCD_LowGenMatch_"+name+"_Pass").c_str(), 
+				  "QCD_Pass", 
+				  SignalRegion_Pass->GetSize()-2, 
+				  SignalRegion_Pass->GetXaxis()->GetXmin(),
+				  SignalRegion_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* LowGenMatch_QCDRegion_Fail = new TH1F(("QCD_LowGenMatch_"+name+"_Fail").c_str(), 
+				  "QCD_Fail", 
+				  SignalRegion_Fail->GetSize()-2, 
+				  SignalRegion_Fail->GetXaxis()->GetXmin(),
+				  SignalRegion_Fail->GetXaxis()->GetXmax());
+  
+  TH1F* LowGenMatch_QCDinWJets_Pass = new TH1F(("WJets_QCD_LowGenMatch_"+name+"_Pass").c_str(), 
+				   "WJets_QCD_Pass", 
+				   SignalRegion_Pass->GetSize()-2, 
+				   SignalRegion_Pass->GetXaxis()->GetXmin(),
+				   SignalRegion_Pass->GetXaxis()->GetXmax());
+
+  TH1F* LowGenMatch_QCDinWJets_Fail = new TH1F(("WJets_QCD_LowGenMatch_"+name+"_Fail").c_str(), 
+				   "WJets_QCD_Fail", 
+				   SignalRegion_Fail->GetSize()-2, 
+				   SignalRegion_Fail->GetXaxis()->GetXmin(),
+				   SignalRegion_Fail->GetXaxis()->GetXmax());
+  //For genmatch == 6
+  TH1F* HighGenMatch_SignalRegion_Pass = new TH1F(("HighGenMatch_"+name+"_Pass").c_str(),
+				     "Signal_Pass",
+				     20,
+				     50.0,
+				     150.0);
+  TH1F* HighGenMatch_SignalRegion_Fail = new TH1F(("HighGenMatch_"+name+"_Fail").c_str(),
+				     "Signal_Fail",
+				     20,
+				     50.0,
+				     150.0);
+
+  TH1F* HighGenMatch_WJetsRegion_Pass = new TH1F(("WJets_HighGenMatch_"+name+"_Pass").c_str(), 
+				    "WJets_Pass", 
+				    SignalRegion_Pass->GetSize()-2, 
+				    SignalRegion_Pass->GetXaxis()->GetXmin(),
+				    SignalRegion_Pass->GetXaxis()->GetXmax());
+  TH1F* HighGenMatch_WJetsRegion_Fail = new TH1F(("WJets_HighGenMatch_"+name+"_Fail").c_str(), 
+				    "WJets_Fail", 
+				    SignalRegion_Fail->GetSize()-2, 
+				    SignalRegion_Fail->GetXaxis()->GetXmin(),
+				    SignalRegion_Fail->GetXaxis()->GetXmax());
+  
+  TH1F* HighGenMatch_QCDRegion_Pass = new TH1F(("QCD_HighGenMatch_"+name+"_Pass").c_str(), 
+				  "QCD_Pass", 
+				  SignalRegion_Pass->GetSize()-2, 
+				  SignalRegion_Pass->GetXaxis()->GetXmin(),
+				  SignalRegion_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* HighGenMatch_QCDRegion_Fail = new TH1F(("QCD_HighGenMatch_"+name+"_Fail").c_str(), 
+				  "QCD_Fail", 
+				  SignalRegion_Fail->GetSize()-2, 
+				  SignalRegion_Fail->GetXaxis()->GetXmin(),
+				  SignalRegion_Fail->GetXaxis()->GetXmax());
+  
+  TH1F* HighGenMatch_QCDinWJets_Pass = new TH1F(("WJets_QCD_HighGenMatch_"+name+"_Pass").c_str(), 
+				   "WJets_QCD_Pass", 
+				   SignalRegion_Pass->GetSize()-2, 
+				   SignalRegion_Pass->GetXaxis()->GetXmin(),
+				   SignalRegion_Pass->GetXaxis()->GetXmax());
+
+  TH1F* HighGenMatch_QCDinWJets_Fail = new TH1F(("WJets_QCD_HighGenMatch_"+name+"_Fail").c_str(), 
 				   "WJets_QCD_Fail", 
 				   SignalRegion_Fail->GetSize()-2, 
 				   SignalRegion_Fail->GetXaxis()->GetXmin(),
@@ -420,13 +513,15 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 	      if(TauIsoDiscrim)
 		{		  
 		  //seperate out our signal region in the drell yan histos
-		  if((input == "DY"
-		      or input == "DY1"
-		      or input == "DY2"
-		      or input == "DY3"
-		      or input == "DY4") and gen_match_2 == 5)
+		  if(input == "DY"
+		     or input == "DY1"
+		     or input == "DY2"
+		     or input == "DY3"
+		     or input == "DY4")
 		    {
-		      GenMatch_SignalRegion_Pass->Fill(Var,NormalizationWeight);    
+		      if(gen_match_2 < 5 ) LowGenMatch_SignalRegion_Pass->Fill(Var,NormalizationWeight);    
+		      if(gen_match_2 == 5) GenMatch_SignalRegion_Pass->Fill(Var,NormalizationWeight);    
+		      if(gen_match_2 == 6) HighGenMatch_SignalRegion_Pass->Fill(Var,NormalizationWeight);    
 		    }
 		  //Literally everything else
 		  else
@@ -437,13 +532,15 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 	      else
 		{		  
 		  //seperate out the Z->tautau stuff
-		  if((input == "DY"
-		      or input == "DY1"
-		      or input == "DY2"
-		      or input == "DY3"
-		      or input == "DY4") and gen_match_2 == 5)
+		  if(input == "DY"
+		     or input == "DY1"
+		     or input == "DY2"
+		     or input == "DY3"
+		     or input == "DY4")
 		    {
-		      GenMatch_SignalRegion_Fail->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 < 5) LowGenMatch_SignalRegion_Fail->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 == 5) GenMatch_SignalRegion_Fail->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 == 6) HighGenMatch_SignalRegion_Fail->Fill(Var,NormalizationWeight);
 		    }
 		  //Literally everything else
 		  else
@@ -458,13 +555,15 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 	      if(TauIsoDiscrim)
 		{		  
 		  //seperate out the Z->tau tau stuff
-		  if((input == "DY"
-		      or input == "DY1"
-		      or input == "DY2"
-		      or input == "DY3"
-		      or input == "DY4") and gen_match_2 == 5)
+		  if(input == "DY"
+		     or input == "DY1"
+		     or input == "DY2"
+		     or input == "DY3"
+		     or input == "DY4")
 		    {
-		      GenMatch_WJetsRegion_Pass->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 < 5)  LowGenMatch_WJetsRegion_Pass->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 == 5) GenMatch_WJetsRegion_Pass->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 == 6) HighGenMatch_WJetsRegion_Pass->Fill(Var,NormalizationWeight);
 		    }
 		  //Literally everything else
 		  {
@@ -474,13 +573,15 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 	      else
 		{		  
 		  //seperate out the Z->tau tau stuff
-		  if((input == "DY"
-		      or input == "DY1"
-		      or input == "DY2"
-		      or input == "DY3"
-		      or input == "DY4") and gen_match_2 == 5)
+		  if(input == "DY"
+		     or input == "DY1"
+		     or input == "DY2"
+		     or input == "DY3"
+		     or input == "DY4")
 		    {
-		      GenMatch_WJetsRegion_Fail->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 < 5) LowGenMatch_WJetsRegion_Fail->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 == 5) GenMatch_WJetsRegion_Fail->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 == 6) HighGenMatch_WJetsRegion_Fail->Fill(Var,NormalizationWeight);
 		    }
 		  //Literally everything else
 		  else
@@ -499,13 +600,15 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 	      if(TauIsoDiscrim)
 		{		  
 		  //seperate out the Z->tautau stuff
-		  if((input == "DY"
-		      or input == "DY1"
-		      or input == "DY2"
-		      or input == "DY3"
-		      or input == "DY4") and gen_match_2 == 5)
+		  if(input == "DY"
+		     or input == "DY1"
+		     or input == "DY2"
+		     or input == "DY3"
+		     or input == "DY4")
 		    {
-		      GenMatch_QCDRegion_Pass->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 < 5) LowGenMatch_QCDRegion_Pass->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 == 5) GenMatch_QCDRegion_Pass->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 == 6) HighGenMatch_QCDRegion_Pass->Fill(Var,NormalizationWeight);
 		    }
 		  else
 		    {
@@ -519,9 +622,11 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 		      or input == "DY1"
 		      or input == "DY2"
 		      or input == "DY3"
-		      or input == "DY4") and gen_match_2 == 5)
+		      or input == "DY4") and gen_match_2 <= 6)
 		    {
-		      GenMatch_QCDRegion_Fail->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 < 5) LowGenMatch_QCDRegion_Fail->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 == 5) GenMatch_QCDRegion_Fail->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 == 6) HighGenMatch_QCDRegion_Fail->Fill(Var,NormalizationWeight);
 		    }
 		  //Literally Everything Else
 		  else
@@ -536,13 +641,15 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 	      if(TauIsoDiscrim)
 		{		  
 		  //Seperate out the Z->tautau stuff
-		  if((input == "DY"
-		      or input == "DY1"
-		      or input == "DY2"
-		      or input == "DY3"
-		      or input == "DY4") and gen_match_2 == 5)
+		  if(input == "DY"
+		     or input == "DY1"
+		     or input == "DY2"
+		     or input == "DY3"
+		     or input == "DY4")
 		    {
-		      GenMatch_QCDinWJets_Pass->Fill(Var,NormalizationWeight);    
+		      if(gen_match_2 < 5) LowGenMatch_QCDinWJets_Pass->Fill(Var,NormalizationWeight);    
+		      if(gen_match_2 == 5) GenMatch_QCDinWJets_Pass->Fill(Var,NormalizationWeight);    
+		      if(gen_match_2 == 6) HighGenMatch_QCDinWJets_Pass->Fill(Var,NormalizationWeight);    
 		    }
 		  //Literally everything else
 		  else
@@ -553,13 +660,15 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 	      else
 		{
 		  //Seperate out the Z->tautau signal
-		  if((input == "DY"
-		      or input == "DY1"
-		      or input == "DY2"
-		      or input == "DY3"
-		      or input == "DY4") and gen_match_2 == 5)
+		  if(input == "DY"
+		     or input == "DY1"
+		     or input == "DY2"
+		     or input == "DY3"
+		     or input == "DY4")
 		    {
-		      GenMatch_QCDinWJets_Fail->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 < 5) LowGenMatch_QCDinWJets_Fail->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 == 5) GenMatch_QCDinWJets_Fail->Fill(Var,NormalizationWeight);
+		      if(gen_match_2 == 6) HighGenMatch_QCDinWJets_Fail->Fill(Var,NormalizationWeight);
 		    }
 		  //Literally everything else
 		  else
@@ -632,6 +741,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
       or input == "DY3"
       or input == "DY4")
     {
+      //for genmatch == 5
       TFile* GenMatchedSignalOutFile = new TFile(("TemporaryFiles/Signal_GenMatch_"+name+"_Passfail.root").c_str(),"RECREATE");
       
       TDirectory *GenMatchSignalPassDir = GenMatchedSignalOutFile->mkdir("pass");
@@ -682,5 +792,109 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
       GenMatch_QCDinWJets_Fail->Write();
       
       GenMatchedQCDinWJetsOutFile->Close();
+
+      //For genmatch < 5
+      TFile* LowGenMatchedSignalOutFile = new TFile(("TemporaryFiles/Signal_LowGenMatch_"+name+"_Passfail.root").c_str(),"RECREATE");
+      
+      TDirectory *LowGenMatchSignalPassDir = LowGenMatchedSignalOutFile->mkdir("pass");
+      LowGenMatchSignalPassDir->cd();
+      LowGenMatch_SignalRegion_Pass->Write();
+      
+      TDirectory *LowGenMatchSignalFailDir = LowGenMatchedSignalOutFile->mkdir("fail");
+      LowGenMatchSignalFailDir->cd();
+      LowGenMatch_SignalRegion_Fail->Write();
+      
+      LowGenMatchedSignalOutFile->Close();
+      
+      //save WJets distributions
+      TFile* LowGenMatchedWJetsOutFile = new TFile(("TemporaryFiles/WJets_LowGenMatch_"+name+"_PassFail.root").c_str(),"RECREATE");
+      
+      TDirectory *LowGenMatchWJetsPassDir = LowGenMatchedWJetsOutFile->mkdir("pass");
+      LowGenMatchWJetsPassDir->cd();
+      LowGenMatch_WJetsRegion_Pass->Write();
+      
+      TDirectory *LowGenMatchWJetsFailDir = LowGenMatchedWJetsOutFile->mkdir("fail");
+      LowGenMatchWJetsFailDir->cd();
+      LowGenMatch_WJetsRegion_Fail->Write();
+      
+      LowGenMatchedWJetsOutFile->Close();
+      
+      //save QCD distributions
+      TFile* LowGenMatchedQCDOutFile = new TFile(("TemporaryFiles/QCD_LowGenMatch_"+name+"_PassFail.root").c_str(),"RECREATE");
+      
+      TDirectory *LowGenMatchQCDPassDir = LowGenMatchedQCDOutFile->mkdir("pass");
+      LowGenMatchQCDPassDir->cd();
+      LowGenMatch_QCDRegion_Pass->Write();
+      
+      TDirectory *LowGenMatchQCDFailDir = LowGenMatchedQCDOutFile->mkdir("fail");
+      LowGenMatchQCDFailDir->cd();
+      LowGenMatch_QCDRegion_Fail->Write();
+      
+      LowGenMatchedQCDOutFile->Close();
+      
+      //save the QCD Wjets contribution
+      TFile* LowGenMatchedQCDinWJetsOutFile = new TFile(("TemporaryFiles/QCDinWJets_LowGenMatch_"+name+"PassFail.root").c_str(),"RECREATE");
+      
+      TDirectory *LowGenMatchQCDinWJetsPassDir = LowGenMatchedQCDinWJetsOutFile->mkdir("pass");
+      LowGenMatchQCDinWJetsPassDir->cd();
+      LowGenMatch_QCDinWJets_Pass->Write();
+      
+      TDirectory *LowGenMatchQCDinWJetsFailDir = LowGenMatchedQCDinWJetsOutFile->mkdir("fail");
+      LowGenMatchQCDinWJetsFailDir->cd();
+      LowGenMatch_QCDinWJets_Fail->Write();
+      
+      LowGenMatchedQCDinWJetsOutFile->Close();
+
+      //For genmatch == 6
+      TFile* HighGenMatchedSignalOutFile = new TFile(("TemporaryFiles/Signal_HighGenMatch_"+name+"_Passfail.root").c_str(),"RECREATE");
+      
+      TDirectory *HighGenMatchSignalPassDir = HighGenMatchedSignalOutFile->mkdir("pass");
+      HighGenMatchSignalPassDir->cd();
+      HighGenMatch_SignalRegion_Pass->Write();
+      
+      TDirectory *HighGenMatchSignalFailDir = HighGenMatchedSignalOutFile->mkdir("fail");
+      HighGenMatchSignalFailDir->cd();
+      HighGenMatch_SignalRegion_Fail->Write();
+      
+      HighGenMatchedSignalOutFile->Close();
+      
+      //save WJets distributions
+      TFile* HighGenMatchedWJetsOutFile = new TFile(("TemporaryFiles/WJets_HighGenMatch_"+name+"_PassFail.root").c_str(),"RECREATE");
+      
+      TDirectory *HighGenMatchWJetsPassDir = HighGenMatchedWJetsOutFile->mkdir("pass");
+      HighGenMatchWJetsPassDir->cd();
+      HighGenMatch_WJetsRegion_Pass->Write();
+      
+      TDirectory *HighGenMatchWJetsFailDir = HighGenMatchedWJetsOutFile->mkdir("fail");
+      HighGenMatchWJetsFailDir->cd();
+      HighGenMatch_WJetsRegion_Fail->Write();
+      
+      HighGenMatchedWJetsOutFile->Close();
+      
+      //save QCD distributions
+      TFile* HighGenMatchedQCDOutFile = new TFile(("TemporaryFiles/QCD_HighGenMatch_"+name+"_PassFail.root").c_str(),"RECREATE");
+      
+      TDirectory *HighGenMatchQCDPassDir = HighGenMatchedQCDOutFile->mkdir("pass");
+      HighGenMatchQCDPassDir->cd();
+      HighGenMatch_QCDRegion_Pass->Write();
+      
+      TDirectory *HighGenMatchQCDFailDir = HighGenMatchedQCDOutFile->mkdir("fail");
+      HighGenMatchQCDFailDir->cd();
+      HighGenMatch_QCDRegion_Fail->Write();
+      
+      HighGenMatchedQCDOutFile->Close();
+      
+      //save the QCD Wjets contribution
+      TFile* HighGenMatchedQCDinWJetsOutFile = new TFile(("TemporaryFiles/QCDinWJets_HighGenMatch_"+name+"PassFail.root").c_str(),"RECREATE");
+      
+      TDirectory *HighGenMatchQCDinWJetsPassDir = HighGenMatchedQCDinWJetsOutFile->mkdir("pass");
+      HighGenMatchQCDinWJetsPassDir->cd();
+      HighGenMatch_QCDinWJets_Pass->Write();
+      
+      TDirectory *HighGenMatchQCDinWJetsFailDir = HighGenMatchedQCDinWJetsOutFile->mkdir("fail");
+      HighGenMatchQCDinWJetsFailDir->cd();
+      HighGenMatch_QCDinWJets_Fail->Write();
+      
+      HighGenMatchedQCDinWJetsOutFile->Close();
     }
 }

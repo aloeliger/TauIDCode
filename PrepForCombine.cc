@@ -211,7 +211,7 @@ void PrepForCombine()
 
   std::cout<<"Writing the file"<<std::endl;
   TFile* CombineFile = new TFile("Distributions/CombineFile.root","RECREATE");
-  //compile Pass histos
+  //compile Pass histos  
   TDirectory* CombinePassDirectory = CombineFile->mkdir("passOS");
   CombinePassDirectory->cd();
   
@@ -236,13 +236,13 @@ void PrepForCombine()
   HighGenMatch_DY_Shape_DOWN_Pass->SetNameTitle("DYJ_DOWN","DYJ_DOWN");
   HighGenMatch_DY_Shape_DOWN_Pass->Write();
 
-  ZTauTau_Pass->SetNameTitle("ztt","ztt");  
+  ZTauTau_Pass->SetNameTitle("DYS","DYS");  
   ZTauTau_Pass->Write();
 
-  ZTauTau_Shape_UP_Pass->SetNameTitle("ztt_UP","ztt_UP");
+  ZTauTau_Shape_UP_Pass->SetNameTitle("DYS_UP","DYS_UP");
   ZTauTau_Shape_UP_Pass->Write();
 
-  ZTauTau_Shape_DOWN_Pass->SetNameTitle("ztt_DOWN","ztt_DOWN");
+  ZTauTau_Shape_DOWN_Pass->SetNameTitle("DYS_DOWN","DYS_DOWN");
   ZTauTau_Shape_DOWN_Pass->Write();
   
   TH1F* TT_Pass = new TH1F("TT",
@@ -294,13 +294,13 @@ void PrepForCombine()
   HighGenMatch_DY_Shape_DOWN_Fail->SetNameTitle("DYJ_DOWN","DYJ_DOWN");
   HighGenMatch_DY_Shape_DOWN_Fail->Write();
     
-  ZTauTau_Fail->SetNameTitle("ztt","ztt");  
+  ZTauTau_Fail->SetNameTitle("DYS","DYS");  
   ZTauTau_Fail->Write();
 
-  ZTauTau_Shape_UP_Fail->SetNameTitle("ztt_UP","ztt_UP");
+  ZTauTau_Shape_UP_Fail->SetNameTitle("DYS_UP","DYS_UP");
   ZTauTau_Shape_UP_Fail->Write();
 
-  ZTauTau_Shape_DOWN_Fail->SetNameTitle("ztt_DOWN","ztt_DOWN");
+  ZTauTau_Shape_DOWN_Fail->SetNameTitle("DYS_DOWN","DYS_DOWN");
   ZTauTau_Shape_DOWN_Fail->Write();
 
   TH1F* TT_Fail = new TH1F("TT",
@@ -325,7 +325,7 @@ void PrepForCombine()
   QCD_Fail->Write();
 
   W_Fail->SetNameTitle("W","W");
-  W_Fail->Write();
+  W_Fail->Write();  
 
   CombineFile->Close();
   PassFailFile->Close();

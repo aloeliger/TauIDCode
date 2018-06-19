@@ -1,5 +1,6 @@
 //Determine the final QCD contirbution to the signal region.
 #include "TROOT.h"
+#include "CalculateWJetsScaleFactor.cc"
 
 void FinalizeQCDBackground()
 {
@@ -78,7 +79,22 @@ void FinalizeQCDBackground()
   //4/24/2018 TODO: Need to find a way to properly reweight the WJets MC
   // from the script, right now it is called un-scaled.
 
+  float WJetsScaling = CalculateWJetsScaleFactor();
+  
+  W_Pass->Add(W1_Pass);
+  W_Pass->Add(W2_Pass);
+  W_Pass->Add(W3_Pass);
+  W_Pass->Add(W4_Pass);
+  W_Pass->Scale(WJetsScaling);
+
+  W_Fail->Add(W1_Fail);
+  W_Fail->Add(W2_Fail);
+  W_Fail->Add(W3_Fail);
+  W_Fail->Add(W4_Fail);
+  W_Fail->Scale(WJetsScaling);
+
   std::cout<<"Subtracting backgrounds..."<<std::endl;  
+  //handle the pass side of things
   QCD_Pass->Add(ZTauTau_Pass, -1.0);
   QCD_Pass->Add(ZTauTau1_Pass, -1.0);
   QCD_Pass->Add(ZTauTau2_Pass, -1.0);
@@ -101,12 +117,12 @@ void FinalizeQCDBackground()
   QCD_Pass->Add(WW_Pass, -1.0);
   QCD_Pass->Add(WZ_Pass, -1.0);
   QCD_Pass->Add(ZZ_Pass, -1.0);
+  //create the skewed up down distrbutions corresponding to the different w shapes?
+
   QCD_Pass->Add(W_Pass, -1.0);
-  QCD_Pass->Add(W1_Pass, -1.0);
-  QCD_Pass->Add(W2_Pass, -1.0);
-  QCD_Pass->Add(W3_Pass, -1.0);
-  QCD_Pass->Add(W4_Pass, -1.0);
-    
+  
+
+  //Handle the fail side of things
   QCD_Fail->Add(ZTauTau_Fail, -1.0);
   QCD_Fail->Add(ZTauTau1_Fail, -1.0);
   QCD_Fail->Add(ZTauTau2_Fail, -1.0);
@@ -129,11 +145,7 @@ void FinalizeQCDBackground()
   QCD_Fail->Add(WW_Fail, -1.0);
   QCD_Fail->Add(WZ_Fail, -1.0);
   QCD_Fail->Add(ZZ_Fail, -1.0);
-  QCD_Fail->Add(W_Fail, -1.0);
-  QCD_Fail->Add(W1_Fail, -1.0);
-  QCD_Fail->Add(W2_Fail, -1.0);
-  QCD_Fail->Add(W3_Fail, -1.0);
-  QCD_Fail->Add(W4_Fail, -1.0);
+  QCD_Fail->Add(W_Fail, -1.0);  
 
   //we've subtracted off the backgrounds, now we just scale by 1.05
   // as mentioned in the AN to go from SS to OS regions.

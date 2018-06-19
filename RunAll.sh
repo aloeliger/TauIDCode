@@ -4,7 +4,7 @@ root -b -q "TauID.cc(\"Data\")"
 root -b -q "TauID.cc(\"WW\")"
 root -b -q "TauID.cc(\"WZ\")"
 root -b -q "TauID.cc(\"ZZ\")"
-root -b -q "TauID.cc(\"W\")" #is this the W+jets low Mt sample?
+root -b -q "TauID.cc(\"W\")"
 root -b -q "TauID.cc(\"W1\")"
 root -b -q "TauID.cc(\"W2\")"
 root -b -q "TauID.cc(\"W3\")"

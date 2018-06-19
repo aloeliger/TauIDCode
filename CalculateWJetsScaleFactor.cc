@@ -1,7 +1,10 @@
-//Creates the final scaling factor and scales the signal region W+Jets by it
+//Quickly calculates the scale factor used for scaling W+Jets stuff.
+//Right now I only plan to apply it to the QCD generation script,
+// but since I also just plan to take the WJetsSimToData code,
+// I could kill a couple birds with one stone and pull it out of that file too.
 #include "TROOT.h"
 
-void WJetsSimToData()
+float CalculateWJetsScaleFactor()
 {
   TFile* WJetFile = new TFile("Distributions/WJetsDistributions.root","READ");
   TDirectory *WJet_PassDir = (TDirectory *) WJetFile->Get("pass");
@@ -150,62 +153,5 @@ void WJetsSimToData()
   
   float WJetsScaleFactor = (DataEstimated_WJets_Pass->Integral() + DataEstimated_WJets_Fail->Integral()) / (W_Pass->Integral() + W_Fail->Integral());
 
-  TFile* PassFailFile = new TFile("Distributions/PassFailOut.root","UPDATE");
-  TDirectory* PassFail_PassDir = (TDirectory *) PassFailFile->Get("pass");
-  TDirectory* PassFail_FailDir = (TDirectory *) PassFailFile->Get("fail");
-
-  TH1F* PassFail_W_Pass = (TH1F *) PassFail_PassDir->Get("W_Pass");
-  TH1F* PassFail_W1_Pass = (TH1F *) PassFail_PassDir->Get("W1_Pass");
-  TH1F* PassFail_W2_Pass = (TH1F *) PassFail_PassDir->Get("W2_Pass");
-  TH1F* PassFail_W3_Pass = (TH1F *) PassFail_PassDir->Get("W3_Pass");
-  TH1F* PassFail_W4_Pass = (TH1F *) PassFail_PassDir->Get("W4_Pass");
-  TH1F* PassFail_W_Fail = (TH1F *) PassFail_FailDir->Get("W_Fail");
-  TH1F* PassFail_W1_Fail = (TH1F *) PassFail_FailDir->Get("W1_Fail");
-  TH1F* PassFail_W2_Fail = (TH1F *) PassFail_FailDir->Get("W2_Fail");
-  TH1F* PassFail_W3_Fail = (TH1F *) PassFail_FailDir->Get("W3_Fail");
-  TH1F* PassFail_W4_Fail = (TH1F *) PassFail_FailDir->Get("W4_Fail");
-  
-  std::cout<<"Creating Newly Scaled Histos"<<std::endl;
-  TH1F* Rescaled_WJets_Pass = new TH1F(*PassFail_W_Pass);
-  TH1F* Rescaled_WJets_Fail = new TH1F(*PassFail_W_Fail);
-  
-  Rescaled_WJets_Pass->Add(PassFail_W1_Pass);
-  Rescaled_WJets_Pass->Add(PassFail_W2_Pass);
-  Rescaled_WJets_Pass->Add(PassFail_W3_Pass);
-  Rescaled_WJets_Pass->Add(PassFail_W4_Pass);
-
-  Rescaled_WJets_Fail->Add(PassFail_W1_Fail);
-  Rescaled_WJets_Fail->Add(PassFail_W2_Fail);
-  Rescaled_WJets_Fail->Add(PassFail_W3_Fail);
-  Rescaled_WJets_Fail->Add(PassFail_W4_Fail);
-
-  Rescaled_WJets_Pass->Scale(WJetsScaleFactor);
-  Rescaled_WJets_Fail->Scale(WJetsScaleFactor);
-
-  Rescaled_WJets_Pass->SetName("Rescaled_WJets_Pass");
-  Rescaled_WJets_Fail->SetName("Rescaled_WJets_Fail");
-
-  //Shove this back into the old file, and we'll roll with that.
-  std::cout<<"Writing Newly Scaled Histos to the Pass/Fail File"<<std::endl;
-  PassFail_PassDir->cd();
-  Rescaled_WJets_Pass->Write();  
-
-  PassFail_FailDir->cd();
-  Rescaled_WJets_Fail->Write();  
-
-  //just doing some checks
-  // is this necessary anymore?
-  TFile * WJetsCheckFile = new TFile("TemporaryFiles/WJetsCheck.root","RECREATE");
-  DataEstimated_WJets_Pass->Write();
-  DataEstimated_WJets_Fail->Write();
-  W_Pass->Write();
-  W_Fail->Write();
-  
-  W_Pass->SetName("RescaleHighMT_WJets_Pass");
-  W_Fail->SetName("RescaleHighMT_WJets_Fail");
-  W_Pass->Scale(WJetsScaleFactor);
-  W_Fail->Scale(WJetsScaleFactor);
-  W_Pass->Write();
-  W_Fail->Write();
-  WJetsCheckFile->Close();
+  return WJetsScaleFactor;
 }

@@ -13,7 +13,7 @@
 void TauID(std::string input, float ShapeUncertainty = 1.0)
 {
   //get the tree that we're going to run
-  TFile *MyFile = new TFile(("/data/ccaillol/tauid_19may_mt/"+input+".root").c_str());
+  TFile *MyFile = new TFile(("/data/ccaillol/tauid_20june_mt/"+input+".root").c_str());
   TTree *Tree = (TTree*) MyFile->Get("mutau_tree");
   TH1F* nevents = (TH1F*) MyFile->Get("nevents");
   float TotalNumberOfEvents = nevents->GetBinContent(1);
@@ -423,10 +423,10 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
       float TransverseMass = std::sqrt(2.0*l1.Pt()*MissingP.Pt()*(1.0-std::cos(l1.DeltaPhi(MissingP))));      
       
       //look at this, the AN says specifically that zeta is defined to be the bisector of the momenta IN THE TRANSVERSE PLANE of the visible decay products.
-      TVector3 ZetaUnit = l1.Vect()*l2.Vect().Mag()+l2.Vect()*l1.Vect().Mag();//get a bisector of the angle between mu and tau
+      //TVector3 ZetaUnit = l1.Vect()*l2.Vect().Mag()+l2.Vect()*l1.Vect().Mag();//get a bisector of the angle between mu and tau
 
       //get a bisector in the plane?
-      /*
+      
       TVector3 ZetaUnit;
       float BisectorAngle = (l1.Vect().Phi() + l2.Vect().Phi())/2.0;
       ZetaUnit.SetPhi(BisectorAngle);
@@ -438,7 +438,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 	  else BisectorAngle += M_PI;
 	}
       ZetaUnit.SetPhi(BisectorAngle);
-      */
+      
       
       ZetaUnit = ZetaUnit.Unit();      
       
@@ -502,7 +502,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
       
       //we check four things at the same time. Signal region checks, W+Jets region checks, QCD in the signal region, and QCD in the W+Jets Region.
       //check the tau iso discriminants, and divide these our events by pass/fail            
-      bool TauIsoDiscrim = (bool) byTightIsolationRerunMVArun2v2DBoldDMwLT_2;
+      bool TauIsoDiscrim = (bool) byVVTightIsolationRerunMVArun2v2DBoldDMwLT_2;//byTightIsolationRerunMVArun2v2DBoldDMwLT_2;
       // 6/8/2018 EDIT: We're going to do a very rough hack here to include the genmatching
       //check signs: if Opposite sign is signal contribution
       if(q_1 * q_2 < 0.0)

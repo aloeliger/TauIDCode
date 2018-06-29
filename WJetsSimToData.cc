@@ -185,27 +185,31 @@ void WJetsSimToData()
   Rescaled_WJets_Pass->SetName("Rescaled_WJets_Pass");
   Rescaled_WJets_Fail->SetName("Rescaled_WJets_Fail");
 
+  //create the up and down W distributions.
+  TH1F* Rescaled_WJets_WNorm_UP_Pass = (TH1F*) Rescaled_WJets_Pass->Clone();
+  TH1F* Rescaled_WJets_WNorm_DOWN_Pass = (TH1F*) Rescaled_WJets_Pass->Clone();
+  TH1F* Rescaled_WJets_WNorm_UP_Fail = (TH1F*) Rescaled_WJets_Fail->Clone();
+  TH1F* Rescaled_WJets_WNorm_DOWN_Fail = (TH1F*) Rescaled_WJets_Fail->Clone();
+
+  Rescaled_WJets_WNorm_UP_Pass->Scale(1.10);
+  Rescaled_WJets_WNorm_UP_Fail->Scale(1.10);
+  Rescaled_WJets_WNorm_DOWN_Pass->Scale(0.90);
+  Rescaled_WJets_WNorm_DOWN_Pass->Scale(0.90);
+
+  Rescaled_WJets_WNorm_UP_Pass->SetNameTitle("Rescaled_WJets_WNorm_UP_Pass","Rescaled_WJets_WNorm_UP_Pass");
+  Rescaled_WJets_WNorm_DOWN_Pass->SetNameTitle("Rescaled_WJets_WNorm_DOWN_Pass","Rescaled_WJets_WNorm_DOWN_Pass");
+  Rescaled_WJets_WNorm_UP_Fail->SetNameTitle("Rescaled_WJets_WNorm_UP_Fail","Rescaled_WJets_WNorm_UP_Fail");
+  Rescaled_WJets_WNorm_DOWN_Fail->SetNameTitle("Rescaled_WJets_WNorm_DOWN_Fail","Rescaled_WJets_WNorm_DOWN_Fail");
+
   //Shove this back into the old file, and we'll roll with that.
   std::cout<<"Writing Newly Scaled Histos to the Pass/Fail File"<<std::endl;
   PassFail_PassDir->cd();
-  Rescaled_WJets_Pass->Write();  
+  Rescaled_WJets_Pass->Write();
+  Rescaled_WJets_WNorm_UP_Pass->Write();
+  Rescaled_WJets_WNorm_DOWN_Pass->Write();
 
   PassFail_FailDir->cd();
-  Rescaled_WJets_Fail->Write();  
-
-  //just doing some checks
-  // is this necessary anymore?
-  TFile * WJetsCheckFile = new TFile("TemporaryFiles/WJetsCheck.root","RECREATE");
-  DataEstimated_WJets_Pass->Write();
-  DataEstimated_WJets_Fail->Write();
-  W_Pass->Write();
-  W_Fail->Write();
-  
-  W_Pass->SetName("RescaleHighMT_WJets_Pass");
-  W_Fail->SetName("RescaleHighMT_WJets_Fail");
-  W_Pass->Scale(WJetsScaleFactor);
-  W_Fail->Scale(WJetsScaleFactor);
-  W_Pass->Write();
-  W_Fail->Write();
-  WJetsCheckFile->Close();
+  Rescaled_WJets_Fail->Write();
+  Rescaled_WJets_WNorm_UP_Fail->Write();
+  Rescaled_WJets_WNorm_DOWN_Fail->Write();
 }

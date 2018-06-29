@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 #run the ID code over all the available distributions.
+#these the "basic" distributions
 root -b -q "TauID.cc(\"Data\")"
 root -b -q "TauID.cc(\"WW\")"
 root -b -q "TauID.cc(\"WZ\")"
@@ -17,21 +18,58 @@ root -b -q "TauID.cc(\"DY1\")"
 root -b -q "TauID.cc(\"DY2\")"
 root -b -q "TauID.cc(\"DY3\")"
 root -b -q "TauID.cc(\"DY4\")"
+
+#Do the Tau Energy Scale Uncertainties.
+#right now the combine code seems to only want TES on TT, QCD, and Diboson distributions
+#TT and VV are easy.
+root -b -q "TauID.cc(\"TTTo2L2Nu\",1.03)"
+root -b -q "TauID.cc(\"TTToHadronic\",1.03)"
+root -b -q "TauID.cc(\"TTToSemiLeptonic\",1.03)"
+root -b -q "TauID.cc(\"TTTo2L2Nu\",0.97)"
+root -b -q "TauID.cc(\"TTToHadronic\",0.97)"
+root -b -q "TauID.cc(\"TTToSemiLeptonic\",0.97)"
+
+root -b -q "TauID.cc(\"WW\",1.03)"
+root -b -q "TauID.cc(\"WZ\",1.03)"
+root -b -q "TauID.cc(\"ZZ\",1.03)"
+root -b -q "TauID.cc(\"WW\",0.97)"
+root -b -q "TauID.cc(\"WZ\",0.97)"
+root -b -q "TauID.cc(\"ZZ\",0.97)"
+
+#How do we Handle the TES for QCD regions?
+#Best Guess? simply run all other distributions in up or down, then do the QCD 
+#generation with those samples.
+
+#W
+root -b -q "TauID.cc(\"W\",1.03)"
+root -b -q "TauID.cc(\"W1\",1.03)"
+root -b -q "TauID.cc(\"W2\",1.03)"
+root -b -q "TauID.cc(\"W3\",1.03)"
+root -b -q "TauID.cc(\"W4\",1.03)"
+root -b -q "TauID.cc(\"W\",0.97)"
+root -b -q "TauID.cc(\"W1\",0.97)"
+root -b -q "TauID.cc(\"W2\",0.97)"
+root -b -q "TauID.cc(\"W3\",0.97)"
+root -b -q "TauID.cc(\"W4\",0.97)"
+
+#DY
 root -b -q "TauID.cc(\"DY\",1.03)"
 root -b -q "TauID.cc(\"DY1\",1.03)"
 root -b -q "TauID.cc(\"DY2\",1.03)"
 root -b -q "TauID.cc(\"DY3\",1.03)"
 root -b -q "TauID.cc(\"DY4\",1.03)"
-root -b -q "TauID.cc(\"DY\",1.10)"
-root -b -q "TauID.cc(\"DY1\",1.10)"
-root -b -q "TauID.cc(\"DY2\",1.10)"
-root -b -q "TauID.cc(\"DY3\",1.10)"
-root -b -q "TauID.cc(\"DY4\",1.10)"
 root -b -q "TauID.cc(\"DY\",0.97)"
 root -b -q "TauID.cc(\"DY1\",0.97)"
 root -b -q "TauID.cc(\"DY2\",0.97)"
 root -b -q "TauID.cc(\"DY3\",0.97)"
 root -b -q "TauID.cc(\"DY4\",0.97)"
+
+#Do the Mu To Tau Misidentification shape uncertainty?
+root -b -q "TauID.cc(\"DY\",1.10)"
+root -b -q "TauID.cc(\"DY1\",1.10)"
+root -b -q "TauID.cc(\"DY2\",1.10)"
+root -b -q "TauID.cc(\"DY3\",1.10)"
+root -b -q "TauID.cc(\"DY4\",1.10)"
 root -b -q "TauID.cc(\"DY\",0.90)"
 root -b -q "TauID.cc(\"DY1\",0.90)"
 root -b -q "TauID.cc(\"DY2\",0.90)"

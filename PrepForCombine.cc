@@ -28,11 +28,31 @@ void PrepForCombine()
   TH1F* TTTo2L2Nu_Pass = (TH1F*) passDirectory->Get("TTTo2L2Nu_Pass");
   TH1F* TTToHadronic_Pass = (TH1F*) passDirectory->Get("TTToHadronic_Pass");
   TH1F* TTToSemiLeptonic_Pass = (TH1F*) passDirectory->Get("TTToSemiLeptonic_Pass");
+
+  TH1F* TTTo2L2Nu_TES_UP_Pass = (TH1F*) passDirectory->Get("TTTo2L2Nu_1.030000_Pass");
+  TH1F* TTToHadronic_TES_UP_Pass = (TH1F*) passDirectory->Get("TTToHadronic_1.030000_Pass");
+  TH1F* TTToSemiLeptonic_TES_UP_Pass = (TH1F*) passDirectory->Get("TTToSemiLeptonic_1.030000_Pass");
+  TH1F* TTTo2L2Nu_TES_DOWN_Pass = (TH1F*) passDirectory->Get("TTTo2L2Nu_0.970000_Pass");
+  TH1F* TTToHadronic_TES_DOWN_Pass = (TH1F*) passDirectory->Get("TTToHadronic_0.970000_Pass");
+  TH1F* TTToSemiLeptonic_TES_DOWN_Pass = (TH1F*) passDirectory->Get("TTToSemiLeptonic_0.970000_Pass");
+
   TH1F* W_Pass = (TH1F*) passDirectory->Get("Rescaled_WJets_Pass");
+  TH1F* W_WNorm_UP_Pass = (TH1F*) passDirectory->Get("Rescaled_WJets_WNorm_UP_Pass");
+  TH1F* W_WNorm_DOWN_Pass = (TH1F*) passDirectory->Get("Rescaled_WJets_WNorm_DOWN_Pass");
   TH1F* WW_Pass = (TH1F*) passDirectory->Get("WW_Pass");
   TH1F* WZ_Pass = (TH1F*) passDirectory->Get("WZ_Pass");
   TH1F* ZZ_Pass = (TH1F*) passDirectory->Get("ZZ_Pass");
+  TH1F* WW_TES_UP_Pass = (TH1F*) passDirectory->Get("WW_1.030000_Pass");
+  TH1F* WZ_TES_UP_Pass = (TH1F*) passDirectory->Get("WZ_1.030000_Pass");
+  TH1F* ZZ_TES_UP_Pass = (TH1F*) passDirectory->Get("ZZ_1.030000_Pass");
+  TH1F* WW_TES_DOWN_Pass = (TH1F*) passDirectory->Get("WW_0.970000_Pass");
+  TH1F* WZ_TES_DOWN_Pass = (TH1F*) passDirectory->Get("WZ_0.970000_Pass");
+  TH1F* ZZ_TES_DOWN_Pass = (TH1F*) passDirectory->Get("ZZ_0.970000_Pass");
   TH1F* QCD_Pass = (TH1F*) passDirectory->Get("QCD_Pass");
+  TH1F* QCD_WNorm_UP_Pass = (TH1F*) passDirectory->Get("QCD_WNorm_UP_Pass");
+  TH1F* QCD_WNorm_DOWN_Pass = (TH1F*) passDirectory->Get("QCD_WNorm_DOWN_Pass");
+  TH1F* QCD_TES_UP_Pass = (TH1F*) passDirectory->Get("QCD_TES_UP_Pass");
+  TH1F* QCD_TES_DOWN_Pass= (TH1F*) passDirectory->Get("QCD_TES_DOWN_Pass");
 
   TH1F* LowGenMatch_DY_Shape_UP_Pass = (TH1F*) passDirectory->Get("LowGenMatch_DY_1.100000_Pass");
   TH1F* LowGenMatch_DY1_Shape_UP_Pass = (TH1F*) passDirectory->Get("LowGenMatch_DY1_1.100000_Pass");
@@ -55,16 +75,16 @@ void PrepForCombine()
   TH1F* HighGenMatch_DY3_Shape_DOWN_Pass = (TH1F*) passDirectory->Get("HighGenMatch_DY3_0.900000_Pass");
   TH1F* HighGenMatch_DY4_Shape_DOWN_Pass = (TH1F*) passDirectory->Get("HighGenMatch_DY4_0.900000_Pass");
   
-  TH1F* ZTauTau_Shape_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY_1.030000_Pass");
-  TH1F* ZTauTau1_Shape_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY1_1.030000_Pass");
-  TH1F* ZTauTau2_Shape_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY2_1.030000_Pass");
-  TH1F* ZTauTau3_Shape_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY3_1.030000_Pass");
-  TH1F* ZTauTau4_Shape_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY4_1.030000_Pass");
-  TH1F* ZTauTau_Shape_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY_0.970000_Pass");
-  TH1F* ZTauTau1_Shape_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY1_0.970000_Pass");
-  TH1F* ZTauTau2_Shape_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY2_0.970000_Pass");
-  TH1F* ZTauTau3_Shape_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY3_0.970000_Pass");
-  TH1F* ZTauTau4_Shape_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY4_0.970000_Pass");
+  TH1F* ZTauTau_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY_1.030000_Pass");
+  TH1F* ZTauTau1_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY1_1.030000_Pass");
+  TH1F* ZTauTau2_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY2_1.030000_Pass");
+  TH1F* ZTauTau3_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY3_1.030000_Pass");
+  TH1F* ZTauTau4_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY4_1.030000_Pass");
+  TH1F* ZTauTau_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY_0.970000_Pass");
+  TH1F* ZTauTau1_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY1_0.970000_Pass");
+  TH1F* ZTauTau2_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY2_0.970000_Pass");
+  TH1F* ZTauTau3_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY3_0.970000_Pass");
+  TH1F* ZTauTau4_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY4_0.970000_Pass");
 
   //fail
   TH1F* Data_Fail = (TH1F*) failDirectory->Get("Data_Fail");
@@ -88,11 +108,31 @@ void PrepForCombine()
   TH1F* TTTo2L2Nu_Fail = (TH1F*) failDirectory->Get("TTTo2L2Nu_Fail");
   TH1F* TTToHadronic_Fail = (TH1F*) failDirectory->Get("TTToHadronic_Fail");
   TH1F* TTToSemiLeptonic_Fail = (TH1F*) failDirectory->Get("TTToSemiLeptonic_Fail");
+
+  TH1F* TTTo2L2Nu_TES_UP_Fail = (TH1F*) failDirectory->Get("TTTo2L2Nu_1.030000_Fail");
+  TH1F* TTToHadronic_TES_UP_Fail = (TH1F*) failDirectory->Get("TTToHadronic_1.030000_Fail");
+  TH1F* TTToSemiLeptonic_TES_UP_Fail = (TH1F*) failDirectory->Get("TTToSemiLeptonic_1.030000_Fail");
+  TH1F* TTTo2L2Nu_TES_DOWN_Fail = (TH1F*) failDirectory->Get("TTTo2L2Nu_0.970000_Fail");
+  TH1F* TTToHadronic_TES_DOWN_Fail = (TH1F*) failDirectory->Get("TTToHadronic_0.970000_Fail");
+  TH1F* TTToSemiLeptonic_TES_DOWN_Fail = (TH1F*) failDirectory->Get("TTToSemiLeptonic_0.970000_Fail");
+
   TH1F* W_Fail = (TH1F*) failDirectory->Get("Rescaled_WJets_Fail");
+  TH1F* W_WNorm_UP_Fail = (TH1F*) failDirectory->Get("Rescaled_WJets_WNorm_UP_Fail");
+  TH1F* W_WNorm_DOWN_Fail = (TH1F*) failDirectory->Get("Rescaled_WJets_WNorm_DOWN_Fail");
   TH1F* WW_Fail = (TH1F*) failDirectory->Get("WW_Fail");
   TH1F* WZ_Fail = (TH1F*) failDirectory->Get("WZ_Fail");
   TH1F* ZZ_Fail = (TH1F*) failDirectory->Get("ZZ_Fail");
+  TH1F* WW_TES_UP_Fail = (TH1F*) failDirectory->Get("WW_1.030000_Fail");
+  TH1F* WZ_TES_UP_Fail = (TH1F*) failDirectory->Get("WZ_1.030000_Fail");
+  TH1F* ZZ_TES_UP_Fail = (TH1F*) failDirectory->Get("ZZ_1.030000_Fail");
+  TH1F* WW_TES_DOWN_Fail = (TH1F*) failDirectory->Get("WW_0.970000_Fail");
+  TH1F* WZ_TES_DOWN_Fail = (TH1F*) failDirectory->Get("WZ_0.970000_Fail");
+  TH1F* ZZ_TES_DOWN_Fail = (TH1F*) failDirectory->Get("ZZ_0.970000_Fail");
   TH1F* QCD_Fail = (TH1F*) failDirectory->Get("QCD_Fail");
+  TH1F* QCD_WNorm_UP_Fail = (TH1F*) failDirectory->Get("QCD_WNorm_UP_Fail");
+  TH1F* QCD_WNorm_DOWN_Fail = (TH1F*) failDirectory->Get("QCD_WNorm_DOWN_Fail");
+  TH1F* QCD_TES_UP_Fail = (TH1F*) failDirectory->Get("QCD_TES_UP_Fail");
+  TH1F* QCD_TES_DOWN_Fail= (TH1F*) failDirectory->Get("QCD_TES_DOWN_Fail");
   
   TH1F* LowGenMatch_DY_Shape_UP_Fail = (TH1F*) failDirectory->Get("LowGenMatch_DY_1.100000_Fail");
   TH1F* LowGenMatch_DY1_Shape_UP_Fail = (TH1F*) failDirectory->Get("LowGenMatch_DY1_1.100000_Fail");
@@ -115,16 +155,16 @@ void PrepForCombine()
   TH1F* HighGenMatch_DY3_Shape_DOWN_Fail = (TH1F*) failDirectory->Get("HighGenMatch_DY3_0.900000_Fail");
   TH1F* HighGenMatch_DY4_Shape_DOWN_Fail = (TH1F*) failDirectory->Get("HighGenMatch_DY4_0.900000_Fail");
   
-  TH1F* ZTauTau_Shape_UP_Fail = (TH1F*) failDirectory->Get("GenMatch_DY_1.030000_Fail");
-  TH1F* ZTauTau1_Shape_UP_Fail = (TH1F*) failDirectory->Get("GenMatch_DY1_1.030000_Fail");
-  TH1F* ZTauTau2_Shape_UP_Fail = (TH1F*) failDirectory->Get("GenMatch_DY2_1.030000_Fail");
-  TH1F* ZTauTau3_Shape_UP_Fail = (TH1F*) failDirectory->Get("GenMatch_DY3_1.030000_Fail");
-  TH1F* ZTauTau4_Shape_UP_Fail = (TH1F*) failDirectory->Get("GenMatch_DY4_1.030000_Fail");
-  TH1F* ZTauTau_Shape_DOWN_Fail = (TH1F*) failDirectory->Get("GenMatch_DY_0.970000_Fail");
-  TH1F* ZTauTau1_Shape_DOWN_Fail = (TH1F*) failDirectory->Get("GenMatch_DY1_0.970000_Fail");
-  TH1F* ZTauTau2_Shape_DOWN_Fail = (TH1F*) failDirectory->Get("GenMatch_DY2_0.970000_Fail");
-  TH1F* ZTauTau3_Shape_DOWN_Fail = (TH1F*) failDirectory->Get("GenMatch_DY3_0.970000_Fail");
-  TH1F* ZTauTau4_Shape_DOWN_Fail = (TH1F*) failDirectory->Get("GenMatch_DY4_0.970000_Fail");
+  TH1F* ZTauTau_TES_UP_Fail = (TH1F*) failDirectory->Get("GenMatch_DY_1.030000_Fail");
+  TH1F* ZTauTau1_TES_UP_Fail = (TH1F*) failDirectory->Get("GenMatch_DY1_1.030000_Fail");
+  TH1F* ZTauTau2_TES_UP_Fail = (TH1F*) failDirectory->Get("GenMatch_DY2_1.030000_Fail");
+  TH1F* ZTauTau3_TES_UP_Fail = (TH1F*) failDirectory->Get("GenMatch_DY3_1.030000_Fail");
+  TH1F* ZTauTau4_TES_UP_Fail = (TH1F*) failDirectory->Get("GenMatch_DY4_1.030000_Fail");
+  TH1F* ZTauTau_TES_DOWN_Fail = (TH1F*) failDirectory->Get("GenMatch_DY_0.970000_Fail");
+  TH1F* ZTauTau1_TES_DOWN_Fail = (TH1F*) failDirectory->Get("GenMatch_DY1_0.970000_Fail");
+  TH1F* ZTauTau2_TES_DOWN_Fail = (TH1F*) failDirectory->Get("GenMatch_DY2_0.970000_Fail");
+  TH1F* ZTauTau3_TES_DOWN_Fail = (TH1F*) failDirectory->Get("GenMatch_DY3_0.970000_Fail");
+  TH1F* ZTauTau4_TES_DOWN_Fail = (TH1F*) failDirectory->Get("GenMatch_DY4_0.970000_Fail");
 
   // after this we need only worry about unnumbered DY histos
   std::cout<<"Simplifying the Pass DY Histos"<<std::endl;
@@ -159,14 +199,14 @@ void PrepForCombine()
   ZTauTau_Pass->Add(ZTauTau2_Pass);
   ZTauTau_Pass->Add(ZTauTau3_Pass);
   ZTauTau_Pass->Add(ZTauTau4_Pass);
-  ZTauTau_Shape_UP_Pass->Add(ZTauTau1_Shape_UP_Pass);
-  ZTauTau_Shape_UP_Pass->Add(ZTauTau2_Shape_UP_Pass);
-  ZTauTau_Shape_UP_Pass->Add(ZTauTau3_Shape_UP_Pass);
-  ZTauTau_Shape_UP_Pass->Add(ZTauTau4_Shape_UP_Pass);
-  ZTauTau_Shape_DOWN_Pass->Add(ZTauTau1_Shape_DOWN_Pass);
-  ZTauTau_Shape_DOWN_Pass->Add(ZTauTau2_Shape_DOWN_Pass);
-  ZTauTau_Shape_DOWN_Pass->Add(ZTauTau3_Shape_DOWN_Pass);
-  ZTauTau_Shape_DOWN_Pass->Add(ZTauTau4_Shape_DOWN_Pass);
+  ZTauTau_TES_UP_Pass->Add(ZTauTau1_TES_UP_Pass);
+  ZTauTau_TES_UP_Pass->Add(ZTauTau2_TES_UP_Pass);
+  ZTauTau_TES_UP_Pass->Add(ZTauTau3_TES_UP_Pass);
+  ZTauTau_TES_UP_Pass->Add(ZTauTau4_TES_UP_Pass);
+  ZTauTau_TES_DOWN_Pass->Add(ZTauTau1_TES_DOWN_Pass);
+  ZTauTau_TES_DOWN_Pass->Add(ZTauTau2_TES_DOWN_Pass);
+  ZTauTau_TES_DOWN_Pass->Add(ZTauTau3_TES_DOWN_Pass);
+  ZTauTau_TES_DOWN_Pass->Add(ZTauTau4_TES_DOWN_Pass);
   
   //fail compiling
   std::cout<<"Simplifying the Fail DY Histos"<<std::endl;
@@ -200,16 +240,17 @@ void PrepForCombine()
   ZTauTau_Fail->Add(ZTauTau2_Fail);
   ZTauTau_Fail->Add(ZTauTau3_Fail);
   ZTauTau_Fail->Add(ZTauTau4_Fail);
-  ZTauTau_Shape_UP_Fail->Add(ZTauTau1_Shape_UP_Fail);
-  ZTauTau_Shape_UP_Fail->Add(ZTauTau2_Shape_UP_Fail);
-  ZTauTau_Shape_UP_Fail->Add(ZTauTau3_Shape_UP_Fail);
-  ZTauTau_Shape_UP_Fail->Add(ZTauTau4_Shape_UP_Fail);
-  ZTauTau_Shape_DOWN_Fail->Add(ZTauTau1_Shape_DOWN_Fail);
-  ZTauTau_Shape_DOWN_Fail->Add(ZTauTau2_Shape_DOWN_Fail);
-  ZTauTau_Shape_DOWN_Fail->Add(ZTauTau3_Shape_DOWN_Fail);
-  ZTauTau_Shape_DOWN_Fail->Add(ZTauTau4_Shape_DOWN_Fail);
+  ZTauTau_TES_UP_Fail->Add(ZTauTau1_TES_UP_Fail);
+  ZTauTau_TES_UP_Fail->Add(ZTauTau2_TES_UP_Fail);
+  ZTauTau_TES_UP_Fail->Add(ZTauTau3_TES_UP_Fail);
+  ZTauTau_TES_UP_Fail->Add(ZTauTau4_TES_UP_Fail);
+  ZTauTau_TES_DOWN_Fail->Add(ZTauTau1_TES_DOWN_Fail);
+  ZTauTau_TES_DOWN_Fail->Add(ZTauTau2_TES_DOWN_Fail);
+  ZTauTau_TES_DOWN_Fail->Add(ZTauTau3_TES_DOWN_Fail);
+  ZTauTau_TES_DOWN_Fail->Add(ZTauTau4_TES_DOWN_Fail);
 
   std::cout<<"Writing the file"<<std::endl;
+  std::cout<<"Pass.."<<std::endl;
   TFile* CombineFile = new TFile("Distributions/CombineFile.root","RECREATE");
   //compile Pass histos  
   TDirectory* CombinePassDirectory = CombineFile->mkdir("passOS");
@@ -239,11 +280,11 @@ void PrepForCombine()
   ZTauTau_Pass->SetNameTitle("DYS","DYS");  
   ZTauTau_Pass->Write();
 
-  ZTauTau_Shape_UP_Pass->SetNameTitle("DYS_UP","DYS_UP");
-  ZTauTau_Shape_UP_Pass->Write();
+  ZTauTau_TES_UP_Pass->SetNameTitle("DYS_TESUp","DYS_TESUp");
+  ZTauTau_TES_UP_Pass->Write();
 
-  ZTauTau_Shape_DOWN_Pass->SetNameTitle("DYS_DOWN","DYS_DOWN");
-  ZTauTau_Shape_DOWN_Pass->Write();
+  ZTauTau_TES_DOWN_Pass->SetNameTitle("DYS_TESDown","DYS_TESDown");
+  ZTauTau_TES_DOWN_Pass->Write();
   
   TH1F* TT_Pass = new TH1F("TT",
 			   "TT",
@@ -253,23 +294,79 @@ void PrepForCombine()
   TT_Pass->Add(TTTo2L2Nu_Pass,TTToHadronic_Pass);
   TT_Pass->Add(TTToSemiLeptonic_Pass);
   TT_Pass->Write();
+
+  TH1F* TT_TES_UP_Pass = new TH1F("TT_TESUp",
+				  "TT_TESUp",
+				  TTTo2L2Nu_TES_UP_Pass->GetSize()-2,
+				  TTTo2L2Nu_TES_UP_Pass->GetXaxis()->GetXmin(),
+				  TTTo2L2Nu_TES_UP_Pass->GetXaxis()->GetXmax());
+  TT_TES_UP_Pass->Add(TTTo2L2Nu_TES_UP_Pass,TTToHadronic_TES_UP_Pass);
+  TT_TES_UP_Pass->Add(TTToSemiLeptonic_TES_UP_Pass);
+  TT_TES_UP_Pass->Write();
+
+  TH1F* TT_TES_DOWN_Pass = new TH1F("TT_TESDown",
+				  "TT_TESDown",
+				  TTTo2L2Nu_TES_DOWN_Pass->GetSize()-2,
+				  TTTo2L2Nu_TES_DOWN_Pass->GetXaxis()->GetXmin(),
+				  TTTo2L2Nu_TES_DOWN_Pass->GetXaxis()->GetXmax());
+  TT_TES_DOWN_Pass->Add(TTTo2L2Nu_TES_DOWN_Pass,TTToHadronic_TES_DOWN_Pass);
+  TT_TES_DOWN_Pass->Add(TTToSemiLeptonic_TES_DOWN_Pass);
+  TT_TES_DOWN_Pass->Write();
   
   TH1F* DiBoson_Pass = new TH1F("VV",
 				"VV",
-				W_Pass->GetSize()-2,
-				W_Pass->GetXaxis()->GetXmin(),
-				W_Pass->GetXaxis()->GetXmax());
+				WW_Pass->GetSize()-2,
+				WW_Pass->GetXaxis()->GetXmin(),
+				WW_Pass->GetXaxis()->GetXmax());
   DiBoson_Pass->Add(WW_Pass,WZ_Pass);
   DiBoson_Pass->Add(ZZ_Pass);
   DiBoson_Pass->Write();
 
+  TH1F* DiBoson_TES_UP_Pass = new TH1F("VV_TESUp",
+				       "VV_TESUp",
+				       WW_TES_UP_Pass->GetSize()-2,
+				       WW_TES_UP_Pass->GetXaxis()->GetXmin(),
+				       WW_TES_UP_Pass->GetXaxis()->GetXmax());
+  DiBoson_TES_UP_Pass->Add(WW_TES_UP_Pass,WZ_TES_UP_Pass);
+  DiBoson_TES_UP_Pass->Add(ZZ_TES_UP_Pass);
+  DiBoson_TES_UP_Pass->Write();
+
+  TH1F* DiBoson_TES_DOWN_Pass = new TH1F("VV_TESDown",
+				       "VV_TESDown",
+				       WW_TES_DOWN_Pass->GetSize()-2,
+				       WW_TES_DOWN_Pass->GetXaxis()->GetXmin(),
+				       WW_TES_DOWN_Pass->GetXaxis()->GetXmax());
+  DiBoson_TES_DOWN_Pass->Add(WW_TES_DOWN_Pass,WZ_TES_DOWN_Pass);
+  DiBoson_TES_DOWN_Pass->Add(ZZ_TES_DOWN_Pass);
+  DiBoson_TES_DOWN_Pass->Write();
+  
+
   QCD_Pass->SetNameTitle("QCD","QCD");
   QCD_Pass->Write();
+  
+  QCD_WNorm_UP_Pass->SetNameTitle("QCD_WnormUp","QCD_WnormUp");
+  QCD_WNorm_UP_Pass->Write();
+
+  QCD_WNorm_DOWN_Pass->SetNameTitle("QCD_WnormDown", "QCD_WnormDown");
+  QCD_WNorm_DOWN_Pass->Write();
+
+  QCD_TES_UP_Pass->SetNameTitle("QCD_TESUp","QCD_TESDown");
+  QCD_TES_UP_Pass->Write();
+
+  QCD_TES_DOWN_Pass->SetNameTitle("QCD_TESDown","QCD_TESDown");
+  QCD_TES_DOWN_Pass->Write();
 
   W_Pass->SetNameTitle("W","W");
   W_Pass->Write();
+  
+  W_WNorm_UP_Pass->SetNameTitle("W_WnormUp","W_WnormUp");
+  W_WNorm_UP_Pass->Write();
+  
+  W_WNorm_DOWN_Pass->SetNameTitle("W_WnormDown","W_WnormDown");
+  W_WNorm_DOWN_Pass->Write();
 
   //Compile Fail Histos
+  std::cout<<"Fail..."<<std::endl;
   TDirectory* CombineFailDirectory = CombineFile->mkdir("failOS");
   CombineFailDirectory->cd();
 
@@ -297,11 +394,11 @@ void PrepForCombine()
   ZTauTau_Fail->SetNameTitle("DYS","DYS");  
   ZTauTau_Fail->Write();
 
-  ZTauTau_Shape_UP_Fail->SetNameTitle("DYS_UP","DYS_UP");
-  ZTauTau_Shape_UP_Fail->Write();
+  ZTauTau_TES_UP_Fail->SetNameTitle("DYS_TESUp","DYS_TESUp");
+  ZTauTau_TES_UP_Fail->Write();
 
-  ZTauTau_Shape_DOWN_Fail->SetNameTitle("DYS_DOWN","DYS_DOWN");
-  ZTauTau_Shape_DOWN_Fail->Write();
+  ZTauTau_TES_DOWN_Fail->SetNameTitle("DYS_TESDown","DYS_TESDown");
+  ZTauTau_TES_DOWN_Fail->Write();
 
   TH1F* TT_Fail = new TH1F("TT",
 			   "TT",
@@ -311,6 +408,24 @@ void PrepForCombine()
   TT_Fail->Add(TTTo2L2Nu_Fail,TTToHadronic_Fail);
   TT_Fail->Add(TTToSemiLeptonic_Fail);
   TT_Fail->Write();
+
+  TH1F* TT_TES_UP_Fail = new TH1F("TT_TESUp",
+				  "TT_TESUp",
+				  TTTo2L2Nu_TES_UP_Fail->GetSize()-2,
+				  TTTo2L2Nu_TES_UP_Fail->GetXaxis()->GetXmin(),
+				  TTTo2L2Nu_TES_UP_Fail->GetXaxis()->GetXmax());
+  TT_TES_UP_Fail->Add(TTTo2L2Nu_TES_UP_Fail,TTToHadronic_TES_UP_Fail);
+  TT_TES_UP_Fail->Add(TTToSemiLeptonic_TES_UP_Fail);
+  TT_TES_UP_Fail->Write();
+
+  TH1F* TT_TES_DOWN_Fail = new TH1F("TT_TESDown",
+				  "TT_TESDown",
+				  TTTo2L2Nu_TES_DOWN_Fail->GetSize()-2,
+				  TTTo2L2Nu_TES_DOWN_Fail->GetXaxis()->GetXmin(),
+				  TTTo2L2Nu_TES_DOWN_Fail->GetXaxis()->GetXmax());
+  TT_TES_DOWN_Fail->Add(TTTo2L2Nu_TES_DOWN_Fail,TTToHadronic_TES_DOWN_Fail);
+  TT_TES_DOWN_Fail->Add(TTToSemiLeptonic_TES_DOWN_Fail);
+  TT_TES_DOWN_Pass->Write();
   
   TH1F* DiBoson_Fail = new TH1F("VV",
 				"VV",
@@ -321,11 +436,47 @@ void PrepForCombine()
   DiBoson_Fail->Add(ZZ_Fail);
   DiBoson_Fail->Write();
 
+  TH1F* DiBoson_TES_UP_Fail = new TH1F("VV_TESUp",
+				       "VV_TESUp",
+				       WW_TES_UP_Fail->GetSize()-2,
+				       WW_TES_UP_Fail->GetXaxis()->GetXmin(),
+				       WW_TES_UP_Fail->GetXaxis()->GetXmax());
+  DiBoson_TES_UP_Fail->Add(WW_TES_UP_Fail,WZ_TES_UP_Fail);
+  DiBoson_TES_UP_Fail->Add(ZZ_TES_UP_Fail);
+  DiBoson_TES_UP_Fail->Write();
+
+  TH1F* DiBoson_TES_DOWN_Fail = new TH1F("VV_TESDown",
+				       "VV_TESDown",
+				       WW_TES_DOWN_Fail->GetSize()-2,
+				       WW_TES_DOWN_Fail->GetXaxis()->GetXmin(),
+				       WW_TES_DOWN_Fail->GetXaxis()->GetXmax());
+  DiBoson_TES_DOWN_Fail->Add(WW_TES_DOWN_Fail,WZ_TES_DOWN_Fail);
+  DiBoson_TES_DOWN_Fail->Add(ZZ_TES_DOWN_Fail);
+  DiBoson_TES_DOWN_Fail->Write();
+
   QCD_Fail->SetNameTitle("QCD","QCD");
   QCD_Fail->Write();
 
+  QCD_WNorm_UP_Fail->SetNameTitle("QCD_WnormUp","QCD_WnormUp");
+  QCD_WNorm_UP_Fail->Write();
+
+  QCD_WNorm_DOWN_Fail->SetNameTitle("QCD_WnormDown", "QCD_WnormDown");
+  QCD_WNorm_DOWN_Fail->Write();
+
+  QCD_TES_UP_Fail->SetNameTitle("QCD_TESUp","QCD_TESUp");
+  QCD_TES_UP_Fail->Write();
+  
+  QCD_TES_DOWN_Fail->SetNameTitle("QCD_TESDown","QCD_TESDown");
+  QCD_TES_DOWN_Fail->Write();
+
   W_Fail->SetNameTitle("W","W");
   W_Fail->Write();  
+  
+  W_WNorm_UP_Fail->SetNameTitle("W_WnormUp","W_WnormUp");
+  W_WNorm_UP_Fail->Write();
+  
+  W_WNorm_DOWN_Fail->SetNameTitle("W_WnormDown","W_WnormDown");
+  W_WNorm_DOWN_Fail->Write();
 
   CombineFile->Close();
   PassFailFile->Close();

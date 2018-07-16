@@ -391,12 +391,16 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
   TFile* ISOFile = new TFile("Weightings/RunBCDEF_SF_ISO.root");
   TH2F* ISOWeightings = (TH2F*) ISOFile->Get("NUM_TightRelIso_DEN_MediumID_pt_abseta");
   
+
   for(int i =0;i < NumberOfEntries; i++)
     {
       Tree->GetEntry(i);
-      if(i % 10000 == 0) fprintf(stdout, "\rProcessed through event: %d of %d", i, NumberOfEntries);
+      if(i % 10000 == 0) fprintf(stdout, "\rProcessed through event: %d of %d", i, NumberOfEntries);      
       fflush(stdout);
-
+      
+      std::cout<<"Info: l2_decayMode: "<<l2_decayMode<<std::endl;
+      std::cout<<"decayModeFinding_2: "<<decayModeFinding_2<<std::endl;
+      
       //make the necessary 4 vectors      
       TLorentzVector l1; l1.SetPtEtaPhiE(pt_1, eta_1, phi_1, e_1); //muon
       TLorentzVector l2; l2.SetPtEtaPhiE(pt_2, eta_2, phi_2, e_2); //tau
@@ -425,8 +429,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
       //look at this, the AN says specifically that zeta is defined to be the bisector of the momenta IN THE TRANSVERSE PLANE of the visible decay products.
       //TVector3 ZetaUnit = l1.Vect()*l2.Vect().Mag()+l2.Vect()*l1.Vect().Mag();//get a bisector of the angle between mu and tau
 
-      //get a bisector in the plane?
-      
+      //get a bisector in the plane?      
       TVector3 ZetaUnit;
       float BisectorAngle = (l1.Vect().Phi() + l2.Vect().Phi())/2.0;
       ZetaUnit.SetPhi(BisectorAngle);
@@ -455,8 +458,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 
       if(input == "WW")NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
       else if(input == "WZ") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
-      else if(input == "ZZ") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;      
-      //TODO: Figure out if this is the correct way to apply the weights 
+      else if(input == "ZZ") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;            
       // from the excel file.
       else if(input == "W"
 	      or input == "W1"
@@ -498,11 +500,11 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 	}
 
       //Data Selection
-      float Var = (l1+l2).M();
+      float Var = (l1+l2).M();      
       
       //we check four things at the same time. Signal region checks, W+Jets region checks, QCD in the signal region, and QCD in the W+Jets Region.
       //check the tau iso discriminants, and divide these our events by pass/fail            
-      bool TauIsoDiscrim = (bool) byVVTightIsolationRerunMVArun2v2DBoldDMwLT_2;//byTightIsolationRerunMVArun2v2DBoldDMwLT_2;
+      bool TauIsoDiscrim = (bool) byTightIsolationRerunMVArun2v2DBoldDMwLT_2;//byTightIsolationRerunMVArun2v2DBoldDMwLT_2;
       // 6/8/2018 EDIT: We're going to do a very rough hack here to include the genmatching
       //check signs: if Opposite sign is signal contribution
       if(q_1 * q_2 < 0.0)

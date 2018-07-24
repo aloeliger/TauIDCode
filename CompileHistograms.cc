@@ -1,6 +1,7 @@
 #include "TROOT.h"
 #include "/afs/cern.ch/user/a/aloelige/private/RootMacros/CMS_lumi.C"
 #include "/afs/cern.ch/user/a/aloelige/private/RootMacros/tdrstyle.C"
+#include "/afs/cern.ch/user/a/aloelige/private/RootMacros/MakeRatioPlot.cc"
 
 void CompileHistograms()
 {
@@ -145,14 +146,14 @@ void CompileHistograms()
   PassStack->Add(TT_Pass,"hist");
   PassStack->Add(DiBoson_Pass,"hist");
 
-  Data_Pass->Draw();
-  PassStack->Draw("SAME");
-  Data_Pass->SetTitle("#mu#tau Invariant Mass Pass");
-  Data_Pass->Draw("SAME");
-  Data_Pass->GetXaxis()->SetTitle("#mu#tau Invariant Mass (GeV)");
-  Data_Pass->GetYaxis()->SetTitle("Events");
+  TPad* PlotPad_Pass = MakeRatioPlot(C1, PassStack, Data_Pass);    
 
-  CMS_lumi(C1,0,33);
+  PassStack->Draw();
+  PassStack->SetTitle("#mu#tau Invariant Mass Pass");  
+  PassStack->GetXaxis()->SetTitle("#mu#tau Invariant Mass (GeV)");
+  PassStack->GetYaxis()->SetTitle("Events");
+  Data_Pass->Draw("SAME");
+  CMS_lumi(PlotPad_Pass,0,33);
   
   TLegend* Legend = new TLegend(0.7, 0.5, 0.88, 0.68);
   Legend->AddEntry(Data_Pass, "Data", "ep");
@@ -164,6 +165,8 @@ void CompileHistograms()
   Legend->AddEntry(QCD_Pass, "QCD", "f");
 
   Legend->Draw();
+
+  C1->Draw();
 
   //Fail Region
   TCanvas* C2 = new TCanvas("C2", "#mu#tau Invariant Mass");
@@ -207,24 +210,68 @@ void CompileHistograms()
   FailStack->Add(TT_Fail,"hist");
   FailStack->Add(DiBoson_Fail,"hist");  
 
-  Data_Fail->Draw();
-  FailStack->Draw("SAME");
-  Data_Fail->SetTitle("#mu#tau Invariant Mass Fail");
-  Data_Fail->Draw("SAME");
-  Data_Fail->GetXaxis()->SetTitle("#mu#tau Invariant Mass (GeV)");
-  Data_Fail->GetYaxis()->SetTitle("Events");
+  TPad* PlotPad_Fail = MakeRatioPlot(C2, FailStack, Data_Fail);
 
-  CMS_lumi(C2,0,33);
+  FailStack->Draw();
+  FailStack->SetTitle("#mu#tau Invariant Mass Fail");  
+  FailStack->GetXaxis()->SetTitle("#mu#tau Invariant Mass (GeV)");
+  FailStack->GetYaxis()->SetTitle("Events");
+  Data_Fail->Draw("SAME");
+
+  CMS_lumi(PlotPad_Fail,0,33);
 
   Legend->Draw();
   
+  C2->Draw();
+
+  //Render the Fake Rate determined pass distribution
+  TFile* FakeRateDeterminedDistributions = new TFile("Distributions/FakeRateDeterminedDistributions.root");
+  TH1F* TightJetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("TightJetDistribution");
+  
+  TCanvas* C3 = new TCanvas("C3", "#mu#tau Invariant Mass");
+  C3->SetTickx();
+  C3->SetTicky();
+
+  TightJetDistribution->SetLineColor(kBlack);
+  TightJetDistribution->SetFillColor(kRed);
+  
+  THStack * PassJetStack = new THStack("PassJetStack", "PassJetStack");   
+  PassJetStack->Add(TightJetDistribution, "hist");
+  PassJetStack->Add(ZTauTau_Pass, "hist");
+  PassJetStack->Add(LowGenMatch_DY_Pass, "hist");
+  PassJetStack->Add(TT_Pass,"hist");
+  PassJetStack->Add(DiBoson_Pass,"hist");  
+
+  TPad* JetPlotPad = MakeRatioPlot(C3,PassJetStack,Data_Pass);
+  
+  PassJetStack->Draw();
+  PassJetStack->SetTitle("#mu#tau Invariant Mass Pass");
+  PassJetStack->GetXaxis()->SetTitle("#mu#tau Invariant Mass (GeV)");
+  PassJetStack->GetYaxis()->SetTitle("Events");
+  Data_Pass->Draw("SAME");
+
+  TLegend* JetLegend = new TLegend(0.7, 0.5, 0.88, 0.68);
+  JetLegend->AddEntry(Data_Pass, "Data", "ep");
+  JetLegend->AddEntry(ZTauTau_Pass, "Z #rightarrow #tau#tau", "f");
+  JetLegend->AddEntry(LowGenMatch_DY_Pass, "Other Drell-Yan", "f");
+  JetLegend->AddEntry(DiBoson_Pass, "DiBoson", "f");
+  JetLegend->AddEntry(TT_Pass, "t#bar{t}","f");
+  JetLegend->AddEntry("TightJetDistribution" ,"Fake Rate Determined Jets", "f");
+  
+  JetLegend->Draw();
+  
+  CMS_lumi(JetPlotPad,0,33);
+  
+  C3->Draw();
 
   //Write these to a histo file.
   TFile* HistoFile = new TFile("Histos/HistoFile.root","RECREATE");
   C1->Write();
   C2->Write();
+  C3->Write();
   HistoFile->Close();
 
   C1->SaveAs("Histos/pass.png");
   C2->SaveAs("Histos/fail.png");  
+  C3->SaveAs("Histos/JetPass.png");
 }

@@ -376,7 +376,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
   //std::cout<<"NormalizationWeight: "<<NormalizationWeight<<std::endl;
 
   reweight::LumiReWeighting* LumiWeights_12;
-  LumiWeights_12 = new reweight::LumiReWeighting(("/data/ccaillol/tauid_3mar_mt/"+input+".root").c_str(),
+  LumiWeights_12 = new reweight::LumiReWeighting(("/data/ccaillol/tauid_20june_mt/"+input+".root").c_str(),
 						 "Weightings/MyDataPileupHistogram.root",
 						 "pileup_mc",
 						 "pileup");
@@ -396,10 +396,7 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
     {
       Tree->GetEntry(i);
       if(i % 10000 == 0) fprintf(stdout, "\rProcessed through event: %d of %d", i, NumberOfEntries);      
-      fflush(stdout);
-      
-      std::cout<<"Info: l2_decayMode: "<<l2_decayMode<<std::endl;
-      std::cout<<"decayModeFinding_2: "<<decayModeFinding_2<<std::endl;
+      fflush(stdout);     
       
       //make the necessary 4 vectors      
       TLorentzVector l1; l1.SetPtEtaPhiE(pt_1, eta_1, phi_1, e_1); //muon
@@ -429,8 +426,8 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
       //look at this, the AN says specifically that zeta is defined to be the bisector of the momenta IN THE TRANSVERSE PLANE of the visible decay products.
       //TVector3 ZetaUnit = l1.Vect()*l2.Vect().Mag()+l2.Vect()*l1.Vect().Mag();//get a bisector of the angle between mu and tau
 
-      //get a bisector in the plane?      
-      TVector3 ZetaUnit;
+      //get a bisector in the transverse plane?      
+      TVector3 ZetaUnit;            
       float BisectorAngle = (l1.Vect().Phi() + l2.Vect().Phi())/2.0;
       ZetaUnit.SetPhi(BisectorAngle);
       ZetaUnit = ZetaUnit.Unit();
@@ -440,11 +437,19 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 	  if(BisectorAngle >= 0.0) BisectorAngle -= M_PI;
 	  else BisectorAngle += M_PI;
 	}
-      ZetaUnit.SetPhi(BisectorAngle);
-      
-      
+      ZetaUnit.SetPhi(BisectorAngle);            
+      ZetaUnit = ZetaUnit.Unit();          
+      //method(s) below seems to offer worse agreement?
+      /*
+      ZetaUnit = l1.Vect().Unit()+l2.Vect().Unit();
+      ZetaUnit.SetPtEtaPhi(ZetaUnit.Pt(),0.0,ZetaUnit.Phi());
+      ZetaUnit = ZetaUnit.Unit();
+      */
+      /*
+      ZetaUnit = l1.Vect().Unit()+l2.Vect().Unit();
       ZetaUnit = ZetaUnit.Unit();      
-      
+      */
+
       float PZetaVis = (l1.Vect()+l2.Vect()).Dot(ZetaUnit);
       float PZetaAll = (l1.Vect()+l2.Vect()+MissingP.Vect()).Dot(ZetaUnit);
       float PZeta = PZetaAll - 0.85 * PZetaVis;      
@@ -500,8 +505,8 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 	}
 
       //Data Selection
-      float Var = (l1+l2).M();      
-      
+      float Var = (l1+l2).M();                 
+	
       //we check four things at the same time. Signal region checks, W+Jets region checks, QCD in the signal region, and QCD in the W+Jets Region.
       //check the tau iso discriminants, and divide these our events by pass/fail            
       bool TauIsoDiscrim = (bool) byTightIsolationRerunMVArun2v2DBoldDMwLT_2;//byTightIsolationRerunMVArun2v2DBoldDMwLT_2;

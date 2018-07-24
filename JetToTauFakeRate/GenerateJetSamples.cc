@@ -136,37 +136,11 @@ void GenerateJetSamples()
   Tree->SetBranchAddress("njets",&njets);
 
   int NumberOfEntries = (int) Tree->GetEntries();
-
-  //Retrieve the fake rates for reweighting
-  TFile* FakeRateFile = new TFile("Distributions/FakeRateDistributions.root");
-  //start with jsut the oerall fake rates
-  TH1F* OverallFakeRates = (TH1F*)FakeRateFile->Get("OverallFakeRates");
-  float VLooseFakeRate = OverallFakeRates->GetBinContent(1);
-  float LooseFakeRate = OverallFakeRates->GetBinContent(2);
-  float MediumFakeRate = OverallFakeRates->GetBinContent(3);
-  float TightFakeRate = OverallFakeRates->GetBinContent(4);
-  float VTightFakeRate = OverallFakeRates->GetBinContent(5);
-  float VVTightFakeRate = OverallFakeRates->GetBinContent(6);
   
-  //now get the pt based fake rates
-  TH1F* VLoosePTFR = (TH1F*)FakeRateFile->Get("VLooseFakeRates");
-  TH1F* LoosePTFR = (TH1F*)FakeRateFile->Get("LooseFakeRates");
-  TH1F* MediumPTFR = (TH1F*)FakeRateFile->Get("MediumFakeRates");
-  TH1F* TightPTFR = (TH1F*)FakeRateFile->Get("TightFakeRates");
-  TH1F* VTightPTFR = (TH1F*)FakeRateFile->Get("VTightFakeRates");
-  TH1F* VVTightPTFR = (TH1F*)FakeRateFile->Get("VVTightFakeRates");
-
-  std::cout<<"VLooseFakeRate: "<<VLooseFakeRate<<" p/(1-p): "<<(VLooseFakeRate/(1.0-VLooseFakeRate))<<std::endl;
-  std::cout<<"LooseFakeRate: "<<LooseFakeRate<<" p/(1-p): "<<(LooseFakeRate/(1.0-LooseFakeRate))<<std::endl;
-  std::cout<<"MediumFakeRate: "<<LooseFakeRate<<" p/(1-p): "<<(MediumFakeRate/(1.0-MediumFakeRate))<<std::endl;
-  std::cout<<"TightFakeRate: "<<TightFakeRate<<" p/(1-p): "<<(TightFakeRate/(1.0-TightFakeRate))<<std::endl;
-  std::cout<<"VTightFakeRate: "<<VTightFakeRate<<" p/(1-p): "<<(VTightFakeRate/(1.0-VTightFakeRate))<<std::endl;
-  std::cout<<"VVTightFakeRate: "<<VVTightFakeRate<<" p/(1-p): "<<(VVTightFakeRate/(1.0-VVTightFakeRate))<<std::endl;
-
   //Create the jet distributions
   //Do we want to open the pass fail master file and take a quick peek at 
   // one of the ata histos to make sure we can get accurate measurements on histogram size?
-  TFile* PassFailFile = new TFile("Distributions/PassFailOut.root");
+  TFile* PassFailFile = new TFile("../Distributions/PassFailOut.root");
   TH1F* Data_Pass = (TH1F*)((TDirectory*)PassFailFile->Get("pass"))->Get("Data_Pass");
   //General Weight reweighted histos.
   TH1F* VLooseJetDistribution = new TH1F("VLooseJetDistribution","VLooseJetDistribution",
@@ -245,12 +219,60 @@ void GenerateJetSamples()
 					      Data_Pass->GetSize()-2,
 					      Data_Pass->GetXaxis()->GetXmin(),
 					      Data_Pass->GetXaxis()->GetXmax());
+
+  TFile* FakeRateFile = new TFile("../Distributions/FakeRateDistributions.root");
+  //start with jsut the oerall fake rates
+  TH1F* OverallFakeRates = (TH1F*)FakeRateFile->Get("OverallFakeRates");
+  float VLooseFakeRate = OverallFakeRates->GetBinContent(1);
+  float LooseFakeRate = OverallFakeRates->GetBinContent(2);
+  float MediumFakeRate = OverallFakeRates->GetBinContent(3);
+  float TightFakeRate = OverallFakeRates->GetBinContent(4);
+  float VTightFakeRate = OverallFakeRates->GetBinContent(5);
+  float VVTightFakeRate = OverallFakeRates->GetBinContent(6);
   
+  //now get the pt based fake rates
+  TH1F* VLoosePTFR = (TH1F*)FakeRateFile->Get("VLooseFakeRates");
+  TH1F* LoosePTFR = (TH1F*)FakeRateFile->Get("LooseFakeRates");
+  TH1F* MediumPTFR = (TH1F*)FakeRateFile->Get("MediumFakeRates");
+  TH1F* TightPTFR = (TH1F*)FakeRateFile->Get("TightFakeRates");
+  TH1F* VTightPTFR = (TH1F*)FakeRateFile->Get("VTightFakeRates");
+  TH1F* VVTightPTFR = (TH1F*)FakeRateFile->Get("VVTightFakeRates");
+
+  std::cout<<"VLooseFakeRate: "<<VLooseFakeRate<<" p/(1-p): "<<(VLooseFakeRate/(1.0-VLooseFakeRate))<<std::endl;
+  std::cout<<"LooseFakeRate: "<<LooseFakeRate<<" p/(1-p): "<<(LooseFakeRate/(1.0-LooseFakeRate))<<std::endl;
+  std::cout<<"MediumFakeRate: "<<MediumFakeRate<<" p/(1-p): "<<(MediumFakeRate/(1.0-MediumFakeRate))<<std::endl;
+  std::cout<<"TightFakeRate: "<<TightFakeRate<<" p/(1-p): "<<(TightFakeRate/(1.0-TightFakeRate))<<std::endl;
+  std::cout<<"VTightFakeRate: "<<VTightFakeRate<<" p/(1-p): "<<(VTightFakeRate/(1.0-VTightFakeRate))<<std::endl;
+  std::cout<<"VVTightFakeRate: "<<VVTightFakeRate<<" p/(1-p): "<<(VVTightFakeRate/(1.0-VVTightFakeRate))<<std::endl;
+
+  //Variables for creating arbitrary weightings of a disribution
+  float VLooseTestFakeRate = 0.05;
+  float LooseTestFakeRate = 0.35;
+  float MediumTestFakeRate = 0.25;
+  float TightTestFakeRate = 0.16;
+  float VTightTestFakeRate = 0.10;
+  float VVTightTestFakeRate = 0.05;
+  
+  std::cout<<"Test Weightings Set At:"<<std::endl;
+  std::cout<<"VLooseTestFakeRate: "<<VLooseTestFakeRate<<" Corresponding to Weight: "<<(VLooseTestFakeRate/(1.0 - VLooseTestFakeRate))<<std::endl;
+  std::cout<<"LooseTestFakeRate: "<<LooseTestFakeRate<<" Corresponding to Weight: "<<(LooseTestFakeRate/(1.0 - LooseTestFakeRate))<<std::endl;
+  std::cout<<"MediumTestFakeRate: "<<MediumTestFakeRate<<" Corresponding to Weight: "<<(MediumTestFakeRate/(1.0 - MediumTestFakeRate))<<std::endl;
+  std::cout<<"TightTestFakeRate: "<<TightTestFakeRate<<" Corresponding to Weight: "<<(TightTestFakeRate/(1.0 - TightTestFakeRate))<<std::endl;
+  std::cout<<"VTightTestFakeRate: "<<VTightTestFakeRate<<" Corresponding to Weight: "<<(VTightTestFakeRate/(1.0 - VTightTestFakeRate))<<std::endl;
+  std::cout<<"VVTightTestFakeRate: "<<VVTightTestFakeRate<<" Corresponding to Weight: "<<(VVTightTestFakeRate/(1.0 - VVTightTestFakeRate))<<std::endl;
+      
   for(int i=0;i < NumberOfEntries; i++)
     {
       Tree->GetEntry(i);
-      if(i % 10000 == 0) fprintf(stdout, "\rProcessed through event: %d of %d", i, NumberOfEntries);      
-      fflush(stdout);
+      if(i%(NumberOfEntries/20)==0 ||  i==(NumberOfEntries-1)) 
+	{	  
+	  fprintf(stdout,"<"); 
+	  for(int NumEquals = 0;NumEquals < i/(NumberOfEntries/20); NumEquals++) fprintf(stdout,"="); 
+	  for(int NumSpaces = 0;NumSpaces < 20-(i/(NumberOfEntries/20));NumSpaces++) fprintf(stdout," ");
+	  fprintf(stdout,">\r");
+	  if(i==(NumberOfEntries-1)) fprintf(stdout,"<====================>\n");
+	  fflush(stdout);
+	}
 
       TLorentzVector l1; l1.SetPtEtaPhiE(pt_1, eta_1, phi_1, e_1); //muon
       TLorentzVector l2; l2.SetPtEtaPhiE(pt_2, eta_2, phi_2, e_2); //tau
@@ -270,8 +292,9 @@ void GenerateJetSamples()
       
       float TransverseMass = std::sqrt(2.0*l1.Pt()*MissingP.Pt()*(1.0-std::cos(l1.DeltaPhi(MissingP))));
 
-      //get a bisector in the plane?      
+      //get a bisector in the transverse plane?      
       TVector3 ZetaUnit;
+      
       float BisectorAngle = (l1.Vect().Phi() + l2.Vect().Phi())/2.0;
       ZetaUnit.SetPhi(BisectorAngle);
       ZetaUnit = ZetaUnit.Unit();
@@ -282,18 +305,27 @@ void GenerateJetSamples()
 	  else BisectorAngle += M_PI;
 	}
       ZetaUnit.SetPhi(BisectorAngle);
-      
-      
       ZetaUnit = ZetaUnit.Unit();      
-      
+      //method(s) below seems to ffer worse agreement?
+      /*
+      ZetaUnit = l1.Vect().Unit()+l2.Vect().Unit();
+      ZetaUnit.SetPtEtaPhi(ZetaUnit.Pt(),0.0,ZetaUnit.Phi());
+      ZetaUnit = ZetaUnit.Unit();
+      */
+      /*
+      ZetaUnit = l1.Vect().Unit()+l2.Vect().Unit();
+      ZetaUnit = ZetaUnit.Unit();
+      */
       float PZetaVis = (l1.Vect()+l2.Vect()).Dot(ZetaUnit);
       float PZetaAll = (l1.Vect()+l2.Vect()+MissingP.Vect()).Dot(ZetaUnit);
       float PZeta = PZetaAll - 0.85 * PZetaVis;
 
-      float Var = (l1+l2).M();
+      float Var = (l1+l2).M();      
       
       //Okay, according to cecile, we sort of ignore the fail regions for now?
-      if(q_1 * q_2 < 0.0 and TransverseMass < 40.0 and PZeta > -25.0)
+      // should we look in the same sign region to be assured that we're working with Jets?
+      // out of curiosity, what happens when we look in the W+Jets Regions and/or the QCD region
+      if(q_1 * q_2 < 0.0 and TransverseMass < 40.0 and PZeta > -25.0)      
 	{
 	  //alright, now we look at each of the indivudal MVA working points and find the
 	  // we find the ones that fail, and we reweight them, and record the visible mass
@@ -305,7 +337,7 @@ void GenerateJetSamples()
 	      PTFakeRate = VLoosePTFR->GetBinContent(VLoosePTFR->FindBin(l2.Pt()));
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
 	      VLoosePTFRJetDistribution->Fill(Var,PTWeighting);
-	      VLooseTestJetDistribution->Fill(Var,0.10);
+	      VLooseTestJetDistribution->Fill(Var, (VLooseTestFakeRate/(1.0-VLooseTestFakeRate)));
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byLooseIsolationRerunMVArun2v2DBoldDMwLT_2)
 	    {
@@ -313,7 +345,7 @@ void GenerateJetSamples()
 	      PTFakeRate = LoosePTFR->GetBinContent(LoosePTFR->FindBin(l2.Pt()));
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
 	      LoosePTFRJetDistribution->Fill(Var,PTWeighting);
-	      LooseTestJetDistribution->Fill(Var, 1.10);
+	      LooseTestJetDistribution->Fill(Var, (LooseTestFakeRate/(1.0 - LooseTestFakeRate)));
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byMediumIsolationRerunMVArun2v2DBoldDMwLT_2)
 	    {
@@ -321,7 +353,7 @@ void GenerateJetSamples()
 	      PTFakeRate = MediumPTFR->GetBinContent(MediumPTFR->FindBin(l2.Pt()));
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
 	      MediumPTFRJetDistribution->Fill(Var,PTWeighting);
-	      MediumTestJetDistribution->Fill(Var,0.40);
+	      MediumTestJetDistribution->Fill(Var, (MediumTestFakeRate/(1.0 - MediumTestFakeRate)));
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byTightIsolationRerunMVArun2v2DBoldDMwLT_2)
 	    {
@@ -329,7 +361,7 @@ void GenerateJetSamples()
 	      PTFakeRate = TightPTFR->GetBinContent(TightPTFR->FindBin(l2.Pt()));
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
 	      TightPTFRJetDistribution->Fill(Var,PTWeighting);
-	      TightTestJetDistribution->Fill(Var,0.20);
+	      TightTestJetDistribution->Fill(Var, (TightTestFakeRate/(1.0 - TightTestFakeRate)));
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byVTightIsolationRerunMVArun2v2DBoldDMwLT_2)
 	    {
@@ -337,7 +369,7 @@ void GenerateJetSamples()
 	      PTFakeRate = VTightPTFR->GetBinContent(VTightPTFR->FindBin(l2.Pt()));
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
 	      VTightPTFRJetDistribution->Fill(Var,PTWeighting);
-	      VTightTestJetDistribution->Fill(Var,0.10);
+	      VTightTestJetDistribution->Fill(Var, (VTightTestFakeRate/(1.0 - VTightTestFakeRate)));
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byVVTightIsolationRerunMVArun2v2DBoldDMwLT_2)
 	    {
@@ -345,7 +377,7 @@ void GenerateJetSamples()
 	      PTFakeRate = VVTightPTFR->GetBinContent(VVTightPTFR->FindBin(l2.Pt()));
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
 	      VVTightPTFRJetDistribution->Fill(Var,PTWeighting);
-	      VVTightTestJetDistribution->Fill(Var,0.05);
+	      VVTightTestJetDistribution->Fill(Var, (VVTightTestFakeRate/(1.0 - VVTightTestFakeRate)));
 	    }
 	} //end of checking for signal region
     } //end of for loop
@@ -353,7 +385,7 @@ void GenerateJetSamples()
   std::cout<<std::endl;
 
   //Alrightm let's right this out and get the heck out of here.
-  TFile* FakeRateDeterminedDistributions = new TFile("Distributions/FakeRateDeterminedDistributions.root","RECREATE");
+  TFile* FakeRateDeterminedDistributions = new TFile("../Distributions/FakeRateDeterminedDistributions.root","RECREATE");
   VLooseJetDistribution->Write();
   LooseJetDistribution->Write();
   MediumJetDistribution->Write();

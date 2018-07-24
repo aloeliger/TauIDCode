@@ -194,13 +194,22 @@ void JetToTauFakesMeasurement()
   TH1F* VTightPTFakeRates = new TH1F("VTightFakeRates","VTightFakeRates",20,0.0,200.0);
   TH1F* VVTightPTFakeRates = new TH1F("VVTightFakeRates","VVTightFakeRates",20,0.0,200.0);
 
+  std::cout<<"Number of Entries: "<<NumberOfEntries<<std::endl;
+
   //loop over the entries and pick out events that meet loose tau reconstruction, 
   // but fail on closer scrutiny. These will be the Jets faking to Taus
   for(int i=0;i<NumberOfEntries;i++)
     {
-      Tree->GetEntry(i);
-      if(i % 10000 == 0) fprintf(stdout, "\rProcessed through event: %d of %d", i, NumberOfEntries);
-      fflush(stdout);
+      Tree->GetEntry(i);      
+      if(i%(NumberOfEntries/20)==0 ||  i==(NumberOfEntries-1)) 
+	{	  
+	  fprintf(stdout,"<"); 
+	  for(int NumEquals = 0;NumEquals < i/(NumberOfEntries/20); NumEquals++) fprintf(stdout,"="); 
+	  for(int NumSpaces = 0;NumSpaces < 20-(i/(NumberOfEntries/20));NumSpaces++) fprintf(stdout," ");
+	  fprintf(stdout,">\r");
+	  if(i==(NumberOfEntries-1)) fprintf(stdout,"<====================>\n");
+	  fflush(stdout);
+	}
 
       // get three lorentz vectors going. first two are muons, the third is a tau
       TLorentzVector l1; l1.SetPtEtaPhiE(pt_1,eta_1,phi_1,e_1); //muon 1
@@ -220,7 +229,7 @@ void JetToTauFakesMeasurement()
       // the only sort of other criteria we'll require is stringent selection of a Z mass
       // should we also require opposite sign mu's to ensure the Z decay?
       // may as well?
-      if((l1+l2).M() <= 80.0 or (l1+l2).M() >= 100.0 or q_1*q_2 > 0) continue;           
+      if((l1+l2).M() <= 80.0 or (l1+l2).M() >= 100.0 or q_1*q_2 > 0) continue;      
 
       // okay we should now be working witha Z decay to mu's and what is nominally a tau
       BaselineSelectedTaus += 1.0;
@@ -312,7 +321,7 @@ void JetToTauFakesMeasurement()
   LoosePTFakeRates->Divide(VLoosePTFakeRates);
   VLoosePTFakeRates->Divide(BaselineSelectedTauPT);
   
-  TFile* FakeRateFile = new TFile("Distributions/FakeRateDistributions.root","RECREATE");
+  TFile* FakeRateFile = new TFile("../Distributions/FakeRateDistributions.root","RECREATE");
   OverallFakeRates->Write();
   VLoosePTFakeRates->Write();
   LoosePTFakeRates->Write();

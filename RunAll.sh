@@ -1,4 +1,9 @@
 #!/usr/bin/bash
+
+#Until I sort out what the issue is with the cnsenv root setup
+# we have the two old lines in this script
+sh GoofyRootSetup.sh
+
 #run the ID code over all the available distributions.
 #these the "basic" distributions
 root -b -q "TauID.cc(\"Data\")"

@@ -1,3 +1,8 @@
+#!/usr/bin/nash
+#Until I sort out what the issue is with the cnsenv root setup
+# we have the two old lines in this script
+sh ../GoofyRootSetup.sh
+
 root -b -l -q JetToTauFakesMeasurement.cc
 root -b -l -q GenerateJetSamples.cc
 #cd ../TemporaryCode/
@@ -25,3 +30,4 @@ hadd -f ../Distributions/ZMuMu.root ../TemporaryFiles/*MuMu.root
 
 root -b -l -q GenerateMuMuQCD.cc
 root -l CompileMuMuHistograms.cc
+root -b -l -q PrepareFakeRateForCombine.cc

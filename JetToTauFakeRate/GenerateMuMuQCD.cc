@@ -11,7 +11,7 @@ void GenerateMuMuQCD()
   TH1F* DY2Histo = (TH1F*) QCDFile->Get("DY2_QCD");
   TH1F* DY3Histo = (TH1F*) QCDFile->Get("DY3_QCD");
   TH1F* DY4Histo = (TH1F*) QCDFile->Get("DY4_QCD");
-  TH1F* TTTo2L2NuHisto = (TH1F*) QCDFile->Get("TT2L2Nu_QCD");
+  TH1F* TTTo2L2NuHisto = (TH1F*) QCDFile->Get("TTTo2L2Nu_QCD");
   TH1F* TTToHadronicHisto = (TH1F*) QCDFile->Get("TTToHadronic_QCD");
   TH1F* TTToSemiLeptonicHisto = (TH1F*) QCDFile->Get("TTToSemiLeptonic_QCD");
   TH1F* WHisto = (TH1F*) QCDFile->Get("W_QCD");

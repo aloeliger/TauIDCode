@@ -61,7 +61,7 @@ void CompileMuMuHistograms()
   DataHisto->Sumw2();
 
   DYHisto->SetLineColor(kBlack);
-  DYHisto->SetFillColor(kYellow);
+  DYHisto->SetFillColor(kBlue);
   
   DiBosonHisto->SetLineColor(kBlack);
   DiBosonHisto->SetFillColor(kPink-3);
@@ -93,7 +93,7 @@ void CompileMuMuHistograms()
 
   TLegend* Legend = new TLegend(0.7, 0.5, 0.88, 0.68);
   Legend->AddEntry(DataHisto, "Data", "ep");
-  Legend->AddEntry(DYHisto, "DY", "f");
+  Legend->AddEntry(DYHisto, "Z #rightarrow #mu#mu", "f");
   Legend->AddEntry(DiBosonHisto, "DiBoson", "f");
   Legend->AddEntry(TTHisto, "t#bar{t}", "f");
   Legend->AddEntry(WHisto, "W+Jets", "f");

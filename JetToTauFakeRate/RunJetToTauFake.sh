@@ -1,7 +1,11 @@
 #!/usr/bin/nash
+
+#argument taken is the tua iso working point VLoose to VVTight
+
 #Until I sort out what the issue is with the cnsenv root setup
 # we have the two old lines in this script
-sh ../GoofyRootSetup.sh
+#sh ../GoofyRootSetup.sh
+
 
 root -b -l -q JetToTauFakesMeasurement.cc
 root -b -l -q GenerateJetSamples.cc
@@ -28,6 +32,4 @@ root -b -l -q ZMuMuRegion.cc\(\"ZZ\"\)
 
 hadd -f ../Distributions/ZMuMu.root ../TemporaryFiles/*MuMu.root
 
-root -b -l -q GenerateMuMuQCD.cc
-root -l CompileMuMuHistograms.cc
-root -b -l -q PrepareFakeRateForCombine.cc
+sh RunFakeRatePostProcessing.sh $1

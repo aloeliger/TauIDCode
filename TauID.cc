@@ -6,11 +6,11 @@
 // 3.) same sign region (for estimating QCD in the signal region
 // 4.) same sign high transverse mass region (for estimating QCD in W+Jets region)
 #include "TROOT.h"
-#include "/afs/cern.ch/user/a/aloelige/private/RootMacros/LumiReweightingStandAlone.h"
+#include "/afs/cern.ch/user/a/aloelige//private/CMSSW_9_4_0/src/PhysicsTools/Utilities/interface/LumiReweightingStandAlone.h"
 #include <cmath>
 #include <string>
 
-void TauID(std::string input, float ShapeUncertainty = 1.0)
+void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.0)
 {
   //get the tree that we're going to run
   TFile *MyFile = new TFile(("/data/ccaillol/tauid_20june_mt/"+input+".root").c_str());
@@ -505,13 +505,43 @@ void TauID(std::string input, float ShapeUncertainty = 1.0)
 	}
 
       //Data Selection
-      float Var = (l1+l2).M();                 
-	
+      float Var = (l1+l2).M();                              
+      
+      //Alright, let's get it so we don't have to edit code to get access to all the working points
+      bool TauIsoDiscrim;
+      assert( IsoWorkingPoint == "VLoose" ||
+	     IsoWorkingPoint == "Loose" ||
+	      IsoWorkingPoint == "Medium" ||
+	      IsoWorkingPoint == "Tight" ||
+	      IsoWorkingPoint == "VTight" ||
+	      IsoWorkingPoint == "VVTight");
+      if(IsoWorkingPoint == "VLoose")
+	{
+	  TauIsoDiscrim = (bool) byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2;
+	}
+      else if(IsoWorkingPoint == "Loose")
+	{
+	  TauIsoDiscrim = (bool) byLooseIsolationRerunMVArun2v2DBoldDMwLT_2;
+	}
+      else if(IsoWorkingPoint == "Medium")
+	{
+	  TauIsoDiscrim = (bool) byMediumIsolationRerunMVArun2v2DBoldDMwLT_2;
+	}
+      else if(IsoWorkingPoint == "Tight")
+	{
+	  TauIsoDiscrim = (bool) byTightIsolationRerunMVArun2v2DBoldDMwLT_2;
+	}
+      else if(IsoWorkingPoint == "VTight")
+	{
+	  TauIsoDiscrim = (bool) byVTightIsolationRerunMVArun2v2DBoldDMwLT_2;
+	}
+      else if(IsoWorkingPoint == "VVTight")
+	{
+	  TauIsoDiscrim = (bool) byVVTightIsolationRerunMVArun2v2DBoldDMwLT_2;
+	}
+      
       //we check four things at the same time. Signal region checks, W+Jets region checks, QCD in the signal region, and QCD in the W+Jets Region.
-      //check the tau iso discriminants, and divide these our events by pass/fail            
-      bool TauIsoDiscrim = (bool) byTightIsolationRerunMVArun2v2DBoldDMwLT_2;//byTightIsolationRerunMVArun2v2DBoldDMwLT_2;
-      // 6/8/2018 EDIT: We're going to do a very rough hack here to include the genmatching
-      //check signs: if Opposite sign is signal contribution
+      //check the tau iso discriminants, and divide these our events by pass/fail
       if(q_1 * q_2 < 0.0)
 	{
 	  //Signal contribution

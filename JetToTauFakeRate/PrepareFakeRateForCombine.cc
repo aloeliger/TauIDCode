@@ -1,6 +1,6 @@
 #include "TROOT.h"
 
-void PrepareFakeRateForCombine()
+void PrepareFakeRateForCombine(string IsoWorkingPoint)
 {
   TFile* PassFailFile = new TFile("../Distributions/PassFailOut.root");
   TDirectory* passDirectory = (TDirectory*) PassFailFile->Get("pass");
@@ -33,7 +33,37 @@ void PrepareFakeRateForCombine()
   
   //Get the fake rates determined stuff
   TFile* FakeRateDeterminedDistributions = new TFile("../Distributions/FakeRateDeterminedDistributions.root");
-  TH1F* TightJetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("TightJetDistribution");
+  TH1F* JetDistribution; 
+  assert(IsoWorkingPoint == "VLoose" ||
+	 IsoWorkingPoint == "Loose" ||
+	 IsoWorkingPoint == "Medium" ||
+	 IsoWorkingPoint == "Tight" ||
+	 IsoWorkingPoint == "VTight" ||
+	 IsoWorkingPoint == "VVTight");
+    if(IsoWorkingPoint == "VLoose")
+      {	
+	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("VLooseJetDistribution");
+      }
+    else if(IsoWorkingPoint == "Loose")
+      {
+	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("LooseJetDistribution");
+      }
+    else if(IsoWorkingPoint == "Medium")
+      {
+	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("MediumJetDistribution");
+      }
+    else if(IsoWorkingPoint == "Tight")
+      {
+	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("TightJetDistribution");
+      }
+    else if(IsoWorkingPoint == "VTight")
+      {
+	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("VTightJetDistribution");
+      }
+    else if(IsoWorkingPoint == "VVTight")
+      {
+	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("VVTightJetDistribution");
+      }  
   
   std::cout<<"Simplifying the DY Histos"<<std::endl;
   //pass compiling  
@@ -87,8 +117,8 @@ void PrepareFakeRateForCombine()
   DiBoson_Pass->Add(ZZ_Pass);
   DiBoson_Pass->Write();
 
-  TightJetDistribution->SetNameTitle("Jets","Jets");
-  TightJetDistribution->Write();
+  JetDistribution->SetNameTitle("Jets","Jets");
+  JetDistribution->Write();
   
   std::cout<<"Preparing the Zmm region"<<std::endl;
   TFile* ZMuMuFile = new TFile("../Distributions/ZMuMu.root");
@@ -134,7 +164,7 @@ void PrepareFakeRateForCombine()
   Data_MuMu->SetNameTitle("data_obs","data_obs");
   Data_MuMu->Write();
 
-  DY_MuMu->SetNameTitle("DYB","DYB");
+  DY_MuMu->SetNameTitle("DYS","DYS");
   DY_MuMu->Write();
 
   TH1F* TT_MuMu = new TH1F("TT",
@@ -154,13 +184,38 @@ void PrepareFakeRateForCombine()
   DiBoson_MuMu->Add(WW_MuMu,WZ_MuMu);
   DiBoson_MuMu->Add(ZZ_MuMu);
   DiBoson_MuMu->Write();
+  // pull a temporary thing where we include a temporary "jets" into the ZMM region
+  // for the sake of having the same distributions as the ZMT region
+  // and then we'll also include empty "DYB" and "DYJ" regions as well.
+
+  TH1F* Jets_MuMu = new TH1F("Jets",
+			     "Jets",
+			     DY_MuMu->GetSize()-2,
+			     DY_MuMu->GetXaxis()->GetXmin(),
+			     DY_MuMu->GetXaxis()->GetXmax());
+  Jets_MuMu->Write();;
+
+  TH1F* DYB_MuMu = new TH1F("DYB",
+			     "DYB",
+			     DY_MuMu->GetSize()-2,
+			     DY_MuMu->GetXaxis()->GetXmin(),
+			     DY_MuMu->GetXaxis()->GetXmax());
+  DYB_MuMu->Write();;
+
+  TH1F* DYJ_MuMu = new TH1F("DYJ",
+			     "DYJ",
+			     DY_MuMu->GetSize()-2,
+			     DY_MuMu->GetXaxis()->GetXmin(),
+			     DY_MuMu->GetXaxis()->GetXmax());
+  DYJ_MuMu->Write();;
   
+  /*
   W_MuMu->SetNameTitle("W","W");
   W_MuMu->Write();
 
   QCD_MuMu->SetNameTitle("QCD","QCD");
   QCD_MuMu->Write();
-
+  */
   CombineFile->Close();
   FakeRateDeterminedDistributions->Close();
   PassFailFile->Close();

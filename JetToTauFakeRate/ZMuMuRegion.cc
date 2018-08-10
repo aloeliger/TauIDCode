@@ -159,6 +159,9 @@ void ZMuMuRegion(std::string input)
       if(pt_1 < 29.0 or std::abs(eta_1) > 2.1 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
       if(pt_2 < 29.0 or std::abs(eta_2) > 2.1 or !id_m_medium_2 or iso_2 > 0.15 or std::abs(dZ_2) > 0.2 or std::abs(d0_2) > 0.045 or !matchIsoMu27_2) continue;
 
+      //pair criteria
+      if(q_1*q_2 >= 0.0 or (l1+l2).M() >= 120.0 or (l1+l2).M() <= 60.0) continue;
+
       float deltaphi = std::abs(phi_1-phi_2);
       if (deltaphi > M_PI) deltaphi-=2.0*M_PI;
       float DeltaR = std::sqrt((eta_1-eta_2)*(eta_1-eta_2)+deltaphi*deltaphi);
@@ -193,13 +196,17 @@ void ZMuMuRegion(std::string input)
       //Create the weighting
       float PileupWeight = LumiWeights_12->weight(npu);
       
-      float muTriggerSF = TriggerWeightings->GetBinContent(TriggerWeightings->FindBin(fabs(l1.Eta()),l1.Pt()));
-      float muIDSF =  IDWeightings->GetBinContent(IDWeightings->FindBin(l1.Pt(),fabs(l1.Eta())));
-      float muISOSF =  ISOWeightings->GetBinContent(ISOWeightings->FindBin(l1.Pt(),fabs(l1.Eta())));
+      float muTriggerSF_1 = TriggerWeightings->GetBinContent(TriggerWeightings->FindBin(fabs(l1.Eta()),l1.Pt()));
+      float muIDSF_1 =  IDWeightings->GetBinContent(IDWeightings->FindBin(l1.Pt(),fabs(l1.Eta())));
+      float muISOSF_1 =  ISOWeightings->GetBinContent(ISOWeightings->FindBin(l1.Pt(),fabs(l1.Eta())));
 
-      if(input == "WW")NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
-      else if(input == "WZ") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
-      else if(input == "ZZ") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;            
+      float muTriggerSF_2 = TriggerWeightings->GetBinContent(TriggerWeightings->FindBin(fabs(l2.Eta()),l2.Pt()));
+      float muIDSF_2 =  IDWeightings->GetBinContent(IDWeightings->FindBin(l2.Pt(),fabs(l2.Eta())));
+      float muISOSF_2 =  ISOWeightings->GetBinContent(ISOWeightings->FindBin(l2.Pt(),fabs(l2.Eta())));
+
+      if(input == "WW")NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF_1*muIDSF_1*muISOSF_1*muTriggerSF_2*muIDSF_2*muISOSF_2;
+      else if(input == "WZ") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF_1*muIDSF_1*muISOSF_1*muTriggerSF_2*muIDSF_2*muISOSF_2;
+      else if(input == "ZZ") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF_1*muIDSF_1*muISOSF_1*muTriggerSF_2*muIDSF_2*muISOSF_2;            
       // from the excel file.
       else if(input == "W"
 	      or input == "W1"
@@ -207,7 +214,7 @@ void ZMuMuRegion(std::string input)
 	      or input == "W3"
 	      or input == "W4") 
 	{
-	  NormalizationWeight = PileupWeight*muTriggerSF*muIDSF*muISOSF;	  
+	  NormalizationWeight = PileupWeight*muTriggerSF_1*muIDSF_1*muISOSF_1*muTriggerSF_2*muIDSF_2*muISOSF_2;	  
 	  
 	  if(numGenJets==0) NormalizationWeight = NormalizationWeight*110.1887;
 	  if(numGenJets==1) NormalizationWeight = NormalizationWeight*14.1549;
@@ -215,9 +222,9 @@ void ZMuMuRegion(std::string input)
 	  if(numGenJets==3) NormalizationWeight = NormalizationWeight*2.40205;
 	  if(numGenJets==4) NormalizationWeight = NormalizationWeight*2.140756;
 	}
-      else if(input == "TTTo2L2Nu") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
-      else if(input == "TTToHadronic") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
-      else if(input == "TTToSemiLeptonic") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
+      else if(input == "TTTo2L2Nu") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF_1*muIDSF_1*muISOSF_1*muTriggerSF_2*muIDSF_2*muISOSF_2;
+      else if(input == "TTToHadronic") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF_1*muIDSF_1*muISOSF_1*muTriggerSF_2*muIDSF_2*muISOSF_2;
+      else if(input == "TTToSemiLeptonic") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF_1*muIDSF_1*muISOSF_1*muTriggerSF_2*muIDSF_2*muISOSF_2;
 
       else if(input == "DY"
 	      or input == "DY1"
@@ -225,7 +232,7 @@ void ZMuMuRegion(std::string input)
 	      or input == "DY3"
 	      or input == "DY4")
 	{	  
-	  NormalizationWeight = PileupWeight*muTriggerSF*muIDSF*muISOSF;
+	  NormalizationWeight = PileupWeight*muTriggerSF_1*muIDSF_1*muISOSF_1*muTriggerSF_2*muIDSF_2*muISOSF_2;
 	  
 	  if(numGenJets==0) NormalizationWeight = NormalizationWeight*3.009;
 	  if(numGenJets==1) NormalizationWeight = NormalizationWeight*0.589;

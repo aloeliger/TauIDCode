@@ -395,8 +395,15 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
   for(int i =0;i < NumberOfEntries; i++)
     {
       Tree->GetEntry(i);
-      if(i % 10000 == 0) fprintf(stdout, "\rProcessed through event: %d of %d", i, NumberOfEntries);      
-      fflush(stdout);     
+      if(i%(NumberOfEntries/20)==0 ||  i==(NumberOfEntries-1)) 
+	{	  
+	  fprintf(stdout,"<"); 
+	  for(int NumEquals = 0;NumEquals < i/(NumberOfEntries/20); NumEquals++) fprintf(stdout,"="); 
+	  for(int NumSpaces = 0;NumSpaces < 20-(i/(NumberOfEntries/20));NumSpaces++) fprintf(stdout," ");
+	  fprintf(stdout,">\r");
+	  if(i==(NumberOfEntries-1)) fprintf(stdout,"<====================>\n");
+	  fflush(stdout);
+	}
       
       //make the necessary 4 vectors      
       TLorentzVector l1; l1.SetPtEtaPhiE(pt_1, eta_1, phi_1, e_1); //muon

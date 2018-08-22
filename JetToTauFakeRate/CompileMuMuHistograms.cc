@@ -1,7 +1,7 @@
 #include "TROOT.h"
-#include "/afs/cern.ch/user/a/aloelige/private/RootMacros/CMS_lumi.C"
-#include "/afs/cern.ch/user/a/aloelige/private/RootMacros/tdrstyle.C"
-#include "/afs/cern.ch/user/a/aloelige/private/RootMacros/MakeRatioPlot.cc"
+#include "/afs/cern.ch/user/a/aloelige/private/ScriptsAndMacros/CMS_lumi.C"
+#include "/afs/cern.ch/user/a/aloelige/private/ScriptsAndMacros/tdrstyle.C"
+#include "/afs/cern.ch/user/a/aloelige/private/ScriptsAndMacros/MakeRatioPlot.cc"
 
 void CompileMuMuHistograms()
 {

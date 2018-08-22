@@ -34,6 +34,8 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   //Get the fake rates determined stuff
   TFile* FakeRateDeterminedDistributions = new TFile("../Distributions/FakeRateDeterminedDistributions.root");
   TH1F* JetDistribution; 
+  TH1F* JetDistribution_DOWN;
+  TH1F* JetDistribution_UP;
   assert(IsoWorkingPoint == "VLoose" ||
 	 IsoWorkingPoint == "Loose" ||
 	 IsoWorkingPoint == "Medium" ||
@@ -42,27 +44,39 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
 	 IsoWorkingPoint == "VVTight");
     if(IsoWorkingPoint == "VLoose")
       {	
-	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("VLooseJetDistribution");
+	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("VLoosePTFRJetDistribution");
+	JetDistribution_DOWN = (TH1F*) FakeRateDeterminedDistributions->Get("VLooseJetDistribution");
+	JetDistribution_UP = (TH1F*) FakeRateDeterminedDistributions->Get("VLooseHighJetDistribution");
       }
     else if(IsoWorkingPoint == "Loose")
       {
-	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("LooseJetDistribution");
+	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("LoosePTFRJetDistribution");
+	JetDistribution_DOWN = (TH1F*) FakeRateDeterminedDistributions->Get("LooseJetDistribution");
+	JetDistribution_UP = (TH1F*) FakeRateDeterminedDistributions->Get("LooseHighJetDistribution");
       }
     else if(IsoWorkingPoint == "Medium")
       {
-	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("MediumJetDistribution");
+	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("MediumPTFRJetDistribution");
+	JetDistribution_DOWN = (TH1F*) FakeRateDeterminedDistributions->Get("MediumJetDistribution");
+	JetDistribution_UP = (TH1F*) FakeRateDeterminedDistributions->Get("MediumHighJetDistribution");
       }
     else if(IsoWorkingPoint == "Tight")
       {
-	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("TightJetDistribution");
+	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("TightPTFRJetDistribution");
+	JetDistribution_DOWN = (TH1F*) FakeRateDeterminedDistributions->Get("TightJetDistribution");
+	JetDistribution_UP = (TH1F*) FakeRateDeterminedDistributions->Get("TightHighJetDistribution");
       }
     else if(IsoWorkingPoint == "VTight")
       {
-	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("VTightJetDistribution");
+	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("VTightPTFRJetDistribution");
+	JetDistribution_DOWN = (TH1F*) FakeRateDeterminedDistributions->Get("VTightJetDistribution");
+	JetDistribution_UP = (TH1F*) FakeRateDeterminedDistributions->Get("VTightHighJetDistribution");
       }
     else if(IsoWorkingPoint == "VVTight")
       {
-	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("VVTightJetDistribution");
+	JetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("VVTightPTFRJetDistribution");
+	JetDistribution_DOWN = (TH1F*) FakeRateDeterminedDistributions->Get("VVTightJetDistribution");
+	JetDistribution_UP = (TH1F*) FakeRateDeterminedDistributions->Get("VVTightHighJetDistribution");
       }  
   
   std::cout<<"Simplifying the DY Histos"<<std::endl;
@@ -119,6 +133,12 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
 
   JetDistribution->SetNameTitle("Jets","Jets");
   JetDistribution->Write();
+
+  JetDistribution_DOWN->SetNameTitle("Jets_UncertaintyDown","Jets_UncertaintyDown");
+  JetDistribution_DOWN->Write();
+  
+  JetDistribution_UP->SetNameTitle("Jets_UncertaintyUp","Jets_UncertaintyUp");
+  JetDistribution_UP->Write();
   
   std::cout<<"Preparing the Zmm region"<<std::endl;
   TFile* ZMuMuFile = new TFile("../Distributions/ZMuMu.root");
@@ -164,7 +184,7 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   Data_MuMu->SetNameTitle("data_obs","data_obs");
   Data_MuMu->Write();
 
-  DY_MuMu->SetNameTitle("DYS","DYS");
+  DY_MuMu->SetNameTitle("DYB","DYB");
   DY_MuMu->Write();
 
   TH1F* TT_MuMu = new TH1F("TT",
@@ -193,21 +213,35 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
 			     DY_MuMu->GetSize()-2,
 			     DY_MuMu->GetXaxis()->GetXmin(),
 			     DY_MuMu->GetXaxis()->GetXmax());
-  Jets_MuMu->Write();;
+  Jets_MuMu->Write();
 
-  TH1F* DYB_MuMu = new TH1F("DYB",
-			     "DYB",
+  TH1F* Jets_MuMu_DOWN = new TH1F("Jets_UncertaintyDown",
+				  "Jets_UncertaintyDown",
+				  DY_MuMu->GetSize()-2,
+				  DY_MuMu->GetXaxis()->GetXmin(),
+				  DY_MuMu->GetXaxis()->GetXmax());
+  Jets_MuMu_DOWN->Write();
+
+  TH1F* Jets_MuMu_UP = new TH1F("Jets_UncertaintyUp",
+				"Jets_UncertaintyUp",
+				DY_MuMu->GetSize()-2,
+				DY_MuMu->GetXaxis()->GetXmin(),
+				DY_MuMu->GetXaxis()->GetXmax());
+  Jets_MuMu_UP->Write();
+
+  TH1F* DYS_MuMu = new TH1F("DYS",
+			     "DYS",
 			     DY_MuMu->GetSize()-2,
 			     DY_MuMu->GetXaxis()->GetXmin(),
 			     DY_MuMu->GetXaxis()->GetXmax());
-  DYB_MuMu->Write();;
+  DYS_MuMu->Write();
 
   TH1F* DYJ_MuMu = new TH1F("DYJ",
 			     "DYJ",
 			     DY_MuMu->GetSize()-2,
 			     DY_MuMu->GetXaxis()->GetXmin(),
 			     DY_MuMu->GetXaxis()->GetXmax());
-  DYJ_MuMu->Write();;
+  DYJ_MuMu->Write();
   
   /*
   W_MuMu->SetNameTitle("W","W");

@@ -96,7 +96,7 @@ cd JetToTauFakeRate/
 sh RunJetToTauFake.sh $1
 cd ../
 
-root -l CompileHistograms.cc
+root -l -q CompileHistograms.cc\(\"$1\"\)
 root -b -q -l PrepForCombine.cc
 #because I can't get combine to compile properly on the lxplus servers
 # we now turn this over to the Wiscosin computers.

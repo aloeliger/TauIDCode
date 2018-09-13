@@ -2,8 +2,9 @@
 #include "/afs/cern.ch/user/a/aloelige/private/ScriptsAndMacros/CMS_lumi.C"
 #include "/afs/cern.ch/user/a/aloelige/private/ScriptsAndMacros/tdrstyle.C"
 #include "/afs/cern.ch/user/a/aloelige/private/ScriptsAndMacros/MakeRatioPlot.cc"
+#include <string>
 
-void CompileHistograms()
+void CompileHistograms(std::string Iso)
 {
   setTDRStyle();
   
@@ -226,7 +227,7 @@ void CompileHistograms()
 
   //Render the Fake Rate determined pass distribution
   TFile* FakeRateDeterminedDistributions = new TFile("Distributions/FakeRateDeterminedDistributions.root");
-  TH1F* TightJetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get("TightJetDistribution");
+  TH1F* TightJetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get((Iso+"PTFRJetDistribution").c_str());
   
   TCanvas* C3 = new TCanvas("C3", "#mu#tau Invariant Mass");
   C3->SetTickx();

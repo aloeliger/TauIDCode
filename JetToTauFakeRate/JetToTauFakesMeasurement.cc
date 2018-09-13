@@ -184,6 +184,22 @@ void JetToTauFakesMeasurement()
   float TausPassVTightMVAIso = 0.0;
   float TausPassVVTightMVAIso = 0.0;
 
+  
+  float binning[] = {0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 110.0, 120.0,
+		     160.0, 200.0};
+  int binnumber = sizeof(binning)/sizeof(float) - 1;
+
+  TH1F* OverallFakeRates = new TH1F("OverallFakeRates","OverallFakeRates",6,0.0,6.0);
+  TH1F* FailsReconstructionByPT = new TH1F("FailsReconstructionByPT","FailsReconstructionsByPT",binnumber,binning);
+  TH1F* BaselineSelectedTauPT = new TH1F("BasicSelectedTauPT","BasicSlsectedTauPT",binnumber,binning);
+  TH1F* VLoosePTFakeRates = new TH1F("VLooseFakeRates","VLooseFakeRates",binnumber,binning);
+  TH1F* LoosePTFakeRates = new TH1F("LooseFakeRates","LooseFakeRates",binnumber,binning);
+  TH1F* MediumPTFakeRates = new TH1F("MediumFakeRates","MediumFakeRates",binnumber,binning);
+  TH1F* TightPTFakeRates = new TH1F("TightFakeRates","TightFakeRates",binnumber,binning);
+  TH1F* VTightPTFakeRates = new TH1F("VTightFakeRates","VTightFakeRates",binnumber,binning);
+  TH1F* VVTightPTFakeRates = new TH1F("VVTightFakeRates","VVTightFakeRates",binnumber,binning);
+  
+  /*
   TH1F* OverallFakeRates = new TH1F("OverallFakeRates","OverallFakeRates",6,0.0,6.0);
   TH1F* FailsReconstructionByPT = new TH1F("FailsReconstructionByPT","FailsReconstructionsByPT",20,0.0,200.0);
   TH1F* BaselineSelectedTauPT = new TH1F("BasicSelectedTauPT","BasicSlsectedTauPT",20,0.0,200.0);
@@ -193,7 +209,7 @@ void JetToTauFakesMeasurement()
   TH1F* TightPTFakeRates = new TH1F("TightFakeRates","TightFakeRates",20,0.0,200.0);
   TH1F* VTightPTFakeRates = new TH1F("VTightFakeRates","VTightFakeRates",20,0.0,200.0);
   TH1F* VVTightPTFakeRates = new TH1F("VVTightFakeRates","VVTightFakeRates",20,0.0,200.0);
-
+  */
   std::cout<<"Number of Entries: "<<NumberOfEntries<<std::endl;
 
   //loop over the entries and pick out events that meet loose tau reconstruction, 

@@ -6,6 +6,17 @@ float GenerateFlippedJetDistribution(float LowBinEdge, float HighBinEdge, float 
   return HighBinEdge+LowBinEdge-Entry;
 }
 
+//generates a pt based fake rate with twice the discrepancy from the flat fake rate
+float GenerateExacerbatedFakeRate(float NominalFakeRate, float FlatFakeRate)
+{
+  return 2.0*NominalFakeRate-FlatFakeRate;
+}
+//generates a pt based fake rate with the bins flipped about the flat fake rate
+float GenerateFlippedFakeRate(float NominalFakeRate, float FlatFakeRate)
+{
+  return 2.0*FlatFakeRate-NominalFakeRate;
+}
+
 void GenerateJetSamples()
 {
   TFile *MyFile = new TFile("/data/ccaillol/tauid_20june_mt/Data.root");
@@ -179,27 +190,27 @@ void GenerateJetSamples()
   
   //General Weight reweighted histos.
   //These form our low end shape uncertainty?
-  TH1F* VLooseJetDistribution = new TH1F("VLooseJetDistribution","VLooseJetDistribution",
+  TH1F* VLooseLowJetDistribution = new TH1F("VLooseLowJetDistribution","VLooseLowJetDistribution",
 					 Data_Pass->GetSize()-2,
 					 Data_Pass->GetXaxis()->GetXmin(),
 					 Data_Pass->GetXaxis()->GetXmax());
-  TH1F* LooseJetDistribution = new TH1F("LooseJetDistribution","LooseJetDistribution",
+  TH1F* LooseLowJetDistribution = new TH1F("LooseLowJetDistribution","LooseLowJetDistribution",
 					Data_Pass->GetSize()-2,
 					Data_Pass->GetXaxis()->GetXmin(),
 					Data_Pass->GetXaxis()->GetXmax());
-  TH1F* MediumJetDistribution = new TH1F("MediumJetDistribution","MediumJetDistribution",
+  TH1F* MediumLowJetDistribution = new TH1F("MediumLowJetDistribution","MediumLowJetDistribution",
 					 Data_Pass->GetSize()-2,
 					 Data_Pass->GetXaxis()->GetXmin(),
 					 Data_Pass->GetXaxis()->GetXmax());
-  TH1F* TightJetDistribution = new TH1F("TightJetDistribution","TightJetDistribution",
+  TH1F* TightLowJetDistribution = new TH1F("TightLowJetDistribution","TightLowJetDistribution",
 					Data_Pass->GetSize()-2,
 					Data_Pass->GetXaxis()->GetXmin(),
 					Data_Pass->GetXaxis()->GetXmax());
-  TH1F* VTightJetDistribution = new TH1F("VTightJetDistribution","VTightJetDistribution",
+  TH1F* VTightLowJetDistribution = new TH1F("VTightLowJetDistribution","VTightLowJetDistribution",
 					 Data_Pass->GetSize()-2,
 					 Data_Pass->GetXaxis()->GetXmin(),
 					 Data_Pass->GetXaxis()->GetXmax());
-  TH1F* VVTightJetDistribution = new TH1F("VVTightJetDistribution","VVTightJetDistribution",
+  TH1F* VVTightLowJetDistribution = new TH1F("VVTightLowJetDistribution","VVTightLowJetDistribution",
 					  Data_Pass->GetSize()-2,
 					  Data_Pass->GetXaxis()->GetXmin(),
 					  Data_Pass->GetXaxis()->GetXmax());
@@ -324,59 +335,87 @@ void GenerateJetSamples()
 	  // we find the ones that fail, and we reweight them, and record the visible mass
 	  float PTFakeRate = 0.0;
 	  float PTWeighting = 0.0;
+	  float ExacerbatedFakeRate = 0.0;
+	  float ExacerbatedWeighting = 0.0;
+	  float FlippedFakeRate = 0.0;
+	  float FlippedWeighting = 0.0;
 	  if(!byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2)
 	    {
-	      VLooseJetDistribution->Fill(Var,VLooseFakeRate/(1.0-VLooseFakeRate));
 	      PTFakeRate = VLoosePTFR->GetBinContent(VLoosePTFR->FindBin(l2.Pt()));
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
-	      VLoosePTFRJetDistribution->Fill(Var,PTWeighting);	
-	      VLooseHighJetDistribution->Fill(GenerateFlippedJetDistribution(HistoLowEdge,HistoHighEdge,Var),
-					      VLooseFakeRate/(1.0-VLooseFakeRate));
-									     }
+	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, VLooseFakeRate);
+	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+	      FlippedFakeRate = GenerateFlippedFakeRate(PTFakeRate, VLooseFakeRate);
+	      FlippedWeighting = FlippedFakeRate/(1.0- FlippedFakeRate);
+	      
+	      VLooseLowJetDistribution->Fill(Var,ExacerbatedWeighting);
+	      VLoosePTFRJetDistribution->Fill(Var,PTWeighting);		      
+	      VLooseHighJetDistribution->Fill(Var,VLooseFakeRate/(1.0-VLooseFakeRate));   	      
+	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byLooseIsolationRerunMVArun2v2DBoldDMwLT_2)
-	    {
-	      LooseJetDistribution->Fill(Var,LooseFakeRate/(1.0-LooseFakeRate));
+	    {	      
 	      PTFakeRate = LoosePTFR->GetBinContent(LoosePTFR->FindBin(l2.Pt()));
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, LooseFakeRate);
+	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+	      FlippedFakeRate = GenerateFlippedFakeRate(PTFakeRate, LooseFakeRate);
+	      FlippedWeighting = FlippedFakeRate/(1.0- FlippedFakeRate);
+	     
+	      LooseLowJetDistribution->Fill(Var,ExacerbatedWeighting);
 	      LoosePTFRJetDistribution->Fill(Var,PTWeighting);	      
-	      LooseHighJetDistribution->Fill(GenerateFlippedJetDistribution(HistoLowEdge,HistoHighEdge,Var),
-					      LooseFakeRate/(1.0-LooseFakeRate));
+	      LooseHighJetDistribution->Fill(Var,LooseFakeRate/(1.0-LooseFakeRate));
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byMediumIsolationRerunMVArun2v2DBoldDMwLT_2)
-	    {
-	      MediumJetDistribution->Fill(Var,MediumFakeRate/(1.0-MediumFakeRate));
+	    {	      
 	      PTFakeRate = MediumPTFR->GetBinContent(MediumPTFR->FindBin(l2.Pt()));
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, MediumFakeRate);
+	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+	      FlippedFakeRate = GenerateFlippedFakeRate(PTFakeRate, MediumFakeRate);
+	      FlippedWeighting = FlippedFakeRate/(1.0- FlippedFakeRate);
+	      
+	      MediumLowJetDistribution->Fill(Var,ExacerbatedWeighting);
 	      MediumPTFRJetDistribution->Fill(Var,PTWeighting);	 
-	      MediumHighJetDistribution->Fill(GenerateFlippedJetDistribution(HistoLowEdge,HistoHighEdge,Var),
-					      MediumFakeRate/(1.0-MediumFakeRate));
+	      MediumHighJetDistribution->Fill(Var,MediumFakeRate/(1.0-MediumFakeRate));
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byTightIsolationRerunMVArun2v2DBoldDMwLT_2)
-	    {
-	      TightJetDistribution->Fill(Var,TightFakeRate/(1.0-TightFakeRate));
+	    {	      
 	      PTFakeRate = TightPTFR->GetBinContent(TightPTFR->FindBin(l2.Pt()));
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, TightFakeRate);
+	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+	      FlippedFakeRate = GenerateFlippedFakeRate(PTFakeRate, TightFakeRate);
+	      FlippedWeighting = FlippedFakeRate/(1.0- FlippedFakeRate);
+	      
+	      TightLowJetDistribution->Fill(Var,ExacerbatedWeighting);
 	      TightPTFRJetDistribution->Fill(Var,PTWeighting);
-	      TightHighJetDistribution->Fill(GenerateFlippedJetDistribution(HistoLowEdge,HistoHighEdge,Var),
-					      TightFakeRate/(1.0-TightFakeRate));
+	      TightHighJetDistribution->Fill(Var,TightFakeRate/(1.0-TightFakeRate));
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byVTightIsolationRerunMVArun2v2DBoldDMwLT_2)
-	    {
-	      VTightJetDistribution->Fill(Var,VTightFakeRate/(1.0-VTightFakeRate));
+	    {	      
 	      PTFakeRate = VTightPTFR->GetBinContent(VTightPTFR->FindBin(l2.Pt()));
-	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);	      
+	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, VTightFakeRate);
+	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+	      FlippedFakeRate = GenerateFlippedFakeRate(PTFakeRate, VTightFakeRate);
+	      FlippedWeighting = FlippedFakeRate/(1.0- FlippedFakeRate);
+
+	      VTightLowJetDistribution->Fill(Var,ExacerbatedWeighting);
 	      VTightPTFRJetDistribution->Fill(Var,PTWeighting);
-	      VTightHighJetDistribution->Fill(GenerateFlippedJetDistribution(HistoLowEdge,HistoHighEdge,Var),
-					      VTightFakeRate/(1.0-VTightFakeRate));
+	      VTightHighJetDistribution->Fill(Var,VTightFakeRate/(1.0-VTightFakeRate));
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byVVTightIsolationRerunMVArun2v2DBoldDMwLT_2)
-	    {
-	      VVTightJetDistribution->Fill(Var,VVTightFakeRate/(1.0-VVTightFakeRate));
+	    {	      
 	      PTFakeRate = VVTightPTFR->GetBinContent(VVTightPTFR->FindBin(l2.Pt()));
-	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);	      
+	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, VVTightFakeRate);
+	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+	      FlippedFakeRate = GenerateFlippedFakeRate(PTFakeRate, VVTightFakeRate);
+	      FlippedWeighting = FlippedFakeRate/(1.0- FlippedFakeRate);
+
+	      VVTightLowJetDistribution->Fill(Var,ExacerbatedWeighting);
 	      VVTightPTFRJetDistribution->Fill(Var,PTWeighting);
-	      VVTightHighJetDistribution->Fill(GenerateFlippedJetDistribution(HistoLowEdge,HistoHighEdge,Var),
-					      VVTightFakeRate/(1.0-VVTightFakeRate));
+	      VVTightHighJetDistribution->Fill(Var,VVTightFakeRate/(1.0-VVTightFakeRate));
 	    }
 	} //end of checking for signal region
     } //end of for loop
@@ -393,12 +432,12 @@ void GenerateJetSamples()
   VTightPTFRJetDistribution->Write();
   VVTightPTFRJetDistribution->Write();  
   
-  VLooseJetDistribution->Write();
-  LooseJetDistribution->Write();
-  MediumJetDistribution->Write();
-  TightJetDistribution->Write();
-  VTightJetDistribution->Write();
-  VVTightJetDistribution->Write();  
+  VLooseLowJetDistribution->Write();
+  LooseLowJetDistribution->Write();
+  MediumLowJetDistribution->Write();
+  TightLowJetDistribution->Write();
+  VTightLowJetDistribution->Write();
+  VVTightLowJetDistribution->Write();  
 
   VLooseHighJetDistribution->Write();
   LooseHighJetDistribution->Write();

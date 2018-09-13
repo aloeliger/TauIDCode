@@ -65,31 +65,31 @@ void ZMuMuRegion(std::string input)
   TH1F* SignalRegion = new TH1F(input.c_str(),
 				input.c_str(),
 				20,
-				50.0,
-				150.0);
+				60.0,
+				120.0);
   // for processing drell yan events
   TH1F* GenMatchSignalRegion = new TH1F(("GenMatch_"+input).c_str(),
 					("GenMatch_"+input).c_str(),
 					20,
-					50.0,
-					150.0);
+					60.0,
+					120.0);
   TH1F* LowGenMatchSignalRegion = new TH1F(("LowGenMatch_"+input).c_str(),
 					   ("LowGenMatch_"+input).c_str(),
 					   20,
-					   50.0,
-					   150.0);
+					   60.0,
+					   120.0);
   TH1F* HighGenMatchSignalRegion = new TH1F(("HighGenMatch_"+input).c_str(),
 					    ("HighGenMatch_"+input).c_str(),
 					    20,
-					    50.0,
-					    150.0);
+					    60.0,
+					    120.0);
 
   //QCD
   TH1F* QCDRegion= new TH1F((input+"_QCD").c_str(),
 			    (input+"_QCD").c_str(),
 			    20,
-			    50.0,
-			    150.0);
+			    60.0,
+			    120.0);
   
 
   //Determine the relevant cross section or normalization
@@ -236,8 +236,8 @@ void ZMuMuRegion(std::string input)
 	  
 	  if(numGenJets==0) NormalizationWeight = NormalizationWeight*3.009;
 	  if(numGenJets==1) NormalizationWeight = NormalizationWeight*0.589;
-	  if(numGenJets==2) NormalizationWeight = NormalizationWeight*0.612;
-	  if(numGenJets==3) NormalizationWeight = NormalizationWeight*0.767;
+	  if(numGenJets==2) NormalizationWeight = NormalizationWeight*0.621;
+	  if(numGenJets==3) NormalizationWeight = NormalizationWeight*0.764;
 	  if(numGenJets==4) NormalizationWeight = NormalizationWeight*0.690;
 	}
       else if(input == "Data") NormalizationWeight = 1.0;          

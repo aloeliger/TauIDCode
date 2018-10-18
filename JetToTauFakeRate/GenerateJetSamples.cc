@@ -11,10 +11,10 @@ float GenerateExacerbatedFakeRate(float NominalFakeRate, float FlatFakeRate)
 {
   return 2.0*NominalFakeRate-FlatFakeRate;
 }
-//generates a pt based fake rate with the bins flipped about the flat fake rate
-float GenerateFlippedFakeRate(float NominalFakeRate, float FlatFakeRate)
+
+float GenerateExacerbatedWeighting(float NominalWeight, float FlatWeight)
 {
-  return 2.0*FlatFakeRate-NominalFakeRate;
+  return 2.0*NominalWeight-FlatWeight;
 }
 
 void GenerateJetSamples()
@@ -252,6 +252,30 @@ void GenerateJetSamples()
   float TightFakeRate = OverallFakeRates->GetBinContent(4);
   float VTightFakeRate = OverallFakeRates->GetBinContent(5);
   float VVTightFakeRate = OverallFakeRates->GetBinContent(6);
+
+  TH1F* OverallDecayMode0FakeRates = (TH1F*)FakeRateFile->Get("OverallDecayMode0FakeRates");
+  float DecayMode0VLooseFakeRate = OverallDecayMode0FakeRates->GetBinContent(1);
+  float DecayMode0LooseFakeRate = OverallDecayMode0FakeRates->GetBinContent(2);
+  float DecayMode0MediumFakeRate = OverallDecayMode0FakeRates->GetBinContent(3);
+  float DecayMode0TightFakeRate = OverallDecayMode0FakeRates->GetBinContent(4);
+  float DecayMode0VTightFakeRate = OverallDecayMode0FakeRates->GetBinContent(5);
+  float DecayMode0VVTightFakeRate = OverallDecayMode0FakeRates->GetBinContent(6);
+
+  TH1F* OverallDecayMode1FakeRates = (TH1F*)FakeRateFile->Get("OverallDecayMode1FakeRates");
+  float DecayMode1VLooseFakeRate = OverallDecayMode1FakeRates->GetBinContent(1);
+  float DecayMode1LooseFakeRate = OverallDecayMode1FakeRates->GetBinContent(2);
+  float DecayMode1MediumFakeRate = OverallDecayMode1FakeRates->GetBinContent(3);
+  float DecayMode1TightFakeRate = OverallDecayMode1FakeRates->GetBinContent(4);
+  float DecayMode1VTightFakeRate = OverallDecayMode1FakeRates->GetBinContent(5);
+  float DecayMode1VVTightFakeRate = OverallDecayMode1FakeRates->GetBinContent(6);
+
+  TH1F* OverallDecayMode10FakeRates = (TH1F*)FakeRateFile->Get("OverallDecayMode10FakeRates");
+  float DecayMode10VLooseFakeRate = OverallDecayMode10FakeRates->GetBinContent(1);
+  float DecayMode10LooseFakeRate = OverallDecayMode10FakeRates->GetBinContent(2);
+  float DecayMode10MediumFakeRate = OverallDecayMode10FakeRates->GetBinContent(3);
+  float DecayMode10TightFakeRate = OverallDecayMode10FakeRates->GetBinContent(4);
+  float DecayMode10VTightFakeRate = OverallDecayMode10FakeRates->GetBinContent(5);
+  float DecayMode10VVTightFakeRate = OverallDecayMode10FakeRates->GetBinContent(6);
   
   //now get the pt based fake rates
   TH1F* VLoosePTFR = (TH1F*)FakeRateFile->Get("VLooseFakeRates");
@@ -260,8 +284,90 @@ void GenerateJetSamples()
   TH1F* TightPTFR = (TH1F*)FakeRateFile->Get("TightFakeRates");
   TH1F* VTightPTFR = (TH1F*)FakeRateFile->Get("VTightFakeRates");
   TH1F* VVTightPTFR = (TH1F*)FakeRateFile->Get("VVTightFakeRates");
+
+  //get the pt based decay mode fake rates
+
+  TH1F* VLooseDecayMode0PTFakeRates = (TH1F*)FakeRateFile->Get("VLooseDecayMode0PTFakeRates");
+  TH1F* VLooseDecayMode1PTFakeRates = (TH1F*)FakeRateFile->Get("VLooseDecayMode1PTFakeRates");
+  TH1F* VLooseDecayMode10PTFakeRates = (TH1F*)FakeRateFile->Get("VLooseDecayMode10PTFakeRates");
+
+  TH1F* LooseDecayMode0PTFakeRates = (TH1F*)FakeRateFile->Get("LooseDecayMode0PTFakeRates");
+  TH1F* LooseDecayMode1PTFakeRates = (TH1F*)FakeRateFile->Get("LooseDecayMode1PTFakeRates");
+  TH1F* LooseDecayMode10PTFakeRates = (TH1F*)FakeRateFile->Get("LooseDecayMode10PTFakeRates");
+
+  TH1F* MediumDecayMode0PTFakeRates = (TH1F*)FakeRateFile->Get("MediumDecayMode0PTFakeRates");
+  TH1F* MediumDecayMode1PTFakeRates = (TH1F*)FakeRateFile->Get("MediumDecayMode1PTFakeRates");
+  TH1F* MediumDecayMode10PTFakeRates = (TH1F*)FakeRateFile->Get("MediumDecayMode10PTFakeRates");
+
+  TH1F* TightDecayMode0PTFakeRates = (TH1F*)FakeRateFile->Get("TightDecayMode0PTFakeRates");
+  TH1F* TightDecayMode1PTFakeRates = (TH1F*)FakeRateFile->Get("TightDecayMode1PTFakeRates");
+  TH1F* TightDecayMode10PTFakeRates = (TH1F*)FakeRateFile->Get("TightDecayMode10PTFakeRates");
+
+  TH1F* VTightDecayMode0PTFakeRates = (TH1F*)FakeRateFile->Get("VTightDecayMode0PTFakeRates");
+  TH1F* VTightDecayMode1PTFakeRates = (TH1F*)FakeRateFile->Get("VTightDecayMode1PTFakeRates");
+  TH1F* VTightDecayMode10PTFakeRates = (TH1F*)FakeRateFile->Get("VTightDecayMode10PTFakeRates");
+
+  TH1F* VVTightDecayMode0PTFakeRates = (TH1F*)FakeRateFile->Get("VVTightDecayMode0PTFakeRates");
+  TH1F* VVTightDecayMode1PTFakeRates = (TH1F*)FakeRateFile->Get("VVTightDecayMode1PTFakeRates");
+  TH1F* VVTightDecayMode10PTFakeRates = (TH1F*)FakeRateFile->Get("VVTightDecayMode10PTFakeRates");
+
+  //get our new pt,eta and decay mode based fake rates.
+  /*
+  TH2F* VLooseDecayMode0FakeRates = (TH2F*) FakeRateFile->Get("VLooseDecayMode0FakeRates");
+  TH2F* VLooseDecayMode1FakeRates = (TH2F*) FakeRateFile->Get("VLooseDecayMode1FakeRates");
+  TH2F* VLooseDecayMode10FakeRates = (TH2F*) FakeRateFile->Get("VLooseDecayMode10FakeRates");
+
+  TH2F* LooseDecayMode0FakeRates = (TH2F*) FakeRateFile->Get("LooseDecayMode0FakeRates");
+  TH2F* LooseDecayMode1FakeRates = (TH2F*) FakeRateFile->Get("LooseDecayMode1FakeRates");
+  TH2F* LooseDecayMode10FakeRates = (TH2F*) FakeRateFile->Get("LooseDecayMode10FakeRates");
+
+  TH2F* MediumDecayMode0FakeRates = (TH2F*) FakeRateFile->Get("MediumDecayMode0FakeRates");
+  TH2F* MediumDecayMode1FakeRates = (TH2F*) FakeRateFile->Get("MediumDecayMode1FakeRates");
+  TH2F* MediumDecayMode10FakeRates = (TH2F*) FakeRateFile->Get("MediumDecayMode10FakeRates");
+
+  TH2F* TightDecayMode0FakeRates = (TH2F*) FakeRateFile->Get("TightDecayMode0FakeRates");
+  TH2F* TightDecayMode1FakeRates = (TH2F*) FakeRateFile->Get("TightDecayMode1FakeRates");
+  TH2F* TightDecayMode10FakeRates = (TH2F*) FakeRateFile->Get("TightDecayMode10FakeRates");
+
+  TH2F* VTightDecayMode0FakeRates = (TH2F*) FakeRateFile->Get("VTightDecayMode0FakeRates");
+  TH2F* VTightDecayMode1FakeRates = (TH2F*) FakeRateFile->Get("VTightDecayMode1FakeRates");
+  TH2F* VTightDecayMode10FakeRates = (TH2F*) FakeRateFile->Get("VTightDecayMode10FakeRates");
   
+  TH2F* VVTightDecayMode0FakeRates = (TH2F*) FakeRateFile->Get("VVTightDecayMode0FakeRates");
+  TH2F* VVTightDecayMode1FakeRates = (TH2F*) FakeRateFile->Get("VVTightDecayMode1FakeRates");
+  TH2F* VVTightDecayMode10FakeRates = (TH2F*) FakeRateFile->Get("VVTightDecayMode10FakeRates");  
+  */
   
+  float NumVLooseEvents = 0.0;
+  float AverageVLoosePT = 0.0;
+  float AverageVLooseFakeRate = 0.0;
+  float AverageVLooseWeight = 0.0;
+
+  float NumLooseEvents = 0.0;
+  float AverageLoosePT = 0.0;
+  float AverageLooseFakeRate = 0.0;
+  float AverageLooseWeight = 0.0;
+
+  float NumMediumEvents = 0.0;
+  float AverageMediumPT = 0.0;
+  float AverageMediumFakeRate = 0.0;
+  float AverageMediumWeight = 0.0;
+
+  float NumTightEvents = 0.0;
+  float AverageTightPT = 0.0;
+  float AverageTightFakeRate = 0.0;
+  float AverageTightWeight = 0.0;
+
+  float NumVTightEvents = 0.0;
+  float AverageVTightPT = 0.0;
+  float AverageVTightFakeRate = 0.0;
+  float AverageVTightWeight = 0.0;
+
+  float NumVVTightEvents = 0.0;
+  float AverageVVTightPT = 0.0;
+  float AverageVVTightFakeRate = 0.0;
+  float AverageVVTightWeight = 0.0;
+  //let's try doing the average 
   for(int i=0;i < NumberOfEntries; i++)
     {
       Tree->GetEntry(i);
@@ -278,10 +384,13 @@ void GenerateJetSamples()
       TLorentzVector l1; l1.SetPtEtaPhiE(pt_1, eta_1, phi_1, e_1); //muon
       TLorentzVector l2; l2.SetPtEtaPhiE(pt_2, eta_2, phi_2, e_2); //tau
 
-      if(pt_1 < 29.0 or std::abs(eta_1) > 2.1 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
+      if(pt_1 < 29.0 or std::abs(eta_1) > 2.4 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
       //tau criteria
       //added the decaymodefinding_2 which catches the old decay mode finding.
-      if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronLooseMVA6_2 != 1 or againstMuonTight3_2 != 1 or !decayModeFinding_2) continue;
+      if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronVLooseMVA6_2 != 1 or againstMuonTight3_2 != 1 or !decayModeFinding_2 /*or std::abs(dZ_2) > 0.2*/) continue;      
+
+      //if(pt_2 < 20.0 or pt_2 > 25.0) continue;
+
       //pair criteria            
       float deltaphi = std::abs(phi_1-phi_2);
       if (deltaphi > M_PI) deltaphi-=2.0*M_PI;
@@ -307,7 +416,7 @@ void GenerateJetSamples()
 	}
       ZetaUnit.SetPhi(BisectorAngle);
       ZetaUnit = ZetaUnit.Unit();      
-      //method(s) below seems to ffer worse agreement?
+      //method(s) below seems to offer worse agreement?
       /*
       ZetaUnit = l1.Vect().Unit()+l2.Vect().Unit();
       ZetaUnit.SetPtEtaPhi(ZetaUnit.Pt(),0.0,ZetaUnit.Phi());
@@ -325,10 +434,220 @@ void GenerateJetSamples()
       float HistoLowEdge = Data_Pass->GetXaxis()->GetXmin();
       
       float Var = (l1+l2).M();      
+            
+      if(q_1 * q_2 < 0.0 and TransverseMass < 40.0 and PZeta > -25.0)      
+	{
+	  float PTFakeRate = 0.0;
+	  float PTWeighting = 0.0;
+	  if(!byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2)
+	    {
+	      NumVLooseEvents += 1.0;
+	      if(l2_decayMode == 0) PTFakeRate = VLooseDecayMode0PTFakeRates->GetBinContent(VLooseDecayMode0PTFakeRates->FindBin(l2.Pt()));	      
+	      else if(l2_decayMode == 1) PTFakeRate = VLooseDecayMode1PTFakeRates->GetBinContent(VLooseDecayMode1PTFakeRates->FindBin(l2.Pt()));	      
+	      else if(l2_decayMode == 10) PTFakeRate = VLooseDecayMode10PTFakeRates->GetBinContent(VLooseDecayMode10PTFakeRates->FindBin(l2.Pt()));
+	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+	      AverageVLoosePT += l2.Pt();
+	      AverageVLooseFakeRate += PTFakeRate;
+	      AverageVLooseWeight += PTWeighting;
+	    }
+	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byLooseIsolationRerunMVArun2v2DBoldDMwLT_2)
+	    {	 
+	      NumLooseEvents += 1.0;
+	      if(l2_decayMode == 0) PTFakeRate = LooseDecayMode0PTFakeRates->GetBinContent(LooseDecayMode0PTFakeRates->FindBin(l2.Pt()));	      
+	      else if(l2_decayMode == 1) PTFakeRate = LooseDecayMode1PTFakeRates->GetBinContent(LooseDecayMode1PTFakeRates->FindBin(l2.Pt()));	      
+	      else if(l2_decayMode == 10) PTFakeRate = LooseDecayMode10PTFakeRates->GetBinContent(LooseDecayMode10PTFakeRates->FindBin(l2.Pt()));	      
+	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+	      AverageLoosePT += l2.Pt();
+	      AverageLooseFakeRate += PTFakeRate;
+	      AverageLooseWeight += PTWeighting;
+	    }
+	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byMediumIsolationRerunMVArun2v2DBoldDMwLT_2)
+	    {	 
+	      NumMediumEvents += 1.0;
+	      if(l2_decayMode == 0) PTFakeRate = MediumDecayMode0PTFakeRates->GetBinContent(MediumDecayMode0PTFakeRates->FindBin(l2.Pt()));	      
+	      else if(l2_decayMode == 1) PTFakeRate = MediumDecayMode1PTFakeRates->GetBinContent(MediumDecayMode1PTFakeRates->FindBin(l2.Pt()));	      
+	      else if(l2_decayMode == 10) PTFakeRate = MediumDecayMode10PTFakeRates->GetBinContent(MediumDecayMode10PTFakeRates->FindBin(l2.Pt()));
+	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+	      AverageMediumPT += l2.Pt();
+	      AverageMediumFakeRate += PTFakeRate;
+	      AverageMediumWeight += PTWeighting;
+		
+	    }
+	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byTightIsolationRerunMVArun2v2DBoldDMwLT_2)
+	    {	 
+	      NumTightEvents += 1.0;
+	      if(l2_decayMode == 0) PTFakeRate = TightDecayMode0PTFakeRates->GetBinContent(TightDecayMode0PTFakeRates->FindBin(l2.Pt()));	      
+	      else if(l2_decayMode == 1) PTFakeRate = TightDecayMode1PTFakeRates->GetBinContent(TightDecayMode1PTFakeRates->FindBin(l2.Pt()));	      	      
+	      else if(l2_decayMode == 10) PTFakeRate = TightDecayMode10PTFakeRates->GetBinContent(TightDecayMode10PTFakeRates->FindBin(l2.Pt()));	      
+		PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+		AverageTightPT += l2.Pt();
+		AverageTightFakeRate += PTFakeRate;
+		AverageTightWeight += PTWeighting;
+
+	    }
+	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byVTightIsolationRerunMVArun2v2DBoldDMwLT_2)
+	    {	 
+	      NumVTightEvents += 1.0;
+	      if(l2_decayMode == 0) PTFakeRate = VTightDecayMode0PTFakeRates->GetBinContent(VTightDecayMode0PTFakeRates->FindBin(l2.Pt()));	      	      
+	      else if(l2_decayMode == 1) PTFakeRate = VTightDecayMode1PTFakeRates->GetBinContent(VTightDecayMode1PTFakeRates->FindBin(l2.Pt()));	      		
+	      else if(l2_decayMode == 10) PTFakeRate = VTightDecayMode10PTFakeRates->GetBinContent(VTightDecayMode10PTFakeRates->FindBin(l2.Pt()));	      	      
+	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+	      AverageVTightPT += l2.Pt();
+	      AverageVTightFakeRate += PTFakeRate;
+	      AverageVTightWeight += PTWeighting;
+	      
+	    }
+	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byVVTightIsolationRerunMVArun2v2DBoldDMwLT_2)
+	    {	 
+	      NumVVTightEvents += 1.0;
+	      if(l2_decayMode == 0) PTFakeRate = VVTightDecayMode0PTFakeRates->GetBinContent(VVTightDecayMode0PTFakeRates->FindBin(l2.Pt()));	      	      
+	      else if(l2_decayMode == 1) PTFakeRate = VVTightDecayMode1PTFakeRates->GetBinContent(VVTightDecayMode1PTFakeRates->FindBin(l2.Pt()));	      		
+	      else if(l2_decayMode == 10) PTFakeRate = VVTightDecayMode10PTFakeRates->GetBinContent(VVTightDecayMode10PTFakeRates->FindBin(l2.Pt()));
+	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+	      AverageVVTightPT += l2.Pt();
+	      AverageVVTightFakeRate += PTFakeRate;
+	      AverageVVTightWeight += PTWeighting;
+	      
+	    }
+	} // end of charge sign check.
+    }//end of average calculation loop
+
+  if(NumVLooseEvents != 0.0)
+    {
+      AverageVLoosePT = AverageVLoosePT / NumVLooseEvents;
+      AverageVLooseFakeRate = AverageVLooseFakeRate / NumVLooseEvents;
+      AverageVLooseWeight = AverageVLooseWeight / NumVLooseEvents;
+      std::cout<<"Num VLoose Events: "<<NumVLooseEvents<<std::endl;
+      std::cout<<"Average VLoose PT: "<<AverageVLoosePT<<std::endl;
+      std::cout<<"Average VLoose Fake Rate: "<<AverageVLooseFakeRate<<std::endl;
+      std::cout<<"Average VLoose Weight: "<<AverageVLooseWeight<<std::endl;
+      std::cout<<std::endl;
+    }
+  if(NumLooseEvents != 0.0)
+    {
+      AverageLoosePT = AverageLoosePT / NumLooseEvents;
+      AverageLooseFakeRate = AverageLooseFakeRate / NumLooseEvents;
+      AverageLooseWeight = AverageLooseWeight / NumLooseEvents;
+      std::cout<<"Num Loose Events: "<<NumLooseEvents<<std::endl;
+      std::cout<<"Average Loose PT: "<<AverageLoosePT<<std::endl;
+      std::cout<<"Average Loose Fake Rate: "<<AverageLooseFakeRate<<std::endl;
+      std::cout<<"Average Loose Weight: "<<AverageLooseWeight<<std::endl;
+      std::cout<<std::endl;
+    }
+  if(NumMediumEvents != 0.0)
+    {
+      AverageMediumPT = AverageMediumPT / NumMediumEvents;
+      AverageMediumFakeRate = AverageMediumFakeRate / NumMediumEvents;
+      AverageMediumWeight = AverageMediumWeight / NumMediumEvents;
+      std::cout<<"Num Medium Events: "<<NumMediumEvents<<std::endl;
+      std::cout<<"Average Medium PT: "<<AverageMediumPT<<std::endl;
+      std::cout<<"Average Medium Fake Rate: "<<AverageMediumFakeRate<<std::endl;
+      std::cout<<"Average Medium Weight: "<<AverageMediumWeight<<std::endl;
+      std::cout<<std::endl;
+    }
+  if(NumTightEvents != 0.0)
+    {
+      AverageTightPT = AverageTightPT / NumTightEvents;
+      AverageTightFakeRate = AverageTightFakeRate / NumTightEvents;
+      AverageTightWeight = AverageTightWeight / NumTightEvents;
+      std::cout<<"Num Tight Events: "<<NumTightEvents<<std::endl;
+      std::cout<<"Average Tight PT: "<<AverageTightPT<<std::endl;
+      std::cout<<"Average Tight Fake Rate: "<<AverageTightFakeRate<<std::endl;
+      std::cout<<"Average Tight Weight: "<<AverageTightWeight<<std::endl;
+      std::cout<<std::endl;
+    }
+  if(NumVTightEvents != 0.0)
+    {
+      AverageVTightPT = AverageVTightPT / NumVTightEvents;
+      AverageVTightFakeRate = AverageVTightFakeRate / NumVTightEvents;
+      AverageVTightWeight = AverageVTightWeight / NumVTightEvents;
+      std::cout<<"Num VTight Events: "<<NumVTightEvents<<std::endl;
+      std::cout<<"Average VTight PT: "<<AverageVTightPT<<std::endl;
+      std::cout<<"Average VTight Fake Rate: "<<AverageVTightFakeRate<<std::endl;
+      std::cout<<"Average VTight Weight: "<<AverageVTightWeight<<std::endl;
+      std::cout<<std::endl;      
+    }
+  if(NumVVTightEvents != 0.0)
+    {
+      AverageVVTightPT = AverageVVTightPT / NumVVTightEvents;
+      AverageVVTightFakeRate = AverageVVTightFakeRate / NumVVTightEvents;
+      AverageVVTightWeight = AverageVVTightWeight / NumVVTightEvents;
+      std::cout<<"Num VVTight Events: "<<NumVVTightEvents<<std::endl;
+      std::cout<<"Average VVTight PT: "<<AverageVVTightPT<<std::endl;
+      std::cout<<"Average VVTight Fake Rate: "<<AverageVVTightFakeRate<<std::endl;
+      std::cout<<"Average VVTight Weight: "<<AverageVVTightWeight<<std::endl;
+      std::cout<<std::endl;
+    }
+  
+
+  //do the generation of the distributions
+  for(int i=0;i < NumberOfEntries; i++)
+    {
+      Tree->GetEntry(i);
+      if(i%(NumberOfEntries/20)==0 ||  i==(NumberOfEntries-1)) 
+	{	  
+	  fprintf(stdout,"<"); 
+	  for(int NumEquals = 0;NumEquals < i/(NumberOfEntries/20); NumEquals++) fprintf(stdout,"="); 
+	  for(int NumSpaces = 0;NumSpaces < 20-(i/(NumberOfEntries/20));NumSpaces++) fprintf(stdout," ");
+	  fprintf(stdout,">\r");
+	  if(i==(NumberOfEntries-1)) fprintf(stdout,"<====================>\n");
+	  fflush(stdout);
+	}
+
+      TLorentzVector l1; l1.SetPtEtaPhiE(pt_1, eta_1, phi_1, e_1); //muon
+      TLorentzVector l2; l2.SetPtEtaPhiE(pt_2, eta_2, phi_2, e_2); //tau
+
+      if(pt_1 < 29.0 or std::abs(eta_1) > 2.4 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
+      //tau criteria
+      //added the decaymodefinding_2 which catches the old decay mode finding.
+      if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronVLooseMVA6_2 != 1 or againstMuonTight3_2 != 1 or !decayModeFinding_2 /*or std::abs(dZ_2) > 0.2*/) continue;      
+
+      //if(pt_2 < 20.0 or pt_2 > 25.0) continue;
+
+      //pair criteria            
+      float deltaphi = std::abs(phi_1-phi_2);
+      if (deltaphi > M_PI) deltaphi-=2.0*M_PI;
+      float DeltaR = std::sqrt((eta_1-eta_2)*(eta_1-eta_2)+deltaphi*deltaphi);
+      if(DeltaR <= 0.5)  continue;
+	 
+      TLorentzVector MissingP;
+      MissingP.SetPtEtaPhiM(met,0,metphi,0);
       
-      //Okay, according to cecile, we sort of ignore the fail regions for now?
-      // should we look in the same sign region to be assured that we're working with Jets?
-      // out of curiosity, what happens when we look in the W+Jets Regions and/or the QCD region
+      float TransverseMass = std::sqrt(2.0*l1.Pt()*MissingP.Pt()*(1.0-std::cos(l1.DeltaPhi(MissingP))));
+
+      //get a bisector in the transverse plane?      
+      TVector3 ZetaUnit;
+      
+      float BisectorAngle = (l1.Vect().Phi() + l2.Vect().Phi())/2.0;
+      ZetaUnit.SetPhi(BisectorAngle);
+      ZetaUnit = ZetaUnit.Unit();
+      //correct it if it faces the wrong direction
+      if(ZetaUnit.Dot(l1.Vect()) < 0.0 or ZetaUnit.Dot(l2.Vect()) < 0.0)
+	{
+	  if(BisectorAngle >= 0.0) BisectorAngle -= M_PI;
+	  else BisectorAngle += M_PI;
+	}
+      ZetaUnit.SetPhi(BisectorAngle);
+      ZetaUnit = ZetaUnit.Unit();      
+      //method(s) below seems to offer worse agreement?
+      /*
+      ZetaUnit = l1.Vect().Unit()+l2.Vect().Unit();
+      ZetaUnit.SetPtEtaPhi(ZetaUnit.Pt(),0.0,ZetaUnit.Phi());
+      ZetaUnit = ZetaUnit.Unit();
+      */
+      /*
+      ZetaUnit = l1.Vect().Unit()+l2.Vect().Unit();
+      ZetaUnit = ZetaUnit.Unit();
+      */
+      float PZetaVis = (l1.Vect()+l2.Vect()).Dot(ZetaUnit);
+      float PZetaAll = (l1.Vect()+l2.Vect()+MissingP.Vect()).Dot(ZetaUnit);
+      float PZeta = PZetaAll - 0.85 * PZetaVis;
+      
+      float HistoHighEdge = Data_Pass->GetXaxis()->GetXmax();
+      float HistoLowEdge = Data_Pass->GetXaxis()->GetXmin();
+      
+      float Var = (l1+l2).M();      
+            
       if(q_1 * q_2 < 0.0 and TransverseMass < 40.0 and PZeta > -25.0)      
 	{
 	  //alright, now we look at each of the indivudal MVA working points and find the
@@ -336,93 +655,189 @@ void GenerateJetSamples()
 	  float PTFakeRate = 0.0;
 	  float PTWeighting = 0.0;
 	  float ExacerbatedFakeRate = 0.0;
-	  float ExacerbatedWeighting = 0.0;
-	  float FlippedFakeRate = 0.0;
-	  float FlippedWeighting = 0.0;
+	  float ExacerbatedWeighting = 0.0;	  
 	  if(!byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2)
 	    {
-	      PTFakeRate = VLoosePTFR->GetBinContent(VLoosePTFR->FindBin(l2.Pt()));
+	      //Look at the decay mode of our claimed tau?
+	      if(l2_decayMode == 0)
+		{		  
+		  PTFakeRate = VLooseDecayMode0PTFakeRates->GetBinContent(VLooseDecayMode0PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode0VLooseFakeRate);
+		  //VLooseHighJetDistribution->Fill(Var,DecayMode0VLooseFakeRate/(1.0-DecayMode0VLooseFakeRate));   	      
+		}
+	      else if(l2_decayMode == 1)
+		{		  
+		  PTFakeRate = VLooseDecayMode1PTFakeRates->GetBinContent(VLooseDecayMode1PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode1VLooseFakeRate);
+		  //VLooseHighJetDistribution->Fill(Var,DecayMode1VLooseFakeRate/(1.0-DecayMode1VLooseFakeRate));
+		}
+	      else if(l2_decayMode == 10)
+		{		  
+		  PTFakeRate = VLooseDecayMode10PTFakeRates->GetBinContent(VLooseDecayMode10PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode10VLooseFakeRate);
+		  //VLooseHighJetDistribution->Fill(Var,DecayMode10VLooseFakeRate/(1.0-DecayMode10VLooseFakeRate));
+		}	      
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
-	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, VLooseFakeRate);
-	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
-	      FlippedFakeRate = GenerateFlippedFakeRate(PTFakeRate, VLooseFakeRate);
-	      FlippedWeighting = FlippedFakeRate/(1.0- FlippedFakeRate);
-	      
+	      //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, VLooseFakeRate);
+	      ExacerbatedWeighting = GenerateExacerbatedWeighting(PTWeighting,AverageVLooseWeight);//ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);	      	      	      
+	      VLooseWeighting = VLooseFakeRate/(1.0-VLooseFakeRate);
+
 	      VLooseLowJetDistribution->Fill(Var,ExacerbatedWeighting);
-	      VLoosePTFRJetDistribution->Fill(Var,PTWeighting);		      
-	      VLooseHighJetDistribution->Fill(Var,VLooseFakeRate/(1.0-VLooseFakeRate));   	      
+	      VLoosePTFRJetDistribution->Fill(Var,PTWeighting);
+	      //VLooseHighJetDistribution->Fill(Var,VLooseWeighting);
+	      VLooseHighJetDistribution->Fill(Var,AverageVLooseWeight);
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byLooseIsolationRerunMVArun2v2DBoldDMwLT_2)
 	    {	      
-	      PTFakeRate = LoosePTFR->GetBinContent(LoosePTFR->FindBin(l2.Pt()));
+	      if(l2_decayMode == 0)
+		{		  
+		  PTFakeRate = LooseDecayMode0PTFakeRates->GetBinContent(LooseDecayMode0PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode0LooseFakeRate);
+		  //LooseHighJetDistribution->Fill(Var,DecayMode0LooseFakeRate/(1.0-DecayMode0LooseFakeRate));
+		}
+	      else if(l2_decayMode == 1)
+		{		  
+		  PTFakeRate = LooseDecayMode1PTFakeRates->GetBinContent(LooseDecayMode1PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode1LooseFakeRate);
+		  //LooseHighJetDistribution->Fill(Var,DecayMode1LooseFakeRate/(1.0-DecayMode1LooseFakeRate));
+		}
+	      else if(l2_decayMode == 10)
+		{		  
+		  PTFakeRate = LooseDecayMode10PTFakeRates->GetBinContent(LooseDecayMode10PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode10LooseFakeRate);
+		  //LooseHighJetDistribution->Fill(Var,DecayMode10LooseFakeRate/(1.0-DecayMode10LooseFakeRate));
+		}	      
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
-	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, LooseFakeRate);
-	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
-	      FlippedFakeRate = GenerateFlippedFakeRate(PTFakeRate, LooseFakeRate);
-	      FlippedWeighting = FlippedFakeRate/(1.0- FlippedFakeRate);
+	      //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, LooseFakeRate);
+	      ExacerbatedWeighting = GenerateExacerbatedWeighting(PTWeighting,AverageLooseWeight);//ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);	      	      
 	     
 	      LooseLowJetDistribution->Fill(Var,ExacerbatedWeighting);
 	      LoosePTFRJetDistribution->Fill(Var,PTWeighting);	      
-	      LooseHighJetDistribution->Fill(Var,LooseFakeRate/(1.0-LooseFakeRate));
+	      //LooseHighJetDistribution->Fill(Var,LooseFakeRate/(1.0-LooseFakeRate));
+	      LooseHighJetDistribution->Fill(Var,AverageLooseWeight);
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byMediumIsolationRerunMVArun2v2DBoldDMwLT_2)
-	    {	      
-	      PTFakeRate = MediumPTFR->GetBinContent(MediumPTFR->FindBin(l2.Pt()));
+	    {
+	      if(l2_decayMode == 0)
+		{		 
+		  PTFakeRate = MediumDecayMode0PTFakeRates->GetBinContent(MediumDecayMode0PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode0MediumFakeRate);
+		  //MediumHighJetDistribution->Fill(Var,DecayMode0MediumFakeRate/(1.0-DecayMode0MediumFakeRate));
+		}
+	      else if(l2_decayMode == 1)
+		{		  
+		  PTFakeRate = MediumDecayMode1PTFakeRates->GetBinContent(MediumDecayMode1PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode1MediumFakeRate);
+		  //MediumHighJetDistribution->Fill(Var,DecayMode1MediumFakeRate/(1.0-DecayMode1MediumFakeRate));
+		}
+	      else if(l2_decayMode == 10)
+		{		  
+		  PTFakeRate = MediumDecayMode10PTFakeRates->GetBinContent(MediumDecayMode0PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode10MediumFakeRate);
+		  //MediumHighJetDistribution->Fill(Var,DecayMode10MediumFakeRate/(1.0-DecayMode10MediumFakeRate));
+		}	      
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
-	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, MediumFakeRate);
-	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
-	      FlippedFakeRate = GenerateFlippedFakeRate(PTFakeRate, MediumFakeRate);
-	      FlippedWeighting = FlippedFakeRate/(1.0- FlippedFakeRate);
+	      //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, MediumFakeRate);
+	      ExacerbatedWeighting = GenerateExacerbatedWeighting(PTWeighting,AverageMediumWeight);//ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);	      
 	      
 	      MediumLowJetDistribution->Fill(Var,ExacerbatedWeighting);
 	      MediumPTFRJetDistribution->Fill(Var,PTWeighting);	 
-	      MediumHighJetDistribution->Fill(Var,MediumFakeRate/(1.0-MediumFakeRate));
+	      //MediumHighJetDistribution->Fill(Var,MediumFakeRate/(1.0-MediumFakeRate));
+	      MediumHighJetDistribution->Fill(Var,AverageMediumWeight);
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byTightIsolationRerunMVArun2v2DBoldDMwLT_2)
-	    {	      
-	      PTFakeRate = TightPTFR->GetBinContent(TightPTFR->FindBin(l2.Pt()));
+	    {
+	      if(l2_decayMode == 0)
+		{		  
+		  PTFakeRate = TightDecayMode0PTFakeRates->GetBinContent(TightDecayMode0PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode0TightFakeRate);
+		  //TightHighJetDistribution->Fill(Var,DecayMode0TightFakeRate/(1.0-DecayMode0TightFakeRate));
+		}
+	      else if(l2_decayMode == 1)
+		{		  
+		  PTFakeRate = TightDecayMode1PTFakeRates->GetBinContent(TightDecayMode1PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode1TightFakeRate);
+		  //TightHighJetDistribution->Fill(Var,DecayMode1TightFakeRate/(1.0-DecayMode1TightFakeRate));
+		}
+	      else if(l2_decayMode == 10)
+		{		  
+		  PTFakeRate = TightDecayMode10PTFakeRates->GetBinContent(TightDecayMode10PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode10TightFakeRate);
+		  //TightHighJetDistribution->Fill(Var,DecayMode10TightFakeRate/(1.0-DecayMode10TightFakeRate));
+		}	      
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
-	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, TightFakeRate);
-	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
-	      FlippedFakeRate = GenerateFlippedFakeRate(PTFakeRate, TightFakeRate);
-	      FlippedWeighting = FlippedFakeRate/(1.0- FlippedFakeRate);
+	      //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, TightFakeRate);
+	      ExacerbatedWeighting = GenerateExacerbatedWeighting(PTWeighting,AverageTightWeight);//ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);	      
 	      
 	      TightLowJetDistribution->Fill(Var,ExacerbatedWeighting);
 	      TightPTFRJetDistribution->Fill(Var,PTWeighting);
-	      TightHighJetDistribution->Fill(Var,TightFakeRate/(1.0-TightFakeRate));
+	      //TightHighJetDistribution->Fill(Var,TightFakeRate/(1.0-TightFakeRate));
+	      TightHighJetDistribution->Fill(Var,AverageTightWeight);
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byVTightIsolationRerunMVArun2v2DBoldDMwLT_2)
-	    {	      
-	      PTFakeRate = VTightPTFR->GetBinContent(VTightPTFR->FindBin(l2.Pt()));
+	    {	
+	      if(l2_decayMode == 0)
+		{		  
+		  PTFakeRate = VTightDecayMode0PTFakeRates->GetBinContent(VTightDecayMode0PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode0VTightFakeRate);
+		  //VTightHighJetDistribution->Fill(Var,DecayMode0VTightFakeRate/(1.0-DecayMode0VTightFakeRate));
+		}
+	      else if(l2_decayMode == 1)
+		{		  
+		  PTFakeRate = VTightDecayMode1PTFakeRates->GetBinContent(VTightDecayMode1PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode1VTightFakeRate);
+		  //VTightHighJetDistribution->Fill(Var,DecayMode1VTightFakeRate/(1.0-DecayMode1VTightFakeRate));
+		}
+	      else if(l2_decayMode == 10)
+		{		  
+		  PTFakeRate = VTightDecayMode10PTFakeRates->GetBinContent(LooseDecayMode10PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode10VTightFakeRate);
+		  //VTightHighJetDistribution->Fill(Var,DecayMode10VTightFakeRate/(1.0-DecayMode10VTightFakeRate));
+		}	      
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);	      
-	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, VTightFakeRate);
-	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
-	      FlippedFakeRate = GenerateFlippedFakeRate(PTFakeRate, VTightFakeRate);
-	      FlippedWeighting = FlippedFakeRate/(1.0- FlippedFakeRate);
+	      //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, VTightFakeRate);
+	      ExacerbatedWeighting = GenerateExacerbatedWeighting(PTWeighting,AverageVTightWeight);//ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);	      
 
 	      VTightLowJetDistribution->Fill(Var,ExacerbatedWeighting);
 	      VTightPTFRJetDistribution->Fill(Var,PTWeighting);
-	      VTightHighJetDistribution->Fill(Var,VTightFakeRate/(1.0-VTightFakeRate));
+	      //VTightHighJetDistribution->Fill(Var,VTightFakeRate/(1.0-VTightFakeRate));
+	      VTightHighJetDistribution->Fill(Var,AverageVTightWeight);
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byVVTightIsolationRerunMVArun2v2DBoldDMwLT_2)
-	    {	      
-	      PTFakeRate = VVTightPTFR->GetBinContent(VVTightPTFR->FindBin(l2.Pt()));
+	    {	
+	      if(l2_decayMode == 0)
+		{		  
+		  PTFakeRate = VVTightDecayMode0PTFakeRates->GetBinContent(VVTightDecayMode0PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode0VVTightFakeRate);
+		  //VVTightHighJetDistribution->Fill(Var,DecayMode0VVTightFakeRate/(1.0-DecayMode0VVTightFakeRate));
+		}
+	      else if(l2_decayMode == 1)
+		{		  
+		  PTFakeRate = VVTightDecayMode1PTFakeRates->GetBinContent(VVTightDecayMode1PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode1VVTightFakeRate);
+		  //VVTightHighJetDistribution->Fill(Var,DecayMode1VVTightFakeRate/(1.0-DecayMode1VVTightFakeRate));
+		}
+	      else if(l2_decayMode == 10)
+		{		  
+		  PTFakeRate = VVTightDecayMode10PTFakeRates->GetBinContent(VVTightDecayMode10PTFakeRates->FindBin(l2.Pt()));
+		  //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode10VVTightFakeRate);
+		  //VVTightHighJetDistribution->Fill(Var,DecayMode10VVTightFakeRate/(1.0-DecayMode10VVTightFakeRate));
+		}	      
 	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);	      
-	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, VVTightFakeRate);
-	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
-	      FlippedFakeRate = GenerateFlippedFakeRate(PTFakeRate, VVTightFakeRate);
-	      FlippedWeighting = FlippedFakeRate/(1.0- FlippedFakeRate);
+	      //ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, VVTightFakeRate);
+	      ExacerbatedWeighting = GenerateExacerbatedWeighting(PTWeighting,AverageVVTightWeight);//ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);	      
 
 	      VVTightLowJetDistribution->Fill(Var,ExacerbatedWeighting);
 	      VVTightPTFRJetDistribution->Fill(Var,PTWeighting);
-	      VVTightHighJetDistribution->Fill(Var,VVTightFakeRate/(1.0-VVTightFakeRate));
+	      //VVTightHighJetDistribution->Fill(Var,VVTightFakeRate/(1.0-VVTightFakeRate));
+	      VVTightHighJetDistribution->Fill(Var,AverageVVTightWeight);
 	    }
 	} //end of checking for signal region
     } //end of for loop
 
-  std::cout<<std::endl;
+  std::cout<<std::endl;    
 
-  //Alrightm let's right this out and get the heck out of here.
+  //Alright let's right this out and get the heck out of here.
   TFile* FakeRateDeterminedDistributions = new TFile("../Distributions/FakeRateDeterminedDistributions.root","RECREATE");
 
   VLoosePTFRJetDistribution->Write();

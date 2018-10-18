@@ -137,6 +137,9 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   W_MuMu->Add(W3_MuMu);
   W_MuMu->Add(W4_MuMu);
 
+  //no longer necessary?
+  /*
+
   std::cout<<"Performing Prescale For ZMM region..."<<std::endl;
   std::cout<<"ZMM DY Integral: "<<DY_MuMu->Integral()<<std::endl;
   std::cout<<"ZMM Data Integral: "<<Data_MuMu->Integral()<<std::endl;
@@ -146,10 +149,11 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   ZTauTau_Pass->Scale(PrescaleFactor);
   LowGenMatch_DY_Pass->Scale(PrescaleFactor);
   HighGenMatch_DY_Pass->Scale(PrescaleFactor);
+  */
 
   std::cout<<"Preparing the Zmt region."<<std::endl;
 
-  TFile* CombineFile = new TFile("../Distributions/FakeRateCombineFile.root","RECREATE");
+  TFile* CombineFile = new TFile(("../Distributions/"+IsoWorkingPoint+"FakeRateCombineFile.root").c_str(),"RECREATE");
   TDirectory* ZMTDirectory = CombineFile->mkdir("zmt");
   ZMTDirectory->cd();
   
@@ -208,8 +212,8 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   JetDistribution_UP->SetNameTitle("Jets_FakeRateUncertaintyUp","Jets_FakeRateUncertaintyUp");
   JetDistribution_UP->Write();
 
-  Jets_WQCDShape_DOWN->Write();
-  Jets_WQCDShape_UP->Write();
+  //Jets_WQCDShape_DOWN->Write();
+  //Jets_WQCDShape_UP->Write();
   
   std::cout<<"Preparing the Zmm region"<<std::endl;  
   TDirectory* ZMMDirectory = CombineFile->mkdir("zmm");
@@ -227,8 +231,8 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
 			   TTTo2L2Nu_MuMu->GetSize()-2,
 			   TTTo2L2Nu_MuMu->GetXaxis()->GetXmin(),
 			   TTTo2L2Nu_MuMu->GetXaxis()->GetXmax());
-  //TT_MuMu->Add(TTTo2L2Nu_MuMu,TTToHadronic_MuMu);
-  //TT_MuMu->Add(TTToSemiLeptonic_MuMu);
+  TT_MuMu->Add(TTTo2L2Nu_MuMu,TTToHadronic_MuMu);
+  TT_MuMu->Add(TTToSemiLeptonic_MuMu);
   TT_MuMu->Write();
   
   TH1F* DiBoson_MuMu = new TH1F("VV",
@@ -236,8 +240,8 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
 				WW_MuMu->GetSize()-2,
 				WW_MuMu->GetXaxis()->GetXmin(),
 				WW_MuMu->GetXaxis()->GetXmax());
-  //DiBoson_MuMu->Add(WW_MuMu,WZ_MuMu);
-  //DiBoson_MuMu->Add(ZZ_MuMu);
+  DiBoson_MuMu->Add(WW_MuMu,WZ_MuMu);
+  DiBoson_MuMu->Add(ZZ_MuMu);
   DiBoson_MuMu->Write();
   // pull a temporary thing where we include a temporary "jets" into the ZMM region
   // for the sake of having the same distributions as the ZMT region

@@ -45,6 +45,10 @@ void CompileMuMuHistograms()
 
   gStyle->SetOptStat(0);
 
+  std::cout<<"DY Integral: "<<DYHisto->Integral()<<std::endl;
+  std::cout<<"Data Integral: "<<DataHisto->Integral()<<std::endl;
+  std::cout<<"Data/DY: "<<(DataHisto->Integral()/DYHisto->Integral())<<std::endl;
+
   TCanvas* C1 = new TCanvas("C1","#mu#mu Invariant Mass");
   C1->SetTickx();
   C1->SetTicky();
@@ -66,7 +70,6 @@ void CompileMuMuHistograms()
   DiBosonHisto->SetLineColor(kBlack);
   DiBosonHisto->SetFillColor(kPink-3);
   
-
   TTHisto->SetLineColor(kBlack);
   TTHisto->SetFillColor(kViolet-3);
   
@@ -77,11 +80,11 @@ void CompileMuMuHistograms()
   QCDHisto->SetFillColor(kPink+1);
   
   THStack* BackgroundStack = new THStack("BackgroundStack","BackgroundStack");
-  BackgroundStack->Add(QCDHisto,"hist");
-  BackgroundStack->Add(WHisto, "hist");
+  //BackgroundStack->Add(QCDHisto,"hist");
+  //BackgroundStack->Add(WHisto, "hist");
   BackgroundStack->Add(DYHisto,"hist");
-  BackgroundStack->Add(TTHisto, "hist");
-  BackgroundStack->Add(DiBosonHisto, "hist");
+  //BackgroundStack->Add(TTHisto, "hist");
+  //BackgroundStack->Add(DiBosonHisto, "hist");
 
   TPad* PlotPad = MakeRatioPlot(C1, BackgroundStack, DataHisto);
   BackgroundStack->Draw();
@@ -94,10 +97,10 @@ void CompileMuMuHistograms()
   TLegend* Legend = new TLegend(0.7, 0.5, 0.88, 0.68);
   Legend->AddEntry(DataHisto, "Data", "ep");
   Legend->AddEntry(DYHisto, "Z #rightarrow #mu#mu", "f");
-  Legend->AddEntry(DiBosonHisto, "DiBoson", "f");
-  Legend->AddEntry(TTHisto, "t#bar{t}", "f");
-  Legend->AddEntry(WHisto, "W+Jets", "f");
-  Legend->AddEntry(QCDHisto, "QCD", "f");
+  //Legend->AddEntry(DiBosonHisto, "DiBoson", "f");
+  //Legend->AddEntry(TTHisto, "t#bar{t}", "f");
+  //Legend->AddEntry(WHisto, "W+Jets", "f");
+  //Legend->AddEntry(QCDHisto, "QCD", "f");
 
   Legend->Draw();
   

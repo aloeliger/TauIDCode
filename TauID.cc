@@ -419,12 +419,17 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
       //muon criteria
       // added the dz criteria and matchisomu catches the matching to triger objects
       // potentially have the dxy requirement taken care of?      
-      if(pt_1 < 29.0 or std::abs(eta_1) > 2.1 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
+      // 9/23/18 EDIT: Changed this and the MC removal code to have mu ID < 2.4 rather than 2.1
+      
+      if(pt_1 < 29.0 or std::abs(eta_1) > 2.4 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
       //EventsPassingMuSelection+=1.0;
+      
       //tau criteria
       //added the decaymodefinding_2 which catches the old decay mode finding.
-      if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronLooseMVA6_2 != 1 or againstMuonTight3_2 != 1 or !decayModeFinding_2) continue;
-      //EventsPassingTauSelection+=1.0;
+      //9/24/18 EDIT: require tau dZ to be < 0.2 cm
+      if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronVLooseMVA6_2 != 1 or againstMuonTight3_2 != 1 or !decayModeFinding_2 /*or std::abs(dZ_2) > 0.2*/) continue;
+      //EventsPassingTauSelection+=1.0;            
+
       //pair criteria            
       float deltaphi = std::abs(phi_1-phi_2);
       if (deltaphi > M_PI) deltaphi-=2.0*M_PI;

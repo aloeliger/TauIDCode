@@ -62,34 +62,46 @@ void ZMuMuRegion(std::string input)
   
   int NumberOfEntries = (int) Tree->GetEntries();
   
-  TH1F* SignalRegion = new TH1F(input.c_str(),
+  TH1D* SignalRegion = new TH1D(input.c_str(),
 				input.c_str(),
-				20,
+				1,
 				60.0,
 				120.0);
-  // for processing drell yan events
-  TH1F* GenMatchSignalRegion = new TH1F(("GenMatch_"+input).c_str(),
-					("GenMatch_"+input).c_str(),
-					20,
-					60.0,
-					120.0);
-  TH1F* LowGenMatchSignalRegion = new TH1F(("LowGenMatch_"+input).c_str(),
-					   ("LowGenMatch_"+input).c_str(),
-					   20,
-					   60.0,
-					   120.0);
-  TH1F* HighGenMatchSignalRegion = new TH1F(("HighGenMatch_"+input).c_str(),
-					    ("HighGenMatch_"+input).c_str(),
-					    20,
-					    60.0,
-					    120.0);
+
+  //Implement this so we can examine each of these by run.  
+  TH1D* RunB_Region = new TH1D((input+"_RunB").c_str(),
+			       (input+"_RunB").c_str(),
+			       SignalRegion->GetNbinsX(),
+			       SignalRegion->GetXaxis()->GetXmin(),
+			       SignalRegion->GetXaxis()->GetXmax());
+  TH1D* RunC_Region = new TH1D((input+"_RunC").c_str(),
+			       (input+"_RunC").c_str(),
+			       SignalRegion->GetNbinsX(),
+			       SignalRegion->GetXaxis()->GetXmin(),
+			       SignalRegion->GetXaxis()->GetXmax());
+  TH1D* RunD_Region = new TH1D((input+"_RunD").c_str(),
+			       (input+"_RunD").c_str(),
+			       SignalRegion->GetNbinsX(),
+			       SignalRegion->GetXaxis()->GetXmin(),
+			       SignalRegion->GetXaxis()->GetXmax());
+  TH1D* RunE_Region = new TH1D((input+"_RunE").c_str(),
+			       (input+"_RunE").c_str(),
+			       SignalRegion->GetNbinsX(),
+			       SignalRegion->GetXaxis()->GetXmin(),
+			       SignalRegion->GetXaxis()->GetXmax());
+  TH1D* RunF_Region = new TH1D((input+"_RunF").c_str(),
+			       (input+"_RunF").c_str(),
+			       SignalRegion->GetNbinsX(),
+			       SignalRegion->GetXaxis()->GetXmin(),
+			       SignalRegion->GetXaxis()->GetXmax());
+  
 
   //QCD
-  TH1F* QCDRegion= new TH1F((input+"_QCD").c_str(),
+  TH1D* QCDRegion= new TH1D((input+"_QCD").c_str(),
 			    (input+"_QCD").c_str(),
-			    20,
-			    60.0,
-			    120.0);
+			    SignalRegion->GetNbinsX(),
+			    SignalRegion->GetXaxis()->GetXmin(),
+			    SignalRegion->GetXaxis()->GetXmax());
   
 
   //Determine the relevant cross section or normalization
@@ -140,6 +152,9 @@ void ZMuMuRegion(std::string input)
   TFile* ISOFile = new TFile("../Weightings/RunBCDEF_SF_ISO.root");
   TH2F* ISOWeightings = (TH2F*) ISOFile->Get("NUM_TightRelIso_DEN_MediumID_pt_abseta");
 
+  double AcceptedEvents = 0.0;
+  long long AcceptedEvents_Two = 0;
+  double NormWeights = 0.0;
   for(int i =0;i < NumberOfEntries; i++)
     {
       Tree->GetEntry(i);
@@ -155,9 +170,25 @@ void ZMuMuRegion(std::string input)
 
       TLorentzVector l1; l1.SetPtEtaPhiE(pt_1, eta_1, phi_1, e_1); //muon
       TLorentzVector l2; l2.SetPtEtaPhiE(pt_2, eta_2, phi_2, e_2); //tau
+      
+      //These are cecile's criteria
+      /*
+	if (pt_1<29 && pt_2<29) continue;
+	if (pt_1<20 or pt_2<20) continue;
+	if (fabs(eta_1)>2.4) continue;
+	if (fabs(eta_2)>2.4) continue;
+	if (!(matchIsoMu27_1 && pt_1>29) && !(matchIsoMu27_2 && pt_2>29)) continue;
+      */
+      if(pt_1 < 20.0 or std::abs(eta_1) > 2.4 or /*!id_m_medium_1 or iso_1 > 0.15 or*/ std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 /*or !matchIsoMu27_1*/) continue;
+      if(pt_2 < 20.0 or std::abs(eta_2) > 2.4 or /*!id_m_medium_2 or iso_2 > 0.15 or*/ std::abs(dZ_2) > 0.2 or std::abs(d0_2) > 0.045 /*or !matchIsoMu27_2*/) continue;
 
-      if(pt_1 < 29.0 or std::abs(eta_1) > 2.1 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
-      if(pt_2 < 29.0 or std::abs(eta_2) > 2.1 or !id_m_medium_2 or iso_2 > 0.15 or std::abs(dZ_2) > 0.2 or std::abs(d0_2) > 0.045 or !matchIsoMu27_2) continue;
+      //if (!(matchIsoMu27_1 && pt_1>29) && !(matchIsoMu27_2 && pt_2>29)) continue;
+      //just my own little test
+      if(matchIsoMu27_1 && !matchIsoMu27_2 && !(pt_1 > 29.0)) continue;
+      if(matchIsoMu27_2 && !matchIsoMu27_1 && !(pt_2 > 29.0)) continue;
+      if(matchIsoMu27_1 && matchIsoMu27_2 && !(pt_1 >29.0 || pt_2 > 29.0)) continue;
+      if(!matchIsoMu27_1 && !matchIsoMu27_2) continue;
+      if(!(pt_1>29.0) && !(pt_2>29.0))continue;
 
       //pair criteria
       if(q_1*q_2 >= 0.0 or (l1+l2).M() >= 120.0 or (l1+l2).M() <= 60.0) continue;
@@ -165,8 +196,8 @@ void ZMuMuRegion(std::string input)
       float deltaphi = std::abs(phi_1-phi_2);
       if (deltaphi > M_PI) deltaphi-=2.0*M_PI;
       float DeltaR = std::sqrt((eta_1-eta_2)*(eta_1-eta_2)+deltaphi*deltaphi);
-      if(DeltaR <= 0.5)  continue;
-      
+      if(DeltaR <= 0.5)  continue;      
+
       //We can sort of still do the transverse mass and zeta criteria?
       TLorentzVector MissingP;
       MissingP.SetPtEtaPhiM(met,0,metphi,0);
@@ -251,8 +282,33 @@ void ZMuMuRegion(std::string input)
       float Var = (l1+l2).M();                  
       
       if(q_1 * q_2 < 0.0 /*and TransverseMass < 40.0 and PZeta > -25.0*/)
-	{	  
+	{ 
+	  AcceptedEvents+=1.0;
+	  AcceptedEvents_Two++;
+	  NormWeights+=NormalizationWeight;
 	  SignalRegion->Fill(Var,NormalizationWeight);
+	  //check which period we belon to and fill the corresponding Histogram	  
+	  // this will only affect data
+	  if(run >= 297020 && run <= 299329)//Run B, 4.823 / 41.557 fb^-1 
+	    {	      	      
+	      RunB_Region->Fill(Var,NormalizationWeight);
+	    }
+	  else if(run >= 299337 && run <= 302029)//Run C 9.664 / 41.557 fb^-1 
+	    {	      
+	      RunC_Region->Fill(Var,NormalizationWeight);
+	    }
+	  else if(run >= 302030 && run <= 303434)//Run D 4.252 / 41.557 fb^-1 
+	    {	      
+	      RunD_Region->Fill(Var,NormalizationWeight);
+	    }
+	  else if(run >= 303435 && run <= 304826)//Run E 9.278 / 41.557 fb^-1
+	    {	      
+	      RunE_Region->Fill(Var,NormalizationWeight);
+	    }
+	  else if(run >= 304911 && run <=306462)//Run F 13.50 /41.577 fb^-1
+	    {	      
+	      RunF_Region->Fill(Var,NormalizationWeight);
+	    }
 	}
       else if(q_1 * q_2 > 0.0 /*and TransverseMass < 40.0 and PZeta > -25.0*/)
 	{
@@ -260,9 +316,21 @@ void ZMuMuRegion(std::string input)
 	}
     }
   std::cout<<std::endl;
+  std::cout<<"AcceptedEvents: "<<AcceptedEvents<<std::endl;
+  std::cout<<"AcceptedEvents_Two:"<<AcceptedEvents_Two<<std::endl;
+  std::cout<<"SignalRegion->Integral(): "<<SignalRegion->Integral()<<std::endl;
+  std::cout<<"Avg Norm Weight: "<<NormWeights/AcceptedEvents<<std::endl;
 
   TFile* OutFile = new TFile(("../TemporaryFiles/"+input+"_MuMu.root").c_str(),"RECREATE");
   SignalRegion->Write();
-  QCDRegion->Write();
+  QCDRegion->Write();  
+  if(input == "Data")
+    {
+      RunB_Region->Write();
+      RunC_Region->Write();
+      RunD_Region->Write();
+      RunE_Region->Write();
+      RunF_Region->Write();
+    }
   OutFile->Close();
 }

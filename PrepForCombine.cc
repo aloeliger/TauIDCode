@@ -1,6 +1,6 @@
 #include "TROOT.h"
 
-void PrepForCombine()
+void PrepForCombine(std::string IsoWorkingPoint)
 {
   TFile* PassFailFile = new TFile("Distributions/PassFailOut.root");
   TDirectory* passDirectory = (TDirectory*) PassFailFile->Get("pass");
@@ -251,7 +251,7 @@ void PrepForCombine()
 
   std::cout<<"Writing the file"<<std::endl;
   std::cout<<"Pass.."<<std::endl;
-  TFile* CombineFile = new TFile("Distributions/CombineFile.root","RECREATE");
+  TFile* CombineFile = new TFile(("Distributions/"+IsoWorkingPoint+"CombineFile.root").c_str(),"RECREATE");
   //compile Pass histos  
   TDirectory* CombinePassDirectory = CombineFile->mkdir("passOS");
   CombinePassDirectory->cd();

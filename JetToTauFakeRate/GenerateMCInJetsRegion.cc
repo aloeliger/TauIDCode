@@ -1,6 +1,6 @@
 #include "TROOT.h"
 #include <string>
-#include "/afs/cern.ch/user/a/aloelige//private/CMSSW_9_4_0/src/PhysicsTools/Utilities/interface/LumiReweightingStandAlone.h"
+#include "/data/aloeliger/CMSSW_9_4_0/src/PhysicsTools/Utilities/interface/LumiReweightingStandAlone.h"
 //just for the helper functions
 //this is sorta overkill
 #include "GenerateJetSamples.cc"
@@ -368,15 +368,16 @@ void GenerateMCInJetsRegion(std::string input)
 	  fflush(stdout);
 	}    
   
-  TLorentzVector l1; l1.SetPtEtaPhiE(pt_1, eta_1, phi_1, e_1); //muon
+      TLorentzVector l1; l1.SetPtEtaPhiE(pt_1, eta_1, phi_1, e_1); //muon
       TLorentzVector l2; l2.SetPtEtaPhiE(pt_2, eta_2, phi_2, e_2); //tau
-
-      if(pt_1 < 29.0 or std::abs(eta_1) > 2.4 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
+  
+      //match diegos pt > 30 cut as opposed to my original 29.0 cut
+      if(pt_1 < 30.0 or std::abs(eta_1) > 2.4 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
       //tau criteria
       //added the decaymodefinding_2 which catches the old decay mode finding.
       if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronVLooseMVA6_2 != 1 or againstMuonTight3_2 != 1 or !decayModeFinding_2 /*or std::abs(dZ_2) > 0.2*/) continue;            
       
-      //if(pt_2 < 20.0 or pt_2 > 25.0) continue;
+      //if(pt_2 < 50.0) continue;
 
       //pair criteria            
       float deltaphi = std::abs(phi_1-phi_2);
@@ -405,13 +406,13 @@ void GenerateMCInJetsRegion(std::string input)
       ZetaUnit = ZetaUnit.Unit();      
       //method(s) below seems to ffer worse agreement?
       /*
-      ZetaUnit = l1.Vect().Unit()+l2.Vect().Unit();
-      ZetaUnit.SetPtEtaPhi(ZetaUnit.Pt(),0.0,ZetaUnit.Phi());
-      ZetaUnit = ZetaUnit.Unit();
+	ZetaUnit = l1.Vect().Unit()+l2.Vect().Unit();
+	ZetaUnit.SetPtEtaPhi(ZetaUnit.Pt(),0.0,ZetaUnit.Phi());
+	ZetaUnit = ZetaUnit.Unit();
       */
       /*
-      ZetaUnit = l1.Vect().Unit()+l2.Vect().Unit();
-      ZetaUnit = ZetaUnit.Unit();
+	ZetaUnit = l1.Vect().Unit()+l2.Vect().Unit();
+	ZetaUnit = ZetaUnit.Unit();
       */
       float PZetaVis = (l1.Vect()+l2.Vect()).Dot(ZetaUnit);
       float PZetaAll = (l1.Vect()+l2.Vect()+MissingP.Vect()).Dot(ZetaUnit);
@@ -451,7 +452,8 @@ void GenerateMCInJetsRegion(std::string input)
 	}            
 
       //alright now we start examining MC in the same region as the jets
-      if(q_1 * q_2 < 0.0 and TransverseMass < 40.0 and PZeta > -25.0)      
+      //changed the mt cut to 50 to match diego, instead of my original 40
+      if(q_1 * q_2 < 0.0 and TransverseMass < 50.0 and PZeta > -25.0)      
 	{
 	  //just handle this category by category as we do the jets.
 	  float PTFakeRate = 0.0;

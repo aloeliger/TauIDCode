@@ -314,9 +314,11 @@ void JetToTauFakesMeasurement()
       //make sure we pass some muon selection?
       //I guess we just do the same muon region as the actually mt region to make 
       // we get as close to possible to the actual region we care about?
-      if(pt_1 < 29.0 or std::abs(eta_1) > 2.4 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
       
-      if(pt_2 < 29.0 or std::abs(eta_2) > 2.4 or !id_m_medium_2 or iso_2 > 0.15 or std::abs(dZ_2) > 0.2 or std::abs(d0_2) > 0.045 or !matchIsoMu27_2) continue;
+      //match diego's pt > 30 cut as opposed to my original 29.0 cut
+      if(pt_1 < 30.0 or std::abs(eta_1) > 2.4 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
+      
+      if(pt_2 < 30.0 or std::abs(eta_2) > 2.4 or !id_m_medium_2 or iso_2 > 0.15 or std::abs(dZ_2) > 0.2 or std::abs(d0_2) > 0.045 or !matchIsoMu27_2) continue;
       
       //We'll do some loose selection of tau stuff, saving the  
       if(pt_3 < 20.0 or std::abs(eta_3) > 2.3 or againstElectronVLooseMVA6_3 != 1 or againstMuonTight3_3 != 1 /*or !decayModeFinding_3*/ /*or std::abs(dZ_3) > 0.2*/) continue;      

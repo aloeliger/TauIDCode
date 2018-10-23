@@ -1,11 +1,6 @@
 #!/usr/bin/bash
 #argument taken is the tua iso working point VLoose to VVTight
 
-#Until I sort out what the issue is with the cnsenv root setup
-# we have the two old lines in this script
-#sh ../GoofyRootSetup.sh
-
-
 root -b -l -q JetToTauFakesMeasurement.cc
 root -b -l -q GenerateJetSamples.cc
 

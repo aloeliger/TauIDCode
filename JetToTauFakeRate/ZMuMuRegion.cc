@@ -184,11 +184,12 @@ void ZMuMuRegion(std::string input)
 
       //if (!(matchIsoMu27_1 && pt_1>29) && !(matchIsoMu27_2 && pt_2>29)) continue;
       //just my own little test
-      if(matchIsoMu27_1 && !matchIsoMu27_2 && !(pt_1 > 29.0)) continue;
-      if(matchIsoMu27_2 && !matchIsoMu27_1 && !(pt_2 > 29.0)) continue;
-      if(matchIsoMu27_1 && matchIsoMu27_2 && !(pt_1 >29.0 || pt_2 > 29.0)) continue;
+      //match to diego's muon pt > 30 cut as opposed to my 29.0 cut.
+      if(matchIsoMu27_1 && !matchIsoMu27_2 && !(pt_1 > 30.0)) continue;
+      if(matchIsoMu27_2 && !matchIsoMu27_1 && !(pt_2 > 30.0)) continue;
+      if(matchIsoMu27_1 && matchIsoMu27_2 && !(pt_1 >30.0 || pt_2 > 30.0)) continue;
       if(!matchIsoMu27_1 && !matchIsoMu27_2) continue;
-      if(!(pt_1>29.0) && !(pt_2>29.0))continue;
+      if(!(pt_1>30.0) && !(pt_2>30.0))continue;
 
       //pair criteria
       if(q_1*q_2 >= 0.0 or (l1+l2).M() >= 120.0 or (l1+l2).M() <= 60.0) continue;

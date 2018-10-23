@@ -6,7 +6,8 @@
 // 3.) same sign region (for estimating QCD in the signal region
 // 4.) same sign high transverse mass region (for estimating QCD in W+Jets region)
 #include "TROOT.h"
-#include "/afs/cern.ch/user/a/aloelige//private/CMSSW_9_4_0/src/PhysicsTools/Utilities/interface/LumiReweightingStandAlone.h"
+//#include "/afs/cern.ch/user/a/aloelige//private/CMSSW_9_4_0/src/PhysicsTools/Utilities/interface/LumiReweightingStandAlone.h"
+#include "/data/aloeliger/CMSSW_9_4_0/src/PhysicsTools/Utilities/interface/LumiReweightingStandAlone.h"
 #include <cmath>
 #include <string>
 
@@ -389,12 +390,7 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
   TH2F* IDWeightings = (TH2F*) IDFile->Get("NUM_MediumID_DEN_genTracks_pt_abseta");
   
   TFile* ISOFile = new TFile("Weightings/RunBCDEF_SF_ISO.root");
-  TH2F* ISOWeightings = (TH2F*) ISOFile->Get("NUM_TightRelIso_DEN_MediumID_pt_abseta");
-  
-  //debug for jithin.
-  //double EventsPassingMuSelection=0.0;
-  //double EventsPassingTauSelection=0.0;
-  //double EventsPassingDeltaRCut=0.0;  
+  TH2F* ISOWeightings = (TH2F*) ISOFile->Get("NUM_TightRelIso_DEN_MediumID_pt_abseta");  
 
   for(int i =0;i < NumberOfEntries; i++)
     {
@@ -412,30 +408,27 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
       //make the necessary 4 vectors      
       TLorentzVector l1; l1.SetPtEtaPhiE(pt_1, eta_1, phi_1, e_1); //muon
       TLorentzVector l2; l2.SetPtEtaPhiE(pt_2, eta_2, phi_2, e_2); //tau
-      //Handle the shape uncertainty
+      //Handle the TES and Muon shape uncertainty
       l2 = l2*ShapeUncertainty;
 
       //Event selection
-      //muon criteria
-      // added the dz criteria and matchisomu catches the matching to triger objects
-      // potentially have the dxy requirement taken care of?      
-      // 9/23/18 EDIT: Changed this and the MC removal code to have mu ID < 2.4 rather than 2.1
-      
-      if(pt_1 < 29.0 or std::abs(eta_1) > 2.4 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;
-      //EventsPassingMuSelection+=1.0;
+      //muon criteria     
+      //CHanged to Match Diego's pt > 30 cut, as opposed to my original > 29 cut
+      if(pt_1 < 30.0 or std::abs(eta_1) > 2.4 or !id_m_medium_1 or iso_1 > 0.15 or std::abs(dZ_1) > 0.2 or std::abs(d0_1) > 0.045 or !matchIsoMu27_1) continue;      
       
       //tau criteria
-      //added the decaymodefinding_2 which catches the old decay mode finding.
-      //9/24/18 EDIT: require tau dZ to be < 0.2 cm
+      //
       if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronVLooseMVA6_2 != 1 or againstMuonTight3_2 != 1 or !decayModeFinding_2 /*or std::abs(dZ_2) > 0.2*/) continue;
       //EventsPassingTauSelection+=1.0;            
+
+      //hacked in brief way to examine pt/eta brackets.
+      //if( pt_2 < 50.0) continue;
 
       //pair criteria            
       float deltaphi = std::abs(phi_1-phi_2);
       if (deltaphi > M_PI) deltaphi-=2.0*M_PI;
       float DeltaR = std::sqrt((eta_1-eta_2)*(eta_1-eta_2)+deltaphi*deltaphi);
-      if(DeltaR <= 0.5)  continue;
-      //EventsPassingDeltaRCut+=1.0;
+      if(DeltaR <= 0.5)  continue;      
 
       TLorentzVector MissingP;
       MissingP.SetPtEtaPhiM(met,0,metphi,0);
@@ -525,8 +518,7 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
 
       //Data Selection
       float Var = (l1+l2).M();                              
-      
-      //Alright, let's get it so we don't have to edit code to get access to all the working points
+            
       bool TauIsoDiscrim;
       assert( IsoWorkingPoint == "VLoose" ||
 	     IsoWorkingPoint == "Loose" ||
@@ -564,7 +556,8 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
       if(q_1 * q_2 < 0.0)
 	{
 	  //Signal contribution
-	  if(TransverseMass < 40.0 and PZeta > -25.0)
+	  //changed the mt cut to 50 to match diego, instead of my original 40
+	  if(TransverseMass < 50.0 and PZeta > -25.0)
 	    {
 	      if(TauIsoDiscrim)
 		{		  
@@ -651,7 +644,8 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
       else if(q_1 * q_2 > 0.0)
 	{
 	  //QCD in the signal region
-	  if(TransverseMass < 40.0 and PZeta > -25.0)
+	  //changed the mt cut to 50 to match diego, instead of my original 40
+	  if(TransverseMass < 50.0 and PZeta > -25.0)
 	    {
 	      if(TauIsoDiscrim)
 		{		  
@@ -953,12 +947,5 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
       
       HighGenMatchedQCDinWJetsOutFile->Close();
     }
-
-  //debug for jithin
-  /*
-  std::cout<<std::endl;
-  std::cout<<"Events Passing Mu Selection: "<<EventsPassingMuSelection<<std::endl;
-  std::cout<<"Events Passing Tau Selection: "<<EventsPassingTauSelection<<std::endl;
-  std::cout<<"Events Passing DeltaR Cut: "<<EventsPassingDeltaRCut<<std::endl;
-  */
+  
 }

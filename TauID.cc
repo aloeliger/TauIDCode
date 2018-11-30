@@ -150,6 +150,19 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
   Tree->SetBranchAddress("nbtag",&nbtag);
   Tree->SetBranchAddress("njets",&njets);
 
+  TFile* SyncFile = new TFile("Distributions/SyncNtuple.root","RECREATE");
+  TTree* SyncTree = new TTree("SyncTree","SyncTree");
+  SyncTree->Branch("run",&run);
+  SyncTree->Branch("lumi",&lumi);
+  SyncTree->Branch("evt",&evt);
+  SyncTree->Branch("pt_1",&pt_1);
+  SyncTree->Branch("eta_1",&eta_1);
+  SyncTree->Branch("phi_1",&phi_1);
+  SyncTree->Branch("pt_2",&pt_2);
+  SyncTree->Branch("phi_2",&phi_2);
+  SyncTree->Branch("eta_2",&eta_2);
+  
+
   int NumberOfEntries = (int) Tree->GetEntries();
 
   //generate the relevant name
@@ -207,142 +220,142 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
   //we'll use this for determining our Z->tautau signal
   //For genmatch == 5
   TH1F* GenMatch_SignalRegion_Pass = new TH1F(("GenMatch_"+name+"_Pass").c_str(),
-				     "Signal_Pass",
-				     20,
-				     50.0,
-				     150.0);
+					      "Signal_Pass",
+					      SignalRegion_Pass->GetSize()-2, 
+					      SignalRegion_Pass->GetXaxis()->GetXmin(),
+					      SignalRegion_Pass->GetXaxis()->GetXmax());
   TH1F* GenMatch_SignalRegion_Fail = new TH1F(("GenMatch_"+name+"_Fail").c_str(),
-				     "Signal_Fail",
-				     20,
-				     50.0,
-				     150.0);
+					      "Signal_Fail",
+					      SignalRegion_Fail->GetSize()-2, 
+					      SignalRegion_Fail->GetXaxis()->GetXmin(),
+					      SignalRegion_Fail->GetXaxis()->GetXmax());
 
   TH1F* GenMatch_WJetsRegion_Pass = new TH1F(("WJets_GenMatch_"+name+"_Pass").c_str(), 
-				    "WJets_Pass", 
-				    SignalRegion_Pass->GetSize()-2, 
-				    SignalRegion_Pass->GetXaxis()->GetXmin(),
-				    SignalRegion_Pass->GetXaxis()->GetXmax());
+					     "WJets_Pass", 
+					     SignalRegion_Pass->GetSize()-2, 
+					     SignalRegion_Pass->GetXaxis()->GetXmin(),
+					     SignalRegion_Pass->GetXaxis()->GetXmax());
   TH1F* GenMatch_WJetsRegion_Fail = new TH1F(("WJets_GenMatch_"+name+"_Fail").c_str(), 
-				    "WJets_Fail", 
-				    SignalRegion_Fail->GetSize()-2, 
-				    SignalRegion_Fail->GetXaxis()->GetXmin(),
-				    SignalRegion_Fail->GetXaxis()->GetXmax());
+					     "WJets_Fail", 
+					     SignalRegion_Fail->GetSize()-2, 
+					     SignalRegion_Fail->GetXaxis()->GetXmin(),
+					     SignalRegion_Fail->GetXaxis()->GetXmax());
   
   TH1F* GenMatch_QCDRegion_Pass = new TH1F(("QCD_GenMatch_"+name+"_Pass").c_str(), 
-				  "QCD_Pass", 
-				  SignalRegion_Pass->GetSize()-2, 
-				  SignalRegion_Pass->GetXaxis()->GetXmin(),
-				  SignalRegion_Pass->GetXaxis()->GetXmax());
+					   "QCD_Pass", 
+					   SignalRegion_Pass->GetSize()-2, 
+					   SignalRegion_Pass->GetXaxis()->GetXmin(),
+					   SignalRegion_Pass->GetXaxis()->GetXmax());
   
   TH1F* GenMatch_QCDRegion_Fail = new TH1F(("QCD_GenMatch_"+name+"_Fail").c_str(), 
-				  "QCD_Fail", 
-				  SignalRegion_Fail->GetSize()-2, 
-				  SignalRegion_Fail->GetXaxis()->GetXmin(),
-				  SignalRegion_Fail->GetXaxis()->GetXmax());
+					   "QCD_Fail", 
+					   SignalRegion_Fail->GetSize()-2, 
+					   SignalRegion_Fail->GetXaxis()->GetXmin(),
+					   SignalRegion_Fail->GetXaxis()->GetXmax());
   
   TH1F* GenMatch_QCDinWJets_Pass = new TH1F(("WJets_QCD_GenMatch_"+name+"_Pass").c_str(), 
-				   "WJets_QCD_Pass", 
-				   SignalRegion_Pass->GetSize()-2, 
-				   SignalRegion_Pass->GetXaxis()->GetXmin(),
-				   SignalRegion_Pass->GetXaxis()->GetXmax());
+					    "WJets_QCD_Pass", 
+					    SignalRegion_Pass->GetSize()-2, 
+					    SignalRegion_Pass->GetXaxis()->GetXmin(),
+					    SignalRegion_Pass->GetXaxis()->GetXmax());
 
   TH1F* GenMatch_QCDinWJets_Fail = new TH1F(("WJets_QCD_GenMatch_"+name+"_Fail").c_str(), 
-				   "WJets_QCD_Fail", 
-				   SignalRegion_Fail->GetSize()-2, 
-				   SignalRegion_Fail->GetXaxis()->GetXmin(),
-				   SignalRegion_Fail->GetXaxis()->GetXmax());
+					    "WJets_QCD_Fail", 
+					    SignalRegion_Fail->GetSize()-2, 
+					    SignalRegion_Fail->GetXaxis()->GetXmin(),
+					    SignalRegion_Fail->GetXaxis()->GetXmax());
   //for genmatch < 5
   TH1F* LowGenMatch_SignalRegion_Pass = new TH1F(("LowGenMatch_"+name+"_Pass").c_str(),
-				     "Signal_Pass",
-				     20,
-				     50.0,
-				     150.0);
+						 "Signal_Pass",
+						 SignalRegion_Pass->GetSize()-2, 
+						 SignalRegion_Pass->GetXaxis()->GetXmin(),
+						 SignalRegion_Pass->GetXaxis()->GetXmax());
   TH1F* LowGenMatch_SignalRegion_Fail = new TH1F(("LowGenMatch_"+name+"_Fail").c_str(),
-				     "Signal_Fail",
-				     20,
-				     50.0,
-				     150.0);
+						 "Signal_Fail",
+						 SignalRegion_Fail->GetSize()-2, 
+						 SignalRegion_Fail->GetXaxis()->GetXmin(),
+						 SignalRegion_Fail->GetXaxis()->GetXmax());
 
   TH1F* LowGenMatch_WJetsRegion_Pass = new TH1F(("WJets_LowGenMatch_"+name+"_Pass").c_str(), 
-				    "WJets_Pass", 
-				    SignalRegion_Pass->GetSize()-2, 
-				    SignalRegion_Pass->GetXaxis()->GetXmin(),
-				    SignalRegion_Pass->GetXaxis()->GetXmax());
+						"WJets_Pass", 
+						SignalRegion_Pass->GetSize()-2, 
+						SignalRegion_Pass->GetXaxis()->GetXmin(),
+						SignalRegion_Pass->GetXaxis()->GetXmax());
   TH1F* LowGenMatch_WJetsRegion_Fail = new TH1F(("WJets_LowGenMatch_"+name+"_Fail").c_str(), 
-				    "WJets_Fail", 
-				    SignalRegion_Fail->GetSize()-2, 
-				    SignalRegion_Fail->GetXaxis()->GetXmin(),
-				    SignalRegion_Fail->GetXaxis()->GetXmax());
+						"WJets_Fail", 
+						SignalRegion_Fail->GetSize()-2, 
+						SignalRegion_Fail->GetXaxis()->GetXmin(),
+						SignalRegion_Fail->GetXaxis()->GetXmax());
   
   TH1F* LowGenMatch_QCDRegion_Pass = new TH1F(("QCD_LowGenMatch_"+name+"_Pass").c_str(), 
-				  "QCD_Pass", 
-				  SignalRegion_Pass->GetSize()-2, 
-				  SignalRegion_Pass->GetXaxis()->GetXmin(),
-				  SignalRegion_Pass->GetXaxis()->GetXmax());
+					      "QCD_Pass", 
+					      SignalRegion_Pass->GetSize()-2, 
+					      SignalRegion_Pass->GetXaxis()->GetXmin(),
+					      SignalRegion_Pass->GetXaxis()->GetXmax());
   
   TH1F* LowGenMatch_QCDRegion_Fail = new TH1F(("QCD_LowGenMatch_"+name+"_Fail").c_str(), 
-				  "QCD_Fail", 
-				  SignalRegion_Fail->GetSize()-2, 
-				  SignalRegion_Fail->GetXaxis()->GetXmin(),
-				  SignalRegion_Fail->GetXaxis()->GetXmax());
+					      "QCD_Fail", 
+					      SignalRegion_Fail->GetSize()-2, 
+					      SignalRegion_Fail->GetXaxis()->GetXmin(),
+					      SignalRegion_Fail->GetXaxis()->GetXmax());
   
   TH1F* LowGenMatch_QCDinWJets_Pass = new TH1F(("WJets_QCD_LowGenMatch_"+name+"_Pass").c_str(), 
-				   "WJets_QCD_Pass", 
-				   SignalRegion_Pass->GetSize()-2, 
-				   SignalRegion_Pass->GetXaxis()->GetXmin(),
-				   SignalRegion_Pass->GetXaxis()->GetXmax());
+					       "WJets_QCD_Pass", 
+					       SignalRegion_Pass->GetSize()-2, 
+					       SignalRegion_Pass->GetXaxis()->GetXmin(),
+					       SignalRegion_Pass->GetXaxis()->GetXmax());
 
   TH1F* LowGenMatch_QCDinWJets_Fail = new TH1F(("WJets_QCD_LowGenMatch_"+name+"_Fail").c_str(), 
-				   "WJets_QCD_Fail", 
-				   SignalRegion_Fail->GetSize()-2, 
-				   SignalRegion_Fail->GetXaxis()->GetXmin(),
-				   SignalRegion_Fail->GetXaxis()->GetXmax());
+					       "WJets_QCD_Fail", 
+					       SignalRegion_Fail->GetSize()-2, 
+					       SignalRegion_Fail->GetXaxis()->GetXmin(),
+					       SignalRegion_Fail->GetXaxis()->GetXmax());
   //For genmatch == 6
   TH1F* HighGenMatch_SignalRegion_Pass = new TH1F(("HighGenMatch_"+name+"_Pass").c_str(),
-				     "Signal_Pass",
-				     20,
-				     50.0,
-				     150.0);
+						  "Signal_Pass",
+						  SignalRegion_Pass->GetSize()-2, 
+						  SignalRegion_Pass->GetXaxis()->GetXmin(),
+						  SignalRegion_Pass->GetXaxis()->GetXmax());
   TH1F* HighGenMatch_SignalRegion_Fail = new TH1F(("HighGenMatch_"+name+"_Fail").c_str(),
-				     "Signal_Fail",
-				     20,
-				     50.0,
-				     150.0);
+						  "Signal_Fail",
+						  SignalRegion_Fail->GetSize()-2, 
+						  SignalRegion_Fail->GetXaxis()->GetXmin(),
+						  SignalRegion_Fail->GetXaxis()->GetXmax());
 
   TH1F* HighGenMatch_WJetsRegion_Pass = new TH1F(("WJets_HighGenMatch_"+name+"_Pass").c_str(), 
-				    "WJets_Pass", 
-				    SignalRegion_Pass->GetSize()-2, 
-				    SignalRegion_Pass->GetXaxis()->GetXmin(),
-				    SignalRegion_Pass->GetXaxis()->GetXmax());
+						 "WJets_Pass", 
+						 SignalRegion_Pass->GetSize()-2, 
+						 SignalRegion_Pass->GetXaxis()->GetXmin(),
+						 SignalRegion_Pass->GetXaxis()->GetXmax());
   TH1F* HighGenMatch_WJetsRegion_Fail = new TH1F(("WJets_HighGenMatch_"+name+"_Fail").c_str(), 
-				    "WJets_Fail", 
-				    SignalRegion_Fail->GetSize()-2, 
-				    SignalRegion_Fail->GetXaxis()->GetXmin(),
-				    SignalRegion_Fail->GetXaxis()->GetXmax());
+						 "WJets_Fail", 
+						 SignalRegion_Fail->GetSize()-2, 
+						 SignalRegion_Fail->GetXaxis()->GetXmin(),
+						 SignalRegion_Fail->GetXaxis()->GetXmax());
   
   TH1F* HighGenMatch_QCDRegion_Pass = new TH1F(("QCD_HighGenMatch_"+name+"_Pass").c_str(), 
-				  "QCD_Pass", 
-				  SignalRegion_Pass->GetSize()-2, 
-				  SignalRegion_Pass->GetXaxis()->GetXmin(),
-				  SignalRegion_Pass->GetXaxis()->GetXmax());
+					       "QCD_Pass", 
+					       SignalRegion_Pass->GetSize()-2, 
+					       SignalRegion_Pass->GetXaxis()->GetXmin(),
+					       SignalRegion_Pass->GetXaxis()->GetXmax());
   
   TH1F* HighGenMatch_QCDRegion_Fail = new TH1F(("QCD_HighGenMatch_"+name+"_Fail").c_str(), 
-				  "QCD_Fail", 
-				  SignalRegion_Fail->GetSize()-2, 
-				  SignalRegion_Fail->GetXaxis()->GetXmin(),
-				  SignalRegion_Fail->GetXaxis()->GetXmax());
+					       "QCD_Fail", 
+					       SignalRegion_Fail->GetSize()-2, 
+					       SignalRegion_Fail->GetXaxis()->GetXmin(),
+					       SignalRegion_Fail->GetXaxis()->GetXmax());
   
   TH1F* HighGenMatch_QCDinWJets_Pass = new TH1F(("WJets_QCD_HighGenMatch_"+name+"_Pass").c_str(), 
-				   "WJets_QCD_Pass", 
-				   SignalRegion_Pass->GetSize()-2, 
-				   SignalRegion_Pass->GetXaxis()->GetXmin(),
-				   SignalRegion_Pass->GetXaxis()->GetXmax());
+						"WJets_QCD_Pass", 
+						SignalRegion_Pass->GetSize()-2, 
+						SignalRegion_Pass->GetXaxis()->GetXmin(),
+						SignalRegion_Pass->GetXaxis()->GetXmax());
 
   TH1F* HighGenMatch_QCDinWJets_Fail = new TH1F(("WJets_QCD_HighGenMatch_"+name+"_Fail").c_str(), 
-				   "WJets_QCD_Fail", 
-				   SignalRegion_Fail->GetSize()-2, 
-				   SignalRegion_Fail->GetXaxis()->GetXmin(),
-				   SignalRegion_Fail->GetXaxis()->GetXmax());
+						"WJets_QCD_Fail", 
+						SignalRegion_Fail->GetSize()-2, 
+						SignalRegion_Fail->GetXaxis()->GetXmin(),
+						SignalRegion_Fail->GetXaxis()->GetXmax());
 
   //Determine the relevant cross section or normalization
   float LHCLumi = 41.370e15;
@@ -507,7 +520,7 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
 	  if(numGenJets==1) NormalizationWeight = NormalizationWeight*0.589;
 	  if(numGenJets==2) NormalizationWeight = NormalizationWeight*0.612;
 	  if(numGenJets==3) NormalizationWeight = NormalizationWeight*0.767;
-	  if(numGenJets==4) NormalizationWeight = NormalizationWeight*0.690;
+	  if(numGenJets==4) NormalizationWeight = NormalizationWeight*0.690;	  
 	}
       else if(input == "Data") NormalizationWeight = 1.0;          
       else
@@ -518,7 +531,11 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
 
       //Data Selection
       float Var = (l1+l2).M();                              
-            
+      //float Var = l2.Eta();
+      //float Var = l1.Eta();
+      //float Var = l1.Pt();
+      //float Var = npv;
+    
       bool TauIsoDiscrim;
       assert( IsoWorkingPoint == "VLoose" ||
 	     IsoWorkingPoint == "Loose" ||
@@ -571,11 +588,13 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
 		      if(gen_match_2 < 5 ) LowGenMatch_SignalRegion_Pass->Fill(Var,NormalizationWeight);    
 		      if(gen_match_2 == 5) GenMatch_SignalRegion_Pass->Fill(Var,NormalizationWeight);    
 		      if(gen_match_2 == 6) HighGenMatch_SignalRegion_Pass->Fill(Var,NormalizationWeight);    
+		      SyncTree->Fill();
 		    }
 		  //Literally everything else
 		  else
 		    {
 		      SignalRegion_Pass->Fill(Var,NormalizationWeight);    
+		      SyncTree->Fill();
 		    }
 		}
 	      else
@@ -947,5 +966,9 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
       
       HighGenMatchedQCDinWJetsOutFile->Close();
     }
+  SyncFile->cd();
+  SyncTree->Write();
+  SyncFile->Write();
+  SyncFile->Close();
   
 }

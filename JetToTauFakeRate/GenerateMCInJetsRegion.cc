@@ -143,6 +143,8 @@ void GenerateMCInJetsRegion(std::string input)
   Tree->SetBranchAddress("njets",&njets);
 
   int NumberOfEntries = (int) Tree->GetEntries();
+
+  //this needs to change to have the new splti shapes accounted for.
   
   TFile* PassFailFile = new TFile("../Distributions/PassFailOut.root");
   TH1F* Data_Pass = (TH1F*)((TDirectory*)PassFailFile->Get("pass"))->Get("Data_Pass");
@@ -182,77 +184,215 @@ void GenerateMCInJetsRegion(std::string input)
 				     Data_Pass->GetXaxis()->GetXmin(),
 				     Data_Pass->GetXaxis()->GetXmax());
 
-  TH1F* VLooseUPResultHisto = new TH1F((input+"UP_VLoose_JetRegion").c_str(),
-				       (input+"UP_VLoose_JetRegion").c_str(),
+  TH1F* VLooseDecayMode0UPResultHisto = new TH1F((input+"_DecayMode0_UP_VLoose_JetRegion").c_str(),
+				       (input+"_DecayMode0_UP_VLoose_JetRegion").c_str(),
 				       Data_Pass->GetNbinsX(),
 				       Data_Pass->GetXaxis()->GetXmin(),
 				       Data_Pass->GetXaxis()->GetXmax());
   
-  TH1F* LooseUPResultHisto = new TH1F((input+"UP_Loose_JetRegion").c_str(),
-				      (input+"UP_Loose_JetRegion").c_str(),
+  TH1F* LooseDecayMode0UPResultHisto = new TH1F((input+"_DecayMode0_UP_Loose_JetRegion").c_str(),
+				      (input+"_DecayMode0_UP_Loose_JetRegion").c_str(),
 				      Data_Pass->GetNbinsX(),
 				      Data_Pass->GetXaxis()->GetXmin(),
 				      Data_Pass->GetXaxis()->GetXmax());
   
-  TH1F* MediumUPResultHisto = new TH1F((input+"UP_Medium_JetRegion").c_str(),
-				       (input+"UP_Medium_JetRegion").c_str(),
+  TH1F* MediumDecayMode0UPResultHisto = new TH1F((input+"_DecayMode0_UP_Medium_JetRegion").c_str(),
+				       (input+"_DecayMode0UP_Medium_JetRegion").c_str(),
 				       Data_Pass->GetNbinsX(),
 				       Data_Pass->GetXaxis()->GetXmin(),
 				       Data_Pass->GetXaxis()->GetXmax());
   
-  TH1F* TightUPResultHisto = new TH1F((input+"UP_Tight_JetRegion").c_str(),
-				      (input+"UP_Tight_JetRegion").c_str(),
+  TH1F* TightDecayMode0UPResultHisto = new TH1F((input+"_DecayMode0_UP_Tight_JetRegion").c_str(),
+				      (input+"_DecayMode0_UP_Tight_JetRegion").c_str(),
 				      Data_Pass->GetNbinsX(),
 				      Data_Pass->GetXaxis()->GetXmin(),
 				      Data_Pass->GetXaxis()->GetXmax());
-  TH1F* VTightUPResultHisto = new TH1F((input+"UP_VTight_JetRegion").c_str(),
-				       (input+"UP_VTight_JetRegion").c_str(),
+  TH1F* VTightDecayMode0UPResultHisto = new TH1F((input+"_DecayMode0_UP_VTight_JetRegion").c_str(),
+				       (input+"_DecayMode0_UP_VTight_JetRegion").c_str(),
 				       Data_Pass->GetNbinsX(),
 				       Data_Pass->GetXaxis()->GetXmin(),
 				       Data_Pass->GetXaxis()->GetXmax());
   
-  TH1F* VVTightUPResultHisto = new TH1F((input+"UP_VVTight_JetRegion").c_str(),
-					(input+"UP_VVTight_JetRegion").c_str(),
+  TH1F* VVTightDecayMode0UPResultHisto = new TH1F((input+"_DecayMode0_UP_VVTight_JetRegion").c_str(),
+					(input+"_DecayMode0_UP_VVTight_JetRegion").c_str(),
+					Data_Pass->GetNbinsX(),
+					Data_Pass->GetXaxis()->GetXmin(),
+					Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* VLooseDecayMode1UPResultHisto = new TH1F((input+"_DecayMode1_UP_VLoose_JetRegion").c_str(),
+				       (input+"_DecayMode1_UP_VLoose_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* LooseDecayMode1UPResultHisto = new TH1F((input+"_DecayMode1_UP_Loose_JetRegion").c_str(),
+				      (input+"_DecayMode1_UP_Loose_JetRegion").c_str(),
+				      Data_Pass->GetNbinsX(),
+				      Data_Pass->GetXaxis()->GetXmin(),
+				      Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* MediumDecayMode1UPResultHisto = new TH1F((input+"_DecayMode1_UP_Medium_JetRegion").c_str(),
+				       (input+"_DecayMode1UP_Medium_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* TightDecayMode1UPResultHisto = new TH1F((input+"_DecayMode1_UP_Tight_JetRegion").c_str(),
+				      (input+"_DecayMode1_UP_Tight_JetRegion").c_str(),
+				      Data_Pass->GetNbinsX(),
+				      Data_Pass->GetXaxis()->GetXmin(),
+				      Data_Pass->GetXaxis()->GetXmax());
+  TH1F* VTightDecayMode1UPResultHisto = new TH1F((input+"_DecayMode1_UP_VTight_JetRegion").c_str(),
+				       (input+"_DecayMode1_UP_VTight_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* VVTightDecayMode1UPResultHisto = new TH1F((input+"_DecayMode1_UP_VVTight_JetRegion").c_str(),
+					(input+"_DecayMode1_UP_VVTight_JetRegion").c_str(),
 					Data_Pass->GetNbinsX(),
 					Data_Pass->GetXaxis()->GetXmin(),
 					Data_Pass->GetXaxis()->GetXmax());
 
-  TH1F* VLooseDOWNResultHisto = new TH1F((input+"DOWN_VLoose_JetRegion").c_str(),
-				     (input+"DOWN_VLoose_JetRegion").c_str(),
-				     Data_Pass->GetNbinsX(),
-				     Data_Pass->GetXaxis()->GetXmin(),
-				     Data_Pass->GetXaxis()->GetXmax());
-
-  TH1F* LooseDOWNResultHisto = new TH1F((input+"DOWN_Loose_JetRegion").c_str(),
-				    (input+"DOWN_Loose_JetRegion").c_str(),
-				    Data_Pass->GetNbinsX(),
-				    Data_Pass->GetXaxis()->GetXmin(),
-				    Data_Pass->GetXaxis()->GetXmax());
-
-  TH1F* MediumDOWNResultHisto = new TH1F((input+"DOWN_Medium_JetRegion").c_str(),
-				     (input+"DOWN_Medium_JetRegion").c_str(),
-				     Data_Pass->GetNbinsX(),
-				     Data_Pass->GetXaxis()->GetXmin(),
-				     Data_Pass->GetXaxis()->GetXmax());
-
-  TH1F* TightDOWNResultHisto = new TH1F((input+"DOWN_Tight_JetRegion").c_str(),
-				    (input+"DOWN_Tight_JetRegion").c_str(),
-				    Data_Pass->GetNbinsX(),
-				    Data_Pass->GetXaxis()->GetXmin(),
-				    Data_Pass->GetXaxis()->GetXmax());
-  TH1F* VTightDOWNResultHisto = new TH1F((input+"DOWN_VTight_JetRegion").c_str(),
-				     (input+"DOWN_VTight_JetRegion").c_str(),
-				     Data_Pass->GetNbinsX(),
-				     Data_Pass->GetXaxis()->GetXmin(),
-				     Data_Pass->GetXaxis()->GetXmax());
+  TH1F* VLooseDecayMode10UPResultHisto = new TH1F((input+"_DecayMode10_UP_VLoose_JetRegion").c_str(),
+				       (input+"_DecayMode10_UP_VLoose_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
   
-  TH1F* VVTightDOWNResultHisto = new TH1F((input+"DOWN_VVTight_JetRegion").c_str(),
-				     (input+"DOWN_VVTight_JetRegion").c_str(),
-				     Data_Pass->GetNbinsX(),
-				     Data_Pass->GetXaxis()->GetXmin(),
-				     Data_Pass->GetXaxis()->GetXmax());
-
+  TH1F* LooseDecayMode10UPResultHisto = new TH1F((input+"_DecayMode10_UP_Loose_JetRegion").c_str(),
+				      (input+"_DecayMode10_UP_Loose_JetRegion").c_str(),
+				      Data_Pass->GetNbinsX(),
+				      Data_Pass->GetXaxis()->GetXmin(),
+				      Data_Pass->GetXaxis()->GetXmax());
   
+  TH1F* MediumDecayMode10UPResultHisto = new TH1F((input+"_DecayMode10_UP_Medium_JetRegion").c_str(),
+				       (input+"_DecayMode10UP_Medium_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* TightDecayMode10UPResultHisto = new TH1F((input+"_DecayMode10_UP_Tight_JetRegion").c_str(),
+				      (input+"_DecayMode10_UP_Tight_JetRegion").c_str(),
+				      Data_Pass->GetNbinsX(),
+				      Data_Pass->GetXaxis()->GetXmin(),
+				      Data_Pass->GetXaxis()->GetXmax());
+  TH1F* VTightDecayMode10UPResultHisto = new TH1F((input+"_DecayMode10_UP_VTight_JetRegion").c_str(),
+				       (input+"_DecayMode10_UP_VTight_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* VVTightDecayMode10UPResultHisto = new TH1F((input+"_DecayMode10_UP_VVTight_JetRegion").c_str(),
+					(input+"_DecayMode10_UP_VVTight_JetRegion").c_str(),
+					Data_Pass->GetNbinsX(),
+					Data_Pass->GetXaxis()->GetXmin(),
+					Data_Pass->GetXaxis()->GetXmax());
+
+  TH1F* VLooseDecayMode0DOWNResultHisto = new TH1F((input+"_DecayMode0_DOWN_VLoose_JetRegion").c_str(),
+				       (input+"_DecayMode0_DOWN_VLoose_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* LooseDecayMode0DOWNResultHisto = new TH1F((input+"_DecayMode0_DOWN_Loose_JetRegion").c_str(),
+				      (input+"_DecayMode0_DOWN_Loose_JetRegion").c_str(),
+				      Data_Pass->GetNbinsX(),
+				      Data_Pass->GetXaxis()->GetXmin(),
+				      Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* MediumDecayMode0DOWNResultHisto = new TH1F((input+"_DecayMode0_DOWN_Medium_JetRegion").c_str(),
+				       (input+"_DecayMode0DOWN_Medium_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* TightDecayMode0DOWNResultHisto = new TH1F((input+"_DecayMode0_DOWN_Tight_JetRegion").c_str(),
+				      (input+"_DecayMode0_DOWN_Tight_JetRegion").c_str(),
+				      Data_Pass->GetNbinsX(),
+				      Data_Pass->GetXaxis()->GetXmin(),
+				      Data_Pass->GetXaxis()->GetXmax());
+  TH1F* VTightDecayMode0DOWNResultHisto = new TH1F((input+"_DecayMode0_DOWN_VTight_JetRegion").c_str(),
+				       (input+"_DecayMode0_DOWN_VTight_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* VVTightDecayMode0DOWNResultHisto = new TH1F((input+"_DecayMode0_DOWN_VVTight_JetRegion").c_str(),
+					(input+"_DecayMode0_DOWN_VVTight_JetRegion").c_str(),
+					Data_Pass->GetNbinsX(),
+					Data_Pass->GetXaxis()->GetXmin(),
+					Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* VLooseDecayMode1DOWNResultHisto = new TH1F((input+"_DecayMode1_DOWN_VLoose_JetRegion").c_str(),
+				       (input+"_DecayMode1_DOWN_VLoose_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* LooseDecayMode1DOWNResultHisto = new TH1F((input+"_DecayMode1_DOWN_Loose_JetRegion").c_str(),
+				      (input+"_DecayMode1_DOWN_Loose_JetRegion").c_str(),
+				      Data_Pass->GetNbinsX(),
+				      Data_Pass->GetXaxis()->GetXmin(),
+				      Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* MediumDecayMode1DOWNResultHisto = new TH1F((input+"_DecayMode1_DOWN_Medium_JetRegion").c_str(),
+				       (input+"_DecayMode1DOWN_Medium_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* TightDecayMode1DOWNResultHisto = new TH1F((input+"_DecayMode1_DOWN_Tight_JetRegion").c_str(),
+				      (input+"_DecayMode1_DOWN_Tight_JetRegion").c_str(),
+				      Data_Pass->GetNbinsX(),
+				      Data_Pass->GetXaxis()->GetXmin(),
+				      Data_Pass->GetXaxis()->GetXmax());
+  TH1F* VTightDecayMode1DOWNResultHisto = new TH1F((input+"_DecayMode1_DOWN_VTight_JetRegion").c_str(),
+				       (input+"_DecayMode1_DOWN_VTight_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* VVTightDecayMode1DOWNResultHisto = new TH1F((input+"_DecayMode1_DOWN_VVTight_JetRegion").c_str(),
+					(input+"_DecayMode1_DOWN_VVTight_JetRegion").c_str(),
+					Data_Pass->GetNbinsX(),
+					Data_Pass->GetXaxis()->GetXmin(),
+					Data_Pass->GetXaxis()->GetXmax());
+
+  TH1F* VLooseDecayMode10DOWNResultHisto = new TH1F((input+"_DecayMode10_DOWN_VLoose_JetRegion").c_str(),
+				       (input+"_DecayMode10_DOWN_VLoose_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* LooseDecayMode10DOWNResultHisto = new TH1F((input+"_DecayMode10_DOWN_Loose_JetRegion").c_str(),
+				      (input+"_DecayMode10_DOWN_Loose_JetRegion").c_str(),
+				      Data_Pass->GetNbinsX(),
+				      Data_Pass->GetXaxis()->GetXmin(),
+				      Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* MediumDecayMode10DOWNResultHisto = new TH1F((input+"_DecayMode10_DOWN_Medium_JetRegion").c_str(),
+				       (input+"_DecayMode10DOWN_Medium_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* TightDecayMode10DOWNResultHisto = new TH1F((input+"_DecayMode10_DOWN_Tight_JetRegion").c_str(),
+				      (input+"_DecayMode10_DOWN_Tight_JetRegion").c_str(),
+				      Data_Pass->GetNbinsX(),
+				      Data_Pass->GetXaxis()->GetXmin(),
+				      Data_Pass->GetXaxis()->GetXmax());
+  TH1F* VTightDecayMode10DOWNResultHisto = new TH1F((input+"_DecayMode10_DOWN_VTight_JetRegion").c_str(),
+				       (input+"_DecayMode10_DOWN_VTight_JetRegion").c_str(),
+				       Data_Pass->GetNbinsX(),
+				       Data_Pass->GetXaxis()->GetXmin(),
+				       Data_Pass->GetXaxis()->GetXmax());
+  
+  TH1F* VVTightDecayMode10DOWNResultHisto = new TH1F((input+"_DecayMode10_DOWN_VVTight_JetRegion").c_str(),
+					(input+"_DecayMode10_DOWN_VVTight_JetRegion").c_str(),
+					Data_Pass->GetNbinsX(),
+					Data_Pass->GetXaxis()->GetXmin(),
+					Data_Pass->GetXaxis()->GetXmax());
   
   //Weighting Information
   float LHCLumi = 41.370e15;
@@ -297,6 +437,30 @@ void GenerateMCInJetsRegion(std::string input)
   float VTightFakeRate = OverallFakeRates->GetBinContent(5);
   float VVTightFakeRate = OverallFakeRates->GetBinContent(6);
 
+  TH1F* OverallDecayMode0FakeRates = (TH1F*)FakeRateFile->Get("OverallDecayMode0FakeRates");
+  float DecayMode0VLooseFakeRate = OverallDecayMode0FakeRates->GetBinContent(1);
+  float DecayMode0LooseFakeRate = OverallDecayMode0FakeRates->GetBinContent(2);
+  float DecayMode0MediumFakeRate = OverallDecayMode0FakeRates->GetBinContent(3);
+  float DecayMode0TightFakeRate = OverallDecayMode0FakeRates->GetBinContent(4);
+  float DecayMode0VTightFakeRate = OverallDecayMode0FakeRates->GetBinContent(5);
+  float DecayMode0VVTightFakeRate = OverallDecayMode0FakeRates->GetBinContent(6);
+
+  TH1F* OverallDecayMode1FakeRates = (TH1F*)FakeRateFile->Get("OverallDecayMode1FakeRates");
+  float DecayMode1VLooseFakeRate = OverallDecayMode1FakeRates->GetBinContent(1);
+  float DecayMode1LooseFakeRate = OverallDecayMode1FakeRates->GetBinContent(2);
+  float DecayMode1MediumFakeRate = OverallDecayMode1FakeRates->GetBinContent(3);
+  float DecayMode1TightFakeRate = OverallDecayMode1FakeRates->GetBinContent(4);
+  float DecayMode1VTightFakeRate = OverallDecayMode1FakeRates->GetBinContent(5);
+  float DecayMode1VVTightFakeRate = OverallDecayMode1FakeRates->GetBinContent(6);
+
+  TH1F* OverallDecayMode10FakeRates = (TH1F*)FakeRateFile->Get("OverallDecayMode10FakeRates");
+  float DecayMode10VLooseFakeRate = OverallDecayMode10FakeRates->GetBinContent(1);
+  float DecayMode10LooseFakeRate = OverallDecayMode10FakeRates->GetBinContent(2);
+  float DecayMode10MediumFakeRate = OverallDecayMode10FakeRates->GetBinContent(3);
+  float DecayMode10TightFakeRate = OverallDecayMode10FakeRates->GetBinContent(4);
+  float DecayMode10VTightFakeRate = OverallDecayMode10FakeRates->GetBinContent(5);
+  float DecayMode10VVTightFakeRate = OverallDecayMode10FakeRates->GetBinContent(6);
+
   TH1F* VLoosePTFR = (TH1F*)FakeRateFile->Get("VLooseFakeRates");
   TH1F* LoosePTFR = (TH1F*)FakeRateFile->Get("LooseFakeRates");
   TH1F* MediumPTFR = (TH1F*)FakeRateFile->Get("MediumFakeRates");
@@ -328,32 +492,7 @@ void GenerateMCInJetsRegion(std::string input)
 
   TH1F* VVTightDecayMode0PTFakeRates = (TH1F*)FakeRateFile->Get("VVTightDecayMode0PTFakeRates");
   TH1F* VVTightDecayMode1PTFakeRates = (TH1F*)FakeRateFile->Get("VVTightDecayMode1PTFakeRates");
-  TH1F* VVTightDecayMode10PTFakeRates = (TH1F*)FakeRateFile->Get("VVTightDecayMode10PTFakeRates");
-
-  //get our new pt,eta and decay mode based fake rates.
-  TH2F* VLooseDecayMode0FakeRates = (TH2F*) FakeRateFile->Get("VLooseDecayMode0FakeRates");
-  TH2F* VLooseDecayMode1FakeRates = (TH2F*) FakeRateFile->Get("VLooseDecayMode1FakeRates");
-  TH2F* VLooseDecayMode10FakeRates = (TH2F*) FakeRateFile->Get("VLooseDecayMode10FakeRates");
-
-  TH2F* LooseDecayMode0FakeRates = (TH2F*) FakeRateFile->Get("LooseDecayMode0FakeRates");
-  TH2F* LooseDecayMode1FakeRates = (TH2F*) FakeRateFile->Get("LooseDecayMode1FakeRates");
-  TH2F* LooseDecayMode10FakeRates = (TH2F*) FakeRateFile->Get("LooseDecayMode10FakeRates");
-
-  TH2F* MediumDecayMode0FakeRates = (TH2F*) FakeRateFile->Get("MediumDecayMode0FakeRates");
-  TH2F* MediumDecayMode1FakeRates = (TH2F*) FakeRateFile->Get("MediumDecayMode1FakeRates");
-  TH2F* MediumDecayMode10FakeRates = (TH2F*) FakeRateFile->Get("MediumDecayMode10FakeRates");
-
-  TH2F* TightDecayMode0FakeRates = (TH2F*) FakeRateFile->Get("TightDecayMode0FakeRates");
-  TH2F* TightDecayMode1FakeRates = (TH2F*) FakeRateFile->Get("TightDecayMode1FakeRates");
-  TH2F* TightDecayMode10FakeRates = (TH2F*) FakeRateFile->Get("TightDecayMode10FakeRates");
-
-  TH2F* VTightDecayMode0FakeRates = (TH2F*) FakeRateFile->Get("VTightDecayMode0FakeRates");
-  TH2F* VTightDecayMode1FakeRates = (TH2F*) FakeRateFile->Get("VTightDecayMode1FakeRates");
-  TH2F* VTightDecayMode10FakeRates = (TH2F*) FakeRateFile->Get("VTightDecayMode10FakeRates");
-  
-  TH2F* VVTightDecayMode0FakeRates = (TH2F*) FakeRateFile->Get("VVTightDecayMode0FakeRates");
-  TH2F* VVTightDecayMode1FakeRates = (TH2F*) FakeRateFile->Get("VVTightDecayMode1FakeRates");
-  TH2F* VVTightDecayMode10FakeRates = (TH2F*) FakeRateFile->Get("VVTightDecayMode10FakeRates");
+  TH1F* VVTightDecayMode10PTFakeRates = (TH1F*)FakeRateFile->Get("VVTightDecayMode10PTFakeRates");  
 
   for(int i=0;i < NumberOfEntries; i++)
     {
@@ -422,7 +561,10 @@ void GenerateMCInJetsRegion(std::string input)
       float HistoLowEdge = Data_Pass->GetXaxis()->GetXmin();
       
       float Var = (l1+l2).M();            
-      
+      //float Var = l2.Eta();
+      //float Var = l1.Eta();
+      //float Var = l1.Pt();
+      //float Var = npv;
       //Create the weighting
       float PileupWeight = LumiWeights_12->weight(npu);
       
@@ -459,163 +601,350 @@ void GenerateMCInJetsRegion(std::string input)
 	  float PTFakeRate = 0.0;
 	  float PTWeighting = 0.0;
 	  float ExacerbatedFakeRate = 0.0;
-	  float ExacerbatedWeighting = 0.0;
+	  float ExacerbatedWeighting = 0.0;	  
 	  if(!byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2)
-	    {
-	      //Look at the decay mode of our claimed tau?
+	    {	      
 	      if(l2_decayMode == 0)
-		{
-		  //PTFakeRate = VLooseDecayMode0FakeRates->GetBinContent(VLooseDecayMode0FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
+		{		  
 		  PTFakeRate = VLooseDecayMode0PTFakeRates->GetBinContent(VLooseDecayMode0PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  VLooseResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode0VLooseFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 0 /up/down with exaggerations
+		  VLooseDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode0VLooseFakeRate/(1.0-DecayMode0VLooseFakeRate)));
+		  VLooseDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  VLooseDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VLooseDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VLooseDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VLooseDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
 		}
 	      else if(l2_decayMode == 1)
 		{
-		  //PTFakeRate = VLooseDecayMode1FakeRates->GetBinContent(VLooseDecayMode1FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
 		  PTFakeRate = VLooseDecayMode1PTFakeRates->GetBinContent(VLooseDecayMode1PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  VLooseResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode1VLooseFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 1 /up/down with exaggerations
+		  VLooseDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode1VLooseFakeRate/(1.0-DecayMode1VLooseFakeRate)));
+		  VLooseDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  VLooseDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VLooseDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VLooseDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VLooseDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
 		}
 	      else if(l2_decayMode == 10)
-		{
-		  //PTFakeRate = VLooseDecayMode10FakeRates->GetBinContent(VLooseDecayMode10FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
-		  PTFakeRate = VLooseDecayMode10PTFakeRates->GetBinContent(VLooseDecayMode10PTFakeRates->FindBin(l2.Pt()));
-		}
-	      //PTFakeRate = VLoosePTFR->GetBinContent(VLoosePTFR->FindBin(l2.Pt()));
-	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
-	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, VLooseFakeRate);
-	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
-	      
-	      VLooseDOWNResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
-	      VLooseResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
-	      VLooseUPResultHisto->Fill(Var,VLooseFakeRate/(1.0-VLooseFakeRate));
+		{		  
+		  PTFakeRate = VLooseDecayMode0PTFakeRates->GetBinContent(VLooseDecayMode10PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  VLooseResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode10VLooseFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 10 /up/down with exaggerations
+		  VLooseDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode10VLooseFakeRate/(1.0-DecayMode10VLooseFakeRate)));
+		  VLooseDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  VLooseDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VLooseDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VLooseDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VLooseDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		}	      	      	      	      	      
+	      	      	      
 	    }
+	  
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byLooseIsolationRerunMVArun2v2DBoldDMwLT_2)
 	    {	
 	      if(l2_decayMode == 0)
-		{
-		  //PTFakeRate = LooseDecayMode0FakeRates->GetBinContent(LooseDecayMode0FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
+		{		  
 		  PTFakeRate = LooseDecayMode0PTFakeRates->GetBinContent(LooseDecayMode0PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  LooseResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode0LooseFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 0 /up/down with exaggerations
+		  LooseDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode0LooseFakeRate/(1.0-DecayMode0LooseFakeRate)));
+		  LooseDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  LooseDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  LooseDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  LooseDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  LooseDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
 		}
 	      else if(l2_decayMode == 1)
 		{
-		  //PTFakeRate = LooseDecayMode1FakeRates->GetBinContent(LooseDecayMode1FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
 		  PTFakeRate = LooseDecayMode1PTFakeRates->GetBinContent(LooseDecayMode1PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  LooseResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode1LooseFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 1 /up/down with exaggerations
+		  LooseDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode1LooseFakeRate/(1.0-DecayMode1LooseFakeRate)));
+		  LooseDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  LooseDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  LooseDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  LooseDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  LooseDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
 		}
 	      else if(l2_decayMode == 10)
-		{
-		  //PTFakeRate = LooseDecayMode10FakeRates->GetBinContent(LooseDecayMode10FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
-		  PTFakeRate = LooseDecayMode10PTFakeRates->GetBinContent(LooseDecayMode10PTFakeRates->FindBin(l2.Pt()));
-		}
-	      //PTFakeRate = LoosePTFR->GetBinContent(LoosePTFR->FindBin(l2.Pt()));
-	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
-	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, LooseFakeRate);
-	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
-	      
-	      LooseDOWNResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
-	      LooseResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
-	      LooseUPResultHisto->Fill(Var,LooseFakeRate/(1.0-LooseFakeRate));
+		{		  
+		  PTFakeRate = LooseDecayMode0PTFakeRates->GetBinContent(LooseDecayMode10PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  LooseResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode10LooseFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 10 /up/down with exaggerations
+		  LooseDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode10LooseFakeRate/(1.0-DecayMode10LooseFakeRate)));
+		  LooseDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  LooseDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  LooseDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  LooseDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  LooseDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		}	      	      	      	      	      
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byMediumIsolationRerunMVArun2v2DBoldDMwLT_2)
 	    {
 	      if(l2_decayMode == 0)
-		{
-		  //PTFakeRate = MediumDecayMode0FakeRates->GetBinContent(MediumDecayMode0FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
+		{		  
 		  PTFakeRate = MediumDecayMode0PTFakeRates->GetBinContent(MediumDecayMode0PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  MediumResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode0MediumFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 0 /up/down with exaggerations
+		  MediumDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode0MediumFakeRate/(1.0-DecayMode0MediumFakeRate)));
+		  MediumDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  MediumDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  MediumDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  MediumDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  MediumDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
 		}
 	      else if(l2_decayMode == 1)
 		{
-		  //PTFakeRate = MediumDecayMode1FakeRates->GetBinContent(MediumDecayMode1FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
 		  PTFakeRate = MediumDecayMode1PTFakeRates->GetBinContent(MediumDecayMode1PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  MediumResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode1MediumFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 1 /up/down with exaggerations
+		  MediumDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode1MediumFakeRate/(1.0-DecayMode1MediumFakeRate)));
+		  MediumDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  MediumDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  MediumDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  MediumDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  MediumDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
 		}
 	      else if(l2_decayMode == 10)
-		{
-		  //PTFakeRate = MediumDecayMode10FakeRates->GetBinContent(MediumDecayMode10FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
-		  PTFakeRate = MediumDecayMode10PTFakeRates->GetBinContent(MediumDecayMode0PTFakeRates->FindBin(l2.Pt()));
-		}
-	      //PTFakeRate = MediumPTFR->GetBinContent(MediumPTFR->FindBin(l2.Pt()));
-	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
-	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, MediumFakeRate);
-	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
-	      
-	      MediumDOWNResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
-	      MediumResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
-	      MediumUPResultHisto->Fill(Var,MediumFakeRate/(1.0-MediumFakeRate));
+		{		  
+		  PTFakeRate = MediumDecayMode0PTFakeRates->GetBinContent(MediumDecayMode10PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  MediumResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode10MediumFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 10 /up/down with exaggerations
+		  MediumDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode10MediumFakeRate/(1.0-DecayMode10MediumFakeRate)));
+		  MediumDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  MediumDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  MediumDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  MediumDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  MediumDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		}	      	      	      	      	      
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byTightIsolationRerunMVArun2v2DBoldDMwLT_2)
 	    {
 	      if(l2_decayMode == 0)
-		{
-		  //PTFakeRate = TightDecayMode0FakeRates->GetBinContent(TightDecayMode0FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
+		{		  
 		  PTFakeRate = TightDecayMode0PTFakeRates->GetBinContent(TightDecayMode0PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  TightResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode0TightFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 0 /up/down with exaggerations
+		  TightDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode0TightFakeRate/(1.0-DecayMode0TightFakeRate)));
+		  TightDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  TightDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  TightDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  TightDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  TightDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
 		}
 	      else if(l2_decayMode == 1)
 		{
-		  //PTFakeRate = TightDecayMode1FakeRates->GetBinContent(TightDecayMode1FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
 		  PTFakeRate = TightDecayMode1PTFakeRates->GetBinContent(TightDecayMode1PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  TightResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode1TightFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 1 /up/down with exaggerations
+		  TightDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode1TightFakeRate/(1.0-DecayMode1TightFakeRate)));
+		  TightDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  TightDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  TightDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  TightDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  TightDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
 		}
 	      else if(l2_decayMode == 10)
-		{
-		  //PTFakeRate = TightDecayMode10FakeRates->GetBinContent(TightDecayMode10FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
-		  PTFakeRate = TightDecayMode10PTFakeRates->GetBinContent(TightDecayMode10PTFakeRates->FindBin(l2.Pt()));
-		}
-	      //PTFakeRate = TightPTFR->GetBinContent(TightPTFR->FindBin(l2.Pt()));
-	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
-	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, TightFakeRate);
-	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
-	      
-	      TightDOWNResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
-	      TightResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
-	      TightUPResultHisto->Fill(Var,TightFakeRate/(1.0-TightFakeRate));
+		{		  
+		  PTFakeRate = TightDecayMode0PTFakeRates->GetBinContent(TightDecayMode10PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  TightResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode10TightFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 10 /up/down with exaggerations
+		  TightDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode10TightFakeRate/(1.0-DecayMode10TightFakeRate)));
+		  TightDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  TightDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  TightDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  TightDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  TightDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		}	      	      	      	      	      
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byVTightIsolationRerunMVArun2v2DBoldDMwLT_2)
 	    {	
 	      if(l2_decayMode == 0)
-		{
-		  //PTFakeRate = VTightDecayMode0FakeRates->GetBinContent(VTightDecayMode0FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
+		{		  
 		  PTFakeRate = VTightDecayMode0PTFakeRates->GetBinContent(VTightDecayMode0PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  VTightResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode0VTightFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 0 /up/down with exaggerations
+		  VTightDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode0VTightFakeRate/(1.0-DecayMode0VTightFakeRate)));
+		  VTightDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  VTightDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VTightDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VTightDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VTightDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
 		}
 	      else if(l2_decayMode == 1)
 		{
-		  //PTFakeRate = VTightDecayMode1FakeRates->GetBinContent(VTightDecayMode1FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
 		  PTFakeRate = VTightDecayMode1PTFakeRates->GetBinContent(VTightDecayMode1PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  VTightResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode1VTightFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 1 /up/down with exaggerations
+		  VTightDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode1VTightFakeRate/(1.0-DecayMode1VTightFakeRate)));
+		  VTightDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  VTightDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VTightDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VTightDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VTightDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
 		}
 	      else if(l2_decayMode == 10)
-		{
-		  //PTFakeRate = VTightDecayMode10FakeRates->GetBinContent(VTightDecayMode10FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
-		  PTFakeRate = VTightDecayMode10PTFakeRates->GetBinContent(LooseDecayMode10PTFakeRates->FindBin(l2.Pt()));
-		}
-	      //PTFakeRate = VTightPTFR->GetBinContent(VTightPTFR->FindBin(l2.Pt()));
-	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
-	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, VTightFakeRate);
-	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
-	      
-	      VTightDOWNResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
-	      VTightResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
-	      VTightUPResultHisto->Fill(Var,VTightFakeRate/(1.0-VTightFakeRate));
+		{		  
+		  PTFakeRate = VTightDecayMode0PTFakeRates->GetBinContent(VTightDecayMode10PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  VTightResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode10VTightFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 10 /up/down with exaggerations
+		  VTightDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode10VTightFakeRate/(1.0-DecayMode10VTightFakeRate)));
+		  VTightDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  VTightDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VTightDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VTightDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VTightDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		}	      	      	      	      	      
 	    }
 	  if(byVLooseIsolationRerunMVArun2v2DBoldDMwLT_2 and !byVVTightIsolationRerunMVArun2v2DBoldDMwLT_2)
 	    {	
 	      if(l2_decayMode == 0)
-		{
-		  //PTFakeRate = VVTightDecayMode0FakeRates->GetBinContent(VVTightDecayMode0FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
+		{		  
 		  PTFakeRate = VVTightDecayMode0PTFakeRates->GetBinContent(VVTightDecayMode0PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  VVTightResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode0VVTightFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 0 /up/down with exaggerations
+		  VVTightDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode0VVTightFakeRate/(1.0-DecayMode0VVTightFakeRate)));
+		  VVTightDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  VVTightDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VVTightDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VVTightDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VVTightDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
 		}
 	      else if(l2_decayMode == 1)
 		{
-		  //PTFakeRate = VVTightDecayMode1FakeRates->GetBinContent(VVTightDecayMode1FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
 		  PTFakeRate = VVTightDecayMode1PTFakeRates->GetBinContent(VVTightDecayMode1PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  VVTightResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode1VVTightFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 1 /up/down with exaggerations
+		  VVTightDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode1VVTightFakeRate/(1.0-DecayMode1VVTightFakeRate)));
+		  VVTightDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  VVTightDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VVTightDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VVTightDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VVTightDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
 		}
 	      else if(l2_decayMode == 10)
-		{
-		  //PTFakeRate = VVTightDecayMode10FakeRates->GetBinContent(VVTightDecayMode10FakeRates->FindBin(l2.Pt(),std::abs(eta_2)));
-		  PTFakeRate = VVTightDecayMode10PTFakeRates->GetBinContent(VVTightDecayMode10PTFakeRates->FindBin(l2.Pt()));
-		}
-	      //PTFakeRate = VVTightPTFR->GetBinContent(VVTightPTFR->FindBin(l2.Pt()));
-	      PTWeighting = PTFakeRate/(1.0-PTFakeRate);
-	      ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, VVTightFakeRate);
-	      ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
-	      
-	      VVTightDOWNResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
-	      VVTightResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
-	      VVTightUPResultHisto->Fill(Var,VVTightFakeRate/(1.0-VVTightFakeRate));
+		{		  
+		  PTFakeRate = VVTightDecayMode0PTFakeRates->GetBinContent(VVTightDecayMode10PTFakeRates->FindBin(l2.Pt()));
+		  PTWeighting = PTFakeRate/(1.0-PTFakeRate);
+
+		  VVTightResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  
+		  ExacerbatedFakeRate = GenerateExacerbatedFakeRate(PTFakeRate, DecayMode10VVTightFakeRate);
+		  ExacerbatedWeighting = ExacerbatedFakeRate/(1.0-ExacerbatedFakeRate);
+		  //fill decay mode 10 /up/down with exaggerations
+		  VVTightDecayMode10DOWNResultHisto->Fill(Var,NormalizationWeight*(DecayMode10VVTightFakeRate/(1.0-DecayMode10VVTightFakeRate)));
+		  VVTightDecayMode10UPResultHisto->Fill(Var,NormalizationWeight*ExacerbatedWeighting);
+		  //fill the other decay modes with nominals
+		  VVTightDecayMode1DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VVTightDecayMode1UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VVTightDecayMode0DOWNResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		  VVTightDecayMode0UPResultHisto->Fill(Var,NormalizationWeight*PTWeighting);
+		}	      	      	      	      	      
 	    }
 	}//end of jets region
     }// end of for loop.
@@ -626,17 +955,48 @@ void GenerateMCInJetsRegion(std::string input)
   TightResultHisto->Write();
   VTightResultHisto->Write();
   VVTightResultHisto->Write();  
-  VLooseUPResultHisto->Write();
-  LooseUPResultHisto->Write();
-  MediumUPResultHisto->Write();
-  TightUPResultHisto->Write();
-  VTightUPResultHisto->Write();
-  VVTightUPResultHisto->Write();  
-  VLooseDOWNResultHisto->Write();
-  LooseDOWNResultHisto->Write();
-  MediumDOWNResultHisto->Write();
-  TightDOWNResultHisto->Write();
-  VTightDOWNResultHisto->Write();
-  VVTightDOWNResultHisto->Write();  
+
+  VLooseDecayMode0UPResultHisto->Write();
+  LooseDecayMode0UPResultHisto->Write();
+  MediumDecayMode0UPResultHisto->Write();
+  TightDecayMode0UPResultHisto->Write();
+  VTightDecayMode0UPResultHisto->Write();
+  VVTightDecayMode0UPResultHisto->Write();  
+
+  VLooseDecayMode1UPResultHisto->Write();
+  LooseDecayMode1UPResultHisto->Write();
+  MediumDecayMode1UPResultHisto->Write();
+  TightDecayMode1UPResultHisto->Write();
+  VTightDecayMode1UPResultHisto->Write();
+  VVTightDecayMode1UPResultHisto->Write();  
+
+  VLooseDecayMode10UPResultHisto->Write();
+  LooseDecayMode10UPResultHisto->Write();
+  MediumDecayMode10UPResultHisto->Write();
+  TightDecayMode10UPResultHisto->Write();
+  VTightDecayMode10UPResultHisto->Write();
+  VVTightDecayMode10UPResultHisto->Write();  
+  
+  VLooseDecayMode0DOWNResultHisto->Write();
+  LooseDecayMode0DOWNResultHisto->Write();
+  MediumDecayMode0DOWNResultHisto->Write();
+  TightDecayMode0DOWNResultHisto->Write();
+  VTightDecayMode0DOWNResultHisto->Write();
+  VVTightDecayMode0DOWNResultHisto->Write();  
+
+  VLooseDecayMode1DOWNResultHisto->Write();
+  LooseDecayMode1DOWNResultHisto->Write();
+  MediumDecayMode1DOWNResultHisto->Write();
+  TightDecayMode1DOWNResultHisto->Write();
+  VTightDecayMode1DOWNResultHisto->Write();
+  VVTightDecayMode1DOWNResultHisto->Write();  
+
+  VLooseDecayMode10DOWNResultHisto->Write();
+  LooseDecayMode10DOWNResultHisto->Write();
+  MediumDecayMode10DOWNResultHisto->Write();
+  TightDecayMode10DOWNResultHisto->Write();
+  VTightDecayMode10DOWNResultHisto->Write();
+  VVTightDecayMode10DOWNResultHisto->Write();  
+
   OutFile->Close();
 }

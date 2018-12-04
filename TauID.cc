@@ -230,6 +230,22 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
 					      SignalRegion_Fail->GetXaxis()->GetXmin(),
 					      SignalRegion_Fail->GetXaxis()->GetXmax());
 
+  TH1F* GenMatch_SignalRegion_DM0Mod_Pass = new TH1F(("GenMatch_"+name+"_DM0Mod_Pass").c_str(),
+						     ("GenMatch_"+name+"_DM0Mod_Pass").c_str(),
+						     SignalRegion_Pass->GetSize()-2,
+						     SignalRegion_Pass->GetXaxis()->GetXmin(),
+						     SignalRegion_Pass->GetXaxis()->GetXmax());
+  TH1F* GenMatch_SignalRegion_DM1Mod_Pass = new TH1F(("GenMatch_"+name+"_DM1Mod_Pass").c_str(),
+						     ("GenMatch_"+name+"_DM1Mod_Pass").c_str(),
+						     SignalRegion_Pass->GetSize()-2,
+						     SignalRegion_Pass->GetXaxis()->GetXmin(),
+						     SignalRegion_Pass->GetXaxis()->GetXmax());
+  TH1F* GenMatch_SignalRegion_DM10Mod_Pass = new TH1F(("GenMatch_"+name+"_DM10Mod_Pass").c_str(),
+						      ("GenMatch_"+name+"_DM10Mod_Pass").c_str(),
+						      SignalRegion_Pass->GetSize()-2,
+						      SignalRegion_Pass->GetXaxis()->GetXmin(),
+						      SignalRegion_Pass->GetXaxis()->GetXmax());
+
   TH1F* GenMatch_WJetsRegion_Pass = new TH1F(("WJets_GenMatch_"+name+"_Pass").c_str(), 
 					     "WJets_Pass", 
 					     SignalRegion_Pass->GetSize()-2, 
@@ -423,6 +439,24 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
       TLorentzVector l2; l2.SetPtEtaPhiE(pt_2, eta_2, phi_2, e_2); //tau
       //Handle the TES and Muon shape uncertainty
       l2 = l2*ShapeUncertainty;
+      TLorentzVector l2_DM0Mod = l2;
+      TLorentzVector l2_DM1Mod = l2;
+      TLorentzVector l2_DM10Mod = l2;
+      if(ShapeUncertainty != 1.0)
+	{
+	  if(l2_decayMode == 0)
+	    {
+	      l2_DM0Mod = l2_DM0Mod * ShapeUncertainty;
+	    }
+	  else if(l2_decayMode == 1)
+	    {
+	      l2_DM1Mod = l2_DM1Mod * ShapeUncertainty;
+	    }
+	  else if(l2_decayMode == 10)
+	    {
+	      l2_DM10Mod = l2_DM10Mod * ShapeUncertainty;
+	    }
+	}
 
       //Event selection
       //muon criteria     
@@ -431,7 +465,7 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
       
       //tau criteria
       //
-      if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronVLooseMVA6_2 != 1 or againstMuonTight3_2 != 1 or !decayModeFinding_2 /*or std::abs(dZ_2) > 0.2*/) continue;
+      if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronVLooseMVA6_2 != 1 or againstMuonTight3_2 != 1 or !decayModeFinding_2 or std::abs(dZ_2) > 0.2) continue;
       //EventsPassingTauSelection+=1.0;            
 
       //hacked in brief way to examine pt/eta brackets.
@@ -531,9 +565,23 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
 
       //Data Selection
       float Var = (l1+l2).M();                              
+      float Var_DM0Mod = (l1+l2_DM0Mod).M();
+      float Var_DM1Mod = (l1+l2_DM1Mod).M();
+      float Var_DM10Mod = (l1+l2_DM10Mod).M();
       //float Var = l2.Eta();
       //float Var = l1.Eta();
-      //float Var = l1.Pt();
+      /*
+      float Var = l1.Pt();
+      float Var_DM0Mod = l1.Pt();
+      float Var_DM1Mod = l1.Pt();
+      float Var_DM10Mod = l1.Pt();
+      */
+      /*
+      float Var = l2.Pt();
+      float Var_DM0Mod = l2.Pt();
+      float Var_DM1Mod = l2.Pt();
+      float Var_DM10Mod = l2.Pt();
+      */
       //float Var = npv;
     
       bool TauIsoDiscrim;
@@ -586,7 +634,13 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
 		     or input == "DY4")
 		    {
 		      if(gen_match_2 < 5 ) LowGenMatch_SignalRegion_Pass->Fill(Var,NormalizationWeight);    
-		      if(gen_match_2 == 5) GenMatch_SignalRegion_Pass->Fill(Var,NormalizationWeight);    
+		      if(gen_match_2 == 5) 
+			{
+			  GenMatch_SignalRegion_Pass->Fill(Var,NormalizationWeight);    
+			  GenMatch_SignalRegion_DM0Mod_Pass->Fill(Var_DM0Mod, NormalizationWeight);
+			  GenMatch_SignalRegion_DM1Mod_Pass->Fill(Var_DM1Mod, NormalizationWeight);
+			  GenMatch_SignalRegion_DM10Mod_Pass->Fill(Var_DM10Mod, NormalizationWeight);
+			}
 		      if(gen_match_2 == 6) HighGenMatch_SignalRegion_Pass->Fill(Var,NormalizationWeight);    
 		      SyncTree->Fill();
 		    }
@@ -816,6 +870,9 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
       TDirectory *GenMatchSignalPassDir = GenMatchedSignalOutFile->mkdir("pass");
       GenMatchSignalPassDir->cd();
       GenMatch_SignalRegion_Pass->Write();
+      GenMatch_SignalRegion_DM0Mod_Pass->Write();
+      GenMatch_SignalRegion_DM1Mod_Pass->Write();
+      GenMatch_SignalRegion_DM10Mod_Pass->Write();
       
       TDirectory *GenMatchSignalFailDir = GenMatchedSignalOutFile->mkdir("fail");
       GenMatchSignalFailDir->cd();

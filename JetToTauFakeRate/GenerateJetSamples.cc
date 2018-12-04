@@ -481,6 +481,7 @@ void GenerateJetSamples()
       //float Var = l2.Eta();
       //float Var = l1.Eta();
       //float Var = l1.Pt();
+      //float Var = l2.Pt();
       //float Var = npv;
       //changed the mt cut to 50 to match diego, instead of my original 40
       if(q_1 * q_2 < 0.0 and TransverseMass < 50.0 and PZeta > -25.0)      

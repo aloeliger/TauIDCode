@@ -46,6 +46,41 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   TH1F* ZTauTau3_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY3_0.970000_Pass");
   TH1F* ZTauTau4_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY4_0.970000_Pass");
 
+  //get the new DM split TES uncertainties.
+  TH1F* ZTauTau_DM0_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY_1.008000_DM0Mod_Pass");
+  TH1F* ZTauTau1_DM0_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY1_1.008000_DM0Mod_Pass");
+  TH1F* ZTauTau2_DM0_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY2_1.008000_DM0Mod_Pass");
+  TH1F* ZTauTau3_DM0_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY3_1.008000_DM0Mod_Pass");
+  TH1F* ZTauTau4_DM0_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY4_1.008000_DM0Mod_Pass");
+  TH1F* ZTauTau_DM0_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY_0.992000_DM0Mod_Pass");
+  TH1F* ZTauTau1_DM0_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY1_0.992000_DM0Mod_Pass");
+  TH1F* ZTauTau2_DM0_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY2_0.992000_DM0Mod_Pass");
+  TH1F* ZTauTau3_DM0_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY3_0.992000_DM0Mod_Pass");
+  TH1F* ZTauTau4_DM0_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY4_0.992000_DM0Mod_Pass");
+  
+  TH1F* ZTauTau_DM1_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY_1.008000_DM1Mod_Pass");
+  TH1F* ZTauTau1_DM1_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY1_1.008000_DM1Mod_Pass");
+  TH1F* ZTauTau2_DM1_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY2_1.008000_DM1Mod_Pass");
+  TH1F* ZTauTau3_DM1_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY3_1.008000_DM1Mod_Pass");
+  TH1F* ZTauTau4_DM1_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY4_1.008000_DM1Mod_Pass");
+  TH1F* ZTauTau_DM1_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY_0.992000_DM1Mod_Pass");
+  TH1F* ZTauTau1_DM1_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY1_0.992000_DM1Mod_Pass");
+  TH1F* ZTauTau2_DM1_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY2_0.992000_DM1Mod_Pass");
+  TH1F* ZTauTau3_DM1_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY3_0.992000_DM1Mod_Pass");
+  TH1F* ZTauTau4_DM1_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY4_0.992000_DM1Mod_Pass");
+  
+  TH1F* ZTauTau_DM10_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY_1.009000_DM10Mod_Pass");
+  TH1F* ZTauTau1_DM10_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY1_1.009000_DM10Mod_Pass");
+  TH1F* ZTauTau2_DM10_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY2_1.009000_DM10Mod_Pass");
+  TH1F* ZTauTau3_DM10_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY3_1.009000_DM10Mod_Pass");
+  TH1F* ZTauTau4_DM10_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY4_1.009000_DM10Mod_Pass");
+  TH1F* ZTauTau_DM10_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY_0.991000_DM10Mod_Pass");
+  TH1F* ZTauTau1_DM10_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY1_0.991000_DM10Mod_Pass");
+  TH1F* ZTauTau2_DM10_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY2_0.991000_DM10Mod_Pass");
+  TH1F* ZTauTau3_DM10_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY3_0.991000_DM10Mod_Pass");
+  TH1F* ZTauTau4_DM10_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY4_0.991000_DM10Mod_Pass");
+  //
+
   //mu to tau fake shape uncertainty
   TH1F* LowGenMatch_DY_Shape_UP_Pass = (TH1F*) passDirectory->Get("LowGenMatch_DY_1.100000_Pass");
   TH1F* LowGenMatch_DY1_Shape_UP_Pass = (TH1F*) passDirectory->Get("LowGenMatch_DY1_1.100000_Pass");
@@ -168,6 +203,34 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   ZTauTau_TES_DOWN_Pass->Add(ZTauTau3_TES_DOWN_Pass);
   ZTauTau_TES_DOWN_Pass->Add(ZTauTau4_TES_DOWN_Pass);
 
+  //sum up the new TES Uncertainties
+  ZTauTau_DM0_TES_UP_Pass->Add(ZTauTau1_DM0_TES_UP_Pass);
+  ZTauTau_DM0_TES_UP_Pass->Add(ZTauTau2_DM0_TES_UP_Pass);
+  ZTauTau_DM0_TES_UP_Pass->Add(ZTauTau3_DM0_TES_UP_Pass);
+  ZTauTau_DM0_TES_UP_Pass->Add(ZTauTau4_DM0_TES_UP_Pass);
+  ZTauTau_DM0_TES_DOWN_Pass->Add(ZTauTau1_DM0_TES_DOWN_Pass);
+  ZTauTau_DM0_TES_DOWN_Pass->Add(ZTauTau2_DM0_TES_DOWN_Pass);
+  ZTauTau_DM0_TES_DOWN_Pass->Add(ZTauTau3_DM0_TES_DOWN_Pass);
+  ZTauTau_DM0_TES_DOWN_Pass->Add(ZTauTau4_DM0_TES_DOWN_Pass);
+
+  ZTauTau_DM1_TES_UP_Pass->Add(ZTauTau1_DM1_TES_UP_Pass);
+  ZTauTau_DM1_TES_UP_Pass->Add(ZTauTau2_DM1_TES_UP_Pass);
+  ZTauTau_DM1_TES_UP_Pass->Add(ZTauTau3_DM1_TES_UP_Pass);
+  ZTauTau_DM1_TES_UP_Pass->Add(ZTauTau4_DM1_TES_UP_Pass);
+  ZTauTau_DM1_TES_DOWN_Pass->Add(ZTauTau1_DM1_TES_DOWN_Pass);
+  ZTauTau_DM1_TES_DOWN_Pass->Add(ZTauTau2_DM1_TES_DOWN_Pass);
+  ZTauTau_DM1_TES_DOWN_Pass->Add(ZTauTau3_DM1_TES_DOWN_Pass);
+  ZTauTau_DM1_TES_DOWN_Pass->Add(ZTauTau4_DM1_TES_DOWN_Pass);
+
+  ZTauTau_DM10_TES_UP_Pass->Add(ZTauTau1_DM10_TES_UP_Pass);
+  ZTauTau_DM10_TES_UP_Pass->Add(ZTauTau2_DM10_TES_UP_Pass);
+  ZTauTau_DM10_TES_UP_Pass->Add(ZTauTau3_DM10_TES_UP_Pass);
+  ZTauTau_DM10_TES_UP_Pass->Add(ZTauTau4_DM10_TES_UP_Pass);
+  ZTauTau_DM10_TES_DOWN_Pass->Add(ZTauTau1_DM10_TES_DOWN_Pass);
+  ZTauTau_DM10_TES_DOWN_Pass->Add(ZTauTau2_DM10_TES_DOWN_Pass);
+  ZTauTau_DM10_TES_DOWN_Pass->Add(ZTauTau3_DM10_TES_DOWN_Pass);
+  ZTauTau_DM10_TES_DOWN_Pass->Add(ZTauTau4_DM10_TES_DOWN_Pass);
+
   std::cout<<"Loading the ZMM Region..."<<std::endl;
   TFile* ZMuMuFile = new TFile("../Distributions/ZMuMu.root");
   TH1F* Data_MuMu = (TH1F*) ZMuMuFile->Get("Data");
@@ -259,6 +322,24 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
 
   ZTauTau_TES_DOWN_Pass->SetNameTitle("DYS_TESDown","DYS_TESDown");
   ZTauTau_TES_DOWN_Pass->Write();
+
+  ZTauTau_DM0_TES_UP_Pass->SetNameTitle("DYS_DM0TESUp","DYS_DM0TESUp");
+  ZTauTau_DM0_TES_UP_Pass->Write();
+  
+  ZTauTau_DM0_TES_DOWN_Pass->SetNameTitle("DYS_DM0TESDown","DYS_DM0TESDown");
+  ZTauTau_DM0_TES_DOWN_Pass->Write();
+
+  ZTauTau_DM1_TES_UP_Pass->SetNameTitle("DYS_DM1TESUp","DYS_DM1TESUp");
+  ZTauTau_DM1_TES_UP_Pass->Write();
+  
+  ZTauTau_DM1_TES_DOWN_Pass->SetNameTitle("DYS_DM1TESDown","DYS_DM1TESDown");
+  ZTauTau_DM1_TES_DOWN_Pass->Write();
+
+  ZTauTau_DM10_TES_UP_Pass->SetNameTitle("DYS_DM10TESUp","DYS_DM10TESUp");
+  ZTauTau_DM10_TES_UP_Pass->Write();
+  
+  ZTauTau_DM10_TES_DOWN_Pass->SetNameTitle("DYS_DM10TESDown","DYS_DM10TESDown");
+  ZTauTau_DM10_TES_DOWN_Pass->Write();
 
   std::cout<<"TTbar..."<<std::endl;
 

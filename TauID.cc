@@ -465,7 +465,7 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
       
       //tau criteria
       //
-      if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronVLooseMVA6_2 != 1 or againstMuonTight3_2 != 1 or !decayModeFinding_2 /*or std::abs(dZ_2) > 0.2*/) continue;
+      if(pt_2 < 20.0  or std::abs(eta_2) > 2.3 or againstElectronVLooseMVA6_2 != 1 or againstMuonTight3_2 != 1 or !decayModeFinding_2 or std::abs(dZ_2) > 0.2) continue;
       //EventsPassingTauSelection+=1.0;            
 
       //hacked in brief way to examine pt/eta brackets.
@@ -570,7 +570,18 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
       float Var_DM10Mod = (l1+l2_DM10Mod).M();
       //float Var = l2.Eta();
       //float Var = l1.Eta();
-      //float Var = l1.Pt();
+      /*
+      float Var = l1.Pt();
+      float Var_DM0Mod = l1.Pt();
+      float Var_DM1Mod = l1.Pt();
+      float Var_DM10Mod = l1.Pt();
+      */
+      /*
+      float Var = l2.Pt();
+      float Var_DM0Mod = l2.Pt();
+      float Var_DM1Mod = l2.Pt();
+      float Var_DM10Mod = l2.Pt();
+      */
       //float Var = npv;
     
       bool TauIsoDiscrim;

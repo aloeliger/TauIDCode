@@ -519,9 +519,7 @@ void GenerateMCInJetsRegion(std::string input)
       //if(pt_2 < 50.0) continue;
 
       //pair criteria            
-      float deltaphi = std::abs(phi_1-phi_2);
-      if (deltaphi > M_PI) deltaphi-=2.0*M_PI;
-      float DeltaR = std::sqrt((eta_1-eta_2)*(eta_1-eta_2)+deltaphi*deltaphi);
+      float DeltaR = l1.DeltaR(l2);      
       if(DeltaR <= 0.5)  continue;
 	 
       TLorentzVector MissingP;

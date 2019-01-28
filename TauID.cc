@@ -150,6 +150,12 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
   Tree->SetBranchAddress("nbtag",&nbtag);
   Tree->SetBranchAddress("njets",&njets);
 
+  //define these here to synchronize on these.
+  float PZetaVis;
+  float PZetaAll;
+  float PZeta;
+  float TransverseMass;
+  
   TFile* SyncFile = new TFile("Distributions/SyncNtuple.root","RECREATE");
   TTree* SyncTree = new TTree("SyncTree","SyncTree");
   SyncTree->Branch("run",&run);
@@ -161,6 +167,12 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
   SyncTree->Branch("pt_2",&pt_2);
   SyncTree->Branch("phi_2",&phi_2);
   SyncTree->Branch("eta_2",&eta_2);
+  SyncTree->Branch("TransverseMass", &TransverseMass);
+  SyncTree->Branch("PZetaVis", &PZetaVis);
+  SyncTree->Branch("PZetaAll", &PZetaAll);  
+  SyncTree->Branch("PZeta", &PZeta);
+  SyncTree->Branch("met", &met);
+  SyncTree->Branch("metphi", &metphi);
   
 
   int NumberOfEntries = (int) Tree->GetEntries();
@@ -471,25 +483,25 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
       //hacked in brief way to examine pt/eta brackets.
       //if( pt_2 < 50.0) continue;
 
-      //pair criteria            
-      float deltaphi = std::abs(phi_1-phi_2);
-      if (deltaphi > M_PI) deltaphi-=2.0*M_PI;
-      float DeltaR = std::sqrt((eta_1-eta_2)*(eta_1-eta_2)+deltaphi*deltaphi);
+      //pair criteria      
+      float DeltaR = l1.DeltaR(l2);      
+      
       if(DeltaR <= 0.5)  continue;      
 
       TLorentzVector MissingP;
       MissingP.SetPtEtaPhiM(met,0,metphi,0);
       
-      float TransverseMass = std::sqrt(2.0*l1.Pt()*MissingP.Pt()*(1.0-std::cos(l1.DeltaPhi(MissingP))));      
+      TransverseMass = std::sqrt(2.0*l1.Pt()*MissingP.Pt()*(1.0-std::cos(l1.DeltaPhi(MissingP))));      
       
-      //look at this, the AN says specifically that zeta is defined to be the bisector of the momenta IN THE TRANSVERSE PLANE of the visible decay products.
-      //TVector3 ZetaUnit = l1.Vect()*l2.Vect().Mag()+l2.Vect()*l1.Vect().Mag();//get a bisector of the angle between mu and tau
+      //look at this, the AN says specifically that zeta is defined to be the bisector of the momenta IN THE TRANSVERSE PLANE of the visible decay products.      
+      TVector3 ZetaUnit;            
 
       //get a bisector in the transverse plane?      
-      TVector3 ZetaUnit;            
-      float BisectorAngle = (l1.Vect().Phi() + l2.Vect().Phi())/2.0;
-      ZetaUnit.SetPhi(BisectorAngle);
-      ZetaUnit = ZetaUnit.Unit();
+      //1/25/19 EDIT: THIS IS BUGEGD AND ALWAYS PRODUCES 0 VECTOR
+      /*	
+      float BisectorAngle = (l1.Vect().Phi() + l2.Vect().Phi())/2.0;      
+      ZetaUnit.SetPhi(BisectorAngle);      
+      ZetaUnit = ZetaUnit.Unit();      
       //correct it if it faces the wrong direction
       if(ZetaUnit.Dot(l1.Vect()) < 0.0 or ZetaUnit.Dot(l2.Vect()) < 0.0)
 	{
@@ -498,20 +510,20 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
 	}
       ZetaUnit.SetPhi(BisectorAngle);            
       ZetaUnit = ZetaUnit.Unit();          
-      //method(s) below seems to offer worse agreement?
-      /*
+      */
+            
+      //are either of these methods correct now
       ZetaUnit = l1.Vect().Unit()+l2.Vect().Unit();
       ZetaUnit.SetPtEtaPhi(ZetaUnit.Pt(),0.0,ZetaUnit.Phi());
       ZetaUnit = ZetaUnit.Unit();
-      */
       /*
       ZetaUnit = l1.Vect().Unit()+l2.Vect().Unit();
       ZetaUnit = ZetaUnit.Unit();      
       */
 
-      float PZetaVis = (l1.Vect()+l2.Vect()).Dot(ZetaUnit);
-      float PZetaAll = (l1.Vect()+l2.Vect()+MissingP.Vect()).Dot(ZetaUnit);
-      float PZeta = PZetaAll - 0.85 * PZetaVis;      
+      PZetaVis = (l1.Vect()+l2.Vect()).Dot(ZetaUnit);
+      PZetaAll = (l1.Vect()+l2.Vect()+MissingP.Vect()).Dot(ZetaUnit);
+      PZeta = PZetaAll - 0.85 * PZetaVis;
 
       //Create the weighting
       float PileupWeight = LumiWeights_12->weight(npu);
@@ -522,7 +534,7 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
 
       if(input == "WW")NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
       else if(input == "WZ") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
-      else if(input == "ZZ") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;            
+      else if(input == "ZZ") NormalizationWeight = XSecWeight*PileupWeight*muTriggerSF*muIDSF*muISOSF;
       // from the excel file.
       else if(input == "W"
 	      or input == "W1"
@@ -615,7 +627,8 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
 	{
 	  TauIsoDiscrim = (bool) byVVTightIsolationRerunMVArun2v2DBoldDMwLT_2;
 	}
-      
+            
+
       //we check four things at the same time. Signal region checks, W+Jets region checks, QCD in the signal region, and QCD in the W+Jets Region.
       //check the tau iso discriminants, and divide these our events by pass/fail
       if(q_1 * q_2 < 0.0)
@@ -626,6 +639,8 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
 	    {
 	      if(TauIsoDiscrim)
 		{		  
+		  //in the passing region now.		  
+		  SyncTree->Fill();
 		  //seperate out our signal region in the drell yan histos
 		  if(input == "DY"
 		     or input == "DY1"
@@ -641,14 +656,12 @@ void TauID(std::string input, string IsoWorkingPoint,float ShapeUncertainty = 1.
 			  GenMatch_SignalRegion_DM1Mod_Pass->Fill(Var_DM1Mod, NormalizationWeight);
 			  GenMatch_SignalRegion_DM10Mod_Pass->Fill(Var_DM10Mod, NormalizationWeight);
 			}
-		      if(gen_match_2 == 6) HighGenMatch_SignalRegion_Pass->Fill(Var,NormalizationWeight);    
-		      SyncTree->Fill();
+		      if(gen_match_2 == 6) HighGenMatch_SignalRegion_Pass->Fill(Var,NormalizationWeight);    		      
 		    }
 		  //Literally everything else
 		  else
 		    {
-		      SignalRegion_Pass->Fill(Var,NormalizationWeight);    
-		      SyncTree->Fill();
+		      SignalRegion_Pass->Fill(Var,NormalizationWeight);    		      
 		    }
 		}
 	      else

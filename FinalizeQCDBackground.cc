@@ -1,6 +1,90 @@
 //Determine the final QCD contirbution to the signal region.
 #include "TROOT.h"
 #include "CalculateWJetsScaleFactor.cc"
+#include <string>
+
+TH1F* FinalizeControls(string ControlVar, float WJetsScaling)
+{
+  std::cout<<"Processing for: "<<ControlVar<<std::endl;
+  TFile* QCDFile = new TFile("Distributions/QCDDistributions.root","READ");
+  TDirectory* QCD_ControlDir = (TDirectory*) QCDFile->Get("control");
+
+  TH1F* QCD_Control = (TH1F *) QCD_ControlDir->Get(("QCD_Data_"+ControlVar).c_str());
+    
+  TH1F* ZTauTau_Control = (TH1F *) QCD_ControlDir->Get(("QCD_GenMatch_DY_"+ControlVar).c_str());
+  TH1F* ZTauTau1_Control = (TH1F *) QCD_ControlDir->Get(("QCD_GenMatch_DY1_"+ControlVar).c_str());
+  TH1F* ZTauTau2_Control = (TH1F *) QCD_ControlDir->Get(("QCD_GenMatch_DY2_"+ControlVar).c_str());
+  TH1F* ZTauTau3_Control = (TH1F *) QCD_ControlDir->Get(("QCD_GenMatch_DY3_"+ControlVar).c_str());
+  TH1F* ZTauTau4_Control = (TH1F *) QCD_ControlDir->Get(("QCD_GenMatch_DY4_"+ControlVar).c_str());
+  TH1F* LowGenMatch_DY_Control = (TH1F *) QCD_ControlDir->Get(("QCD_LowGenMatch_DY_"+ControlVar).c_str());
+  TH1F* LowGenMatch_DY1_Control = (TH1F *) QCD_ControlDir->Get(("QCD_LowGenMatch_DY1_"+ControlVar).c_str());
+  TH1F* LowGenMatch_DY2_Control = (TH1F *) QCD_ControlDir->Get(("QCD_LowGenMatch_DY2_"+ControlVar).c_str());
+  TH1F* LowGenMatch_DY3_Control = (TH1F *) QCD_ControlDir->Get(("QCD_LowGenMatch_DY3_"+ControlVar).c_str());
+  TH1F* LowGenMatch_DY4_Control = (TH1F *) QCD_ControlDir->Get(("QCD_LowGenMatch_DY4_"+ControlVar).c_str());
+  TH1F* GenMatch_DY_Control = (TH1F*) QCD_ControlDir->Get(("QCD_GenMatch_DY_"+ControlVar).c_str());
+  TH1F* GenMatch_DY1_Control = (TH1F*) QCD_ControlDir->Get(("QCD_GenMatch_DY1_"+ControlVar).c_str());
+  TH1F* GenMatch_DY2_Control = (TH1F*) QCD_ControlDir->Get(("QCD_GenMatch_DY2_"+ControlVar).c_str());
+  TH1F* GenMatch_DY3_Control = (TH1F*) QCD_ControlDir->Get(("QCD_GenMatch_DY3_"+ControlVar).c_str());
+  TH1F* GenMatch_DY4_Control = (TH1F*) QCD_ControlDir->Get(("QCD_GenMatch_DY4_"+ControlVar).c_str());
+  TH1F* HighGenMatch_DY_Control = (TH1F *) QCD_ControlDir->Get(("QCD_HighGenMatch_DY_"+ControlVar).c_str());
+  TH1F* HighGenMatch_DY1_Control = (TH1F *) QCD_ControlDir->Get(("QCD_HighGenMatch_DY1_"+ControlVar).c_str());
+  TH1F* HighGenMatch_DY2_Control = (TH1F *) QCD_ControlDir->Get(("QCD_HighGenMatch_DY2_"+ControlVar).c_str());
+  TH1F* HighGenMatch_DY3_Control = (TH1F *) QCD_ControlDir->Get(("QCD_HighGenMatch_DY3_"+ControlVar).c_str());
+  TH1F* HighGenMatch_DY4_Control = (TH1F *) QCD_ControlDir->Get(("QCD_HighGenMatch_DY4_"+ControlVar).c_str());
+
+  TH1F* TTTo2L2Nu_Control = (TH1F *) QCD_ControlDir->Get(("QCD_TTTo2L2Nu_"+ControlVar).c_str());
+  TH1F* TTToHadronic_Control = (TH1F *) QCD_ControlDir->Get(("QCD_TTToHadronic_"+ControlVar).c_str());
+  TH1F* TTToSemiLeptonic_Control =  (TH1F *) QCD_ControlDir->Get(("QCD_TTToSemiLeptonic_"+ControlVar).c_str());
+  TH1F* W_Control = (TH1F *) QCD_ControlDir->Get(("QCD_W_"+ControlVar).c_str());
+  TH1F* W1_Control = (TH1F *) QCD_ControlDir->Get(("QCD_W1_"+ControlVar).c_str());
+  TH1F* W2_Control = (TH1F *) QCD_ControlDir->Get(("QCD_W2_"+ControlVar).c_str());
+  TH1F* W3_Control = (TH1F *) QCD_ControlDir->Get(("QCD_W3_"+ControlVar).c_str());
+  TH1F* W4_Control = (TH1F *) QCD_ControlDir->Get(("QCD_W4_"+ControlVar).c_str());
+  TH1F* WW_Control = (TH1F *) QCD_ControlDir->Get(("QCD_WW_"+ControlVar).c_str());
+  TH1F* WZ_Control = (TH1F *) QCD_ControlDir->Get(("QCD_WZ_"+ControlVar).c_str());
+  TH1F* ZZ_Control = (TH1F *) QCD_ControlDir->Get(("QCD_ZZ_"+ControlVar).c_str());
+
+  QCD_Control->SetName(("QCD_"+ControlVar).c_str());
+
+  W_Control->Add(W1_Control);
+  W_Control->Add(W2_Control);
+  W_Control->Add(W3_Control);
+  W_Control->Add(W4_Control);
+  
+  W_Control->Scale(WJetsScaling);
+
+  ZTauTau_Control->Add(ZTauTau1_Control);
+  ZTauTau_Control->Add(ZTauTau2_Control);
+  ZTauTau_Control->Add(ZTauTau3_Control);
+  ZTauTau_Control->Add(ZTauTau4_Control);
+
+  LowGenMatch_DY_Control->Add(LowGenMatch_DY1_Control);
+  LowGenMatch_DY_Control->Add(LowGenMatch_DY2_Control);
+  LowGenMatch_DY_Control->Add(LowGenMatch_DY3_Control);
+  LowGenMatch_DY_Control->Add(LowGenMatch_DY4_Control);
+
+  HighGenMatch_DY_Control->Add(HighGenMatch_DY1_Control);
+  HighGenMatch_DY_Control->Add(HighGenMatch_DY2_Control);
+  HighGenMatch_DY_Control->Add(HighGenMatch_DY3_Control);
+  HighGenMatch_DY_Control->Add(HighGenMatch_DY4_Control);
+
+  std::cout<<"Subtracting backgrounds..."<<std::endl;  
+  //handle the pass side of things
+  QCD_Control->Add(ZTauTau_Control, -1.0);
+  QCD_Control->Add(LowGenMatch_DY_Control, -1.0);
+  QCD_Control->Add(HighGenMatch_DY_Control, -1.0);  
+  QCD_Control->Add(TTTo2L2Nu_Control, -1.0);
+  QCD_Control->Add(TTToHadronic_Control, -1.0);
+  QCD_Control->Add(TTToSemiLeptonic_Control, -1.0);
+  QCD_Control->Add(WW_Control, -1.0);
+  QCD_Control->Add(WZ_Control, -1.0);
+  QCD_Control->Add(ZZ_Control, -1.0);  
+  QCD_Control->Add(W_Control, -1.0);
+
+  QCD_Control->Scale(1.05);
+
+  return QCD_Control;
+}
 
 void FinalizeQCDBackground()
 {
@@ -236,7 +320,7 @@ void FinalizeQCDBackground()
 
   //Compile Histgrams. This will just make everything much simpler.
   std::cout<<"Compiling Histograms..."<<std::endl;
-    W_Pass->Add(W1_Pass);
+  W_Pass->Add(W1_Pass);
   W_Pass->Add(W2_Pass);
   W_Pass->Add(W3_Pass);
   W_Pass->Add(W4_Pass);
@@ -492,23 +576,47 @@ void FinalizeQCDBackground()
 
   //we've subtracted off the backgrounds, now we just scale by 1.05
   // as mentioned in the AN to go from SS to OS regions.
-  
-  QCD_Pass->Scale(1.05);
-  QCD_WNorm_UP_Pass->Scale(1.05);
-  QCD_WNorm_DOWN_Pass->Scale(1.05);
-  QCD_TES_UP_Pass->Scale(1.05);
-  QCD_TES_DOWN_Pass->Scale(1.05);
 
-  QCD_Fail->Scale(1.05);
-  QCD_WNorm_UP_Fail->Scale(1.05);
-  QCD_WNorm_DOWN_Fail->Scale(1.05);
-  QCD_TES_UP_Pass->Scale(1.05);
-  QCD_TES_DOWN_Pass->Scale(1.05);
+  //changed to 1.12 to test yuta's numbers
   
+  QCD_Pass->Scale(1.12);
+  QCD_WNorm_UP_Pass->Scale(1.12);
+  QCD_WNorm_DOWN_Pass->Scale(1.12);
+  QCD_TES_UP_Pass->Scale(1.12);
+  QCD_TES_DOWN_Pass->Scale(1.12);
+
+  QCD_Fail->Scale(1.12);
+  QCD_WNorm_UP_Fail->Scale(1.12);
+  QCD_WNorm_DOWN_Fail->Scale(1.12);
+  QCD_TES_UP_Pass->Scale(1.12);
+  QCD_TES_DOWN_Pass->Scale(1.12);
+  
+  //Make the Controls
+  TH1F* QCD_MuPt;
+  TH1F* QCD_TauPt;
+  TH1F* QCD_MuEta;
+  TH1F* QCD_TauEta;
+  TH1F* QCD_NJets;
+  TH1F* QCD_NBtag; 
+  TH1F* QCD_ZMass;
+  TH1F* QCD_ZPT;
+  TH1F* QCD_MT;
+
+  QCD_MuPt = FinalizeControls("MuPt",WJetsScaling);
+  QCD_TauPt = FinalizeControls("TauPt",WJetsScaling);
+  QCD_MuEta = FinalizeControls("MuEta",WJetsScaling);
+  QCD_TauEta = FinalizeControls("TauEta",WJetsScaling);
+  QCD_NJets = FinalizeControls("njets",WJetsScaling);
+  QCD_NBtag = FinalizeControls("nbtag",WJetsScaling);
+  QCD_ZMass = FinalizeControls("ZMass",WJetsScaling);
+  QCD_ZPT = FinalizeControls("ZPT",WJetsScaling);
+  QCD_MT = FinalizeControls("MT",WJetsScaling);
+
   //now let's grab the Pass/Fail File and write all this stuff there.
   TFile* PassFailFile = new TFile("Distributions/PassFailOut.root","UPDATE");
   TDirectory* PassFail_PassDir = (TDirectory *) PassFailFile->Get("pass");
   TDirectory* PassFail_FailDir = (TDirectory *) PassFailFile->Get("fail");
+  TDirectory* PassFail_ControlDir = (TDirectory *) PassFailFile->Get("control");
 
   PassFail_PassDir->cd();
   QCD_Pass->Write();
@@ -523,4 +631,15 @@ void FinalizeQCDBackground()
   QCD_WNorm_DOWN_Fail->Write();
   QCD_TES_UP_Fail->Write();
   QCD_TES_DOWN_Fail->Write();
+
+  PassFail_ControlDir->cd();
+  QCD_MuPt->Write();
+  QCD_TauPt->Write();
+  QCD_MuEta->Write();
+  QCD_TauEta->Write();
+  QCD_NJets->Write();
+  QCD_NBtag->Write();
+  QCD_ZMass->Write();
+  QCD_ZPT->Write();
+  QCD_MT->Write();
 }

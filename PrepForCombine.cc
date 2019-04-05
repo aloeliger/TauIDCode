@@ -1,6 +1,6 @@
 #include "TROOT.h"
 
-void PrepForCombine(std::string IsoWorkingPoint)
+void PrepForCombine(std::string IsoWorkingPoint, int PtBracket, int EtaBracket)
 {
   TFile* PassFailFile = new TFile("Distributions/PassFailOut.root");
   TDirectory* passDirectory = (TDirectory*) PassFailFile->Get("pass");
@@ -251,7 +251,77 @@ void PrepForCombine(std::string IsoWorkingPoint)
 
   std::cout<<"Writing the file"<<std::endl;
   std::cout<<"Pass.."<<std::endl;
-  TFile* CombineFile = new TFile(("Distributions/"+IsoWorkingPoint+"CombineFile.root").c_str(),"RECREATE");
+  std::string FileName;
+  std::string PtBracket_Name = "";
+  std::string EtaBracket_Name = "";
+  if(PtBracket == 1)
+    {
+      //tau pt 20-25
+      PtBracket_Name = "_TauPt20-25_";
+    }
+  else if(PtBracket == 2)
+    {
+      //tau pt 25-32
+      PtBracket_Name = "_TauPt25-30_";
+    }
+  else if(PtBracket == 3)
+    {
+      //tau pt 30-32
+      PtBracket_Name = "_TauPt30-32_";
+    }
+  else if(PtBracket == 4)
+    {
+      //tau pt 32-35
+      PtBracket_Name = "_TauPt32-35_";
+    }
+  else if(PtBracket == 5)
+    {
+      //tau pt 30-35
+      PtBracket_Name = "_TauPt30-35_";
+    }
+  else if(PtBracket == 6)
+    {
+      //tau pt 35-40
+      PtBracket_Name = "_TauPt35-40_";
+    }
+  else if(PtBracket == 7)
+    {
+      //tau pt 40-50
+      PtBracket_Name = "_TauPt40-50_";
+    }
+  else if(PtBracket == 8)
+    {
+      //tau pt 50-60
+      PtBracket_Name = "_TauPt50-60_";
+    }
+  else if(PtBracket == 9)
+    {
+      //tau pt 60-70
+      PtBracket_Name = "_TauPt60-70_";
+    }
+  else if(PtBracket == 10)
+    {
+      //tau pt 70-100
+      PtBracket_Name = "_TauPt70-100_";
+    }
+  else if(PtBracket == 11)
+    {
+      //tau pt > 100
+      PtBracket_Name = "_TauPt100Up_";
+    }
+
+  if(EtaBracket == 1)
+    {
+      //tau eta < 1.479
+      EtaBracket_Name = "_TauEtaBarrel_";
+    }
+  else if(EtaBracket == 2)
+    {
+      //tau eta > 1.479
+      EtaBracket_Name = "_TauEtaEndcaps_";
+    }
+  FileName = IsoWorkingPoint+PtBracket_Name+EtaBracket_Name;
+  TFile* CombineFile = new TFile(("Distributions/"+FileName+"CombineFile.root").c_str(),"RECREATE");
   //compile Pass histos  
   TDirectory* CombinePassDirectory = CombineFile->mkdir("passOS");
   CombinePassDirectory->cd();

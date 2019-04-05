@@ -1,0 +1,12 @@
+sh RunAll.sh Tight 0 0
+sh RunAll.sh Tight 1 0
+sh RunAll.sh Tight 2 0
+sh RunAll.sh Tight 3 0
+sh RunAll.sh Tight 4 0
+sh RunAll.sh Tight 5 0
+sh RunAll.sh Tight 6 0
+sh RunAll.sh Tight 7 0
+sh RunAll.sh Tight 8 0
+sh RunAll.sh Tight 9 0
+sh RunAll.sh Tight 10 0
+sh RunAll.sh Tight 11 0

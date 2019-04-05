@@ -10,7 +10,7 @@ void CompileHistograms(std::string Iso)
   
   writeExtraText = true;
   extraText = "Preliminary";
-  lumi_sqrtS = "41 fb^{-1}, 13 TeV";
+  lumi_sqrtS = "41.5 fb^{-1}, 13 TeV";
 
   TFile *PassFailFile = new TFile("Distributions/PassFailOut.root");
   TDirectory *PassDirectory = (TDirectory*) PassFailFile->Get("pass");
@@ -147,7 +147,7 @@ void CompileHistograms(std::string Iso)
   PassStack->Add(TT_Pass,"hist");
   PassStack->Add(DiBoson_Pass,"hist");
 
-  TPad* PlotPad_Pass = MakeRatioPlot(C1, PassStack, Data_Pass);    
+  TPad* PlotPad_Pass = MakeRatioPlot(C1, PassStack, Data_Pass,"m_{vis}",0.7,1.3);    
 
   PassStack->Draw();
   PassStack->SetTitle("#mu#tau Invariant Mass Pass");  
@@ -211,7 +211,7 @@ void CompileHistograms(std::string Iso)
   FailStack->Add(TT_Fail,"hist");
   FailStack->Add(DiBoson_Fail,"hist");  
 
-  TPad* PlotPad_Fail = MakeRatioPlot(C2, FailStack, Data_Fail);
+  TPad* PlotPad_Fail = MakeRatioPlot(C2, FailStack, Data_Fail,"m_{vis}",0.7,1.3);
 
   FailStack->Draw();
   FailStack->SetTitle("#mu#tau Invariant Mass Fail");  
@@ -226,7 +226,7 @@ void CompileHistograms(std::string Iso)
   C2->Draw();
 
   //Render the Fake Rate determined pass distribution
-  TFile* FakeRateDeterminedDistributions = new TFile("Distributions/FakeRateDeterminedDistributions.root");
+  TFile* FakeRateDeterminedDistributions = new TFile("Distributions/CorrectedFakeRateDeterminedDistributions.root");
   TH1F* TightJetDistribution = (TH1F*) FakeRateDeterminedDistributions->Get((Iso+"PTFRJetDistribution").c_str());
   
   TCanvas* C3 = new TCanvas("C3", "#mu#tau Invariant Mass");
@@ -243,7 +243,7 @@ void CompileHistograms(std::string Iso)
   PassJetStack->Add(TT_Pass,"hist");
   PassJetStack->Add(DiBoson_Pass,"hist");  
 
-  TPad* JetPlotPad = MakeRatioPlot(C3,PassJetStack,Data_Pass);
+  TPad* JetPlotPad = MakeRatioPlot(C3,PassJetStack,Data_Pass,"m_{vis}",0.7,1.3);
   
   PassJetStack->Draw();
   PassJetStack->SetTitle("#mu#tau Invariant Mass Pass");
@@ -257,7 +257,7 @@ void CompileHistograms(std::string Iso)
   JetLegend->AddEntry(LowGenMatch_DY_Pass, "Other Drell-Yan", "f");
   JetLegend->AddEntry(DiBoson_Pass, "DiBoson", "f");
   JetLegend->AddEntry(TT_Pass, "t#bar{t}","f");
-  JetLegend->AddEntry("TightJetDistribution" ,"Fake Rate Determined Jets", "f");
+  JetLegend->AddEntry(TightJetDistribution ,"Fake Rate Determined Jets", "f");
   
   JetLegend->Draw();
   

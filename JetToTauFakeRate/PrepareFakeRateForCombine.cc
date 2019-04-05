@@ -1,6 +1,6 @@
 #include "TROOT.h"
 
-void PrepareFakeRateForCombine(string IsoWorkingPoint)
+void PrepareFakeRateForCombine(string IsoWorkingPoint, int PtBracket, int EtaBracket)
 {
   TFile* PassFailFile = new TFile("../Distributions/PassFailOut.root");
   TDirectory* passDirectory = (TDirectory*) PassFailFile->Get("pass");
@@ -32,9 +32,16 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   TH1F* WW_Pass = (TH1F*) passDirectory->Get("WW_Pass");
   TH1F* WZ_Pass = (TH1F*) passDirectory->Get("WZ_Pass");
   TH1F* ZZ_Pass = (TH1F*) passDirectory->Get("ZZ_Pass");
+  
+  TH1F* ST_top_Pass = (TH1F*) passDirectory->Get("ST_top_Pass");
+  TH1F* ST_antitop_Pass = (TH1F*) passDirectory->Get("ST_antitop_Pass");
+  TH1F* ST_tW_top_Pass = (TH1F*) passDirectory->Get("ST_tW_top_Pass");
+  TH1F* ST_tW_antitop_Pass = (TH1F*) passDirectory->Get("ST_tW_antitop_Pass");
+
+  //insert ST stuff here when we get the chance.
 
   //get the TES uncertainty for the Real Tau Distributions
-  
+  /*
   TH1F* ZTauTau_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY_1.030000_Pass");
   TH1F* ZTauTau1_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY1_1.030000_Pass");
   TH1F* ZTauTau2_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY2_1.030000_Pass");
@@ -45,7 +52,7 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   TH1F* ZTauTau2_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY2_0.970000_Pass");
   TH1F* ZTauTau3_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY3_0.970000_Pass");
   TH1F* ZTauTau4_TES_DOWN_Pass = (TH1F*) passDirectory->Get("GenMatch_DY4_0.970000_Pass");
-
+  */
   //get the new DM split TES uncertainties.
   TH1F* ZTauTau_DM0_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY_1.008000_DM0Mod_Pass");
   TH1F* ZTauTau1_DM0_TES_UP_Pass = (TH1F*) passDirectory->Get("GenMatch_DY1_1.008000_DM0Mod_Pass");
@@ -103,7 +110,7 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   LowGenMatch_DY_Shape_DOWN_Pass->Add(LowGenMatch_DY4_Shape_DOWN_Pass);
 
   //Get the fake rates determined stuff
-  TFile* FakeRateDeterminedDistributions = new TFile("../Distributions/FakeRateDeterminedDistributions.root");
+  TFile* FakeRateDeterminedDistributions = new TFile("../Distributions/CorrectedFakeRateDeterminedDistributions.root");
   TH1F* JetDistribution; 
   TH1F* JetDistribution_DecayMode0_DOWN;
   TH1F* JetDistribution_DecayMode0_UP;
@@ -193,7 +200,8 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   ZTauTau_Pass->Add(ZTauTau2_Pass);
   ZTauTau_Pass->Add(ZTauTau3_Pass);
   ZTauTau_Pass->Add(ZTauTau4_Pass);
-
+  
+  /*
   ZTauTau_TES_UP_Pass->Add(ZTauTau1_TES_UP_Pass);
   ZTauTau_TES_UP_Pass->Add(ZTauTau2_TES_UP_Pass);
   ZTauTau_TES_UP_Pass->Add(ZTauTau3_TES_UP_Pass);
@@ -202,6 +210,7 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   ZTauTau_TES_DOWN_Pass->Add(ZTauTau2_TES_DOWN_Pass);
   ZTauTau_TES_DOWN_Pass->Add(ZTauTau3_TES_DOWN_Pass);
   ZTauTau_TES_DOWN_Pass->Add(ZTauTau4_TES_DOWN_Pass);
+  */
 
   //sum up the new TES Uncertainties
   ZTauTau_DM0_TES_UP_Pass->Add(ZTauTau1_DM0_TES_UP_Pass);
@@ -240,8 +249,7 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   TH1F* DY3_MuMu = (TH1F*) ZMuMuFile->Get("DY3");
   TH1F* DY4_MuMu = (TH1F*) ZMuMuFile->Get("DY4");
   TH1F* DY_MuMu = (TH1F*) ZMuMuFile->Get("DY");
-  
-  //are these really necessary?
+    
   TH1F* TTTo2L2Nu_MuMu = (TH1F*) ZMuMuFile->Get("TTTo2L2Nu");
   TH1F* TTToHadronic_MuMu = (TH1F*) ZMuMuFile->Get("TTToHadronic");
   TH1F* TTToSemiLeptonic_MuMu = (TH1F*) ZMuMuFile->Get("TTToSemiLeptonic");
@@ -249,6 +257,11 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   TH1F* WW_MuMu = (TH1F*) ZMuMuFile->Get("WW");
   TH1F* WZ_MuMu = (TH1F*) ZMuMuFile->Get("WZ");
   TH1F* ZZ_MuMu = (TH1F*) ZMuMuFile->Get("ZZ");
+  //new ST stuff
+  TH1F* ST_top_MuMu = (TH1F*) ZMuMuFile->Get("ST_top");
+  TH1F* ST_antitop_MuMu = (TH1F*) ZMuMuFile->Get("ST_antitop");
+  TH1F* ST_tW_top_MuMu = (TH1F*) ZMuMuFile->Get("ST_tW_top");
+  TH1F* ST_tW_antitop_MuMu = (TH1F*) ZMuMuFile->Get("ST_tW_antitop");
 
   //These moreso
   TH1F* W_MuMu = (TH1F*) ZMuMuFile->Get("W");
@@ -269,23 +282,78 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   W_MuMu->Add(W3_MuMu);
   W_MuMu->Add(W4_MuMu);
 
-  //no longer necessary?
-  /*
-
-  std::cout<<"Performing Prescale For ZMM region..."<<std::endl;
-  std::cout<<"ZMM DY Integral: "<<DY_MuMu->Integral()<<std::endl;
-  std::cout<<"ZMM Data Integral: "<<Data_MuMu->Integral()<<std::endl;
-  float PrescaleFactor = Data_MuMu->Integral()/DY_MuMu->Integral();
-  std::cout<<"DY Prescaling Factor: "<<PrescaleFactor<<std::endl;
-  DY_MuMu->Scale(PrescaleFactor);
-  ZTauTau_Pass->Scale(PrescaleFactor);
-  LowGenMatch_DY_Pass->Scale(PrescaleFactor);
-  HighGenMatch_DY_Pass->Scale(PrescaleFactor);
-  */
-
   std::cout<<"Preparing the Zmt region."<<std::endl;
+  std::string FileName;
+  std::string PtBracket_Name = "";
+  std::string EtaBracket_Name = "";
+  if(PtBracket == 1)
+    {
+      //tau pt 20-25
+      PtBracket_Name = "_TauPt20-25_";
+    }
+  else if(PtBracket == 2)
+    {
+      //tau pt 25-32
+      PtBracket_Name = "_TauPt25-30_";
+    }
+  else if(PtBracket == 3)
+    {
+      //tau pt 30-32
+      PtBracket_Name = "_TauPt30-32_";
+    }
+  else if(PtBracket == 4)
+    {
+      //tau pt 32-35
+      PtBracket_Name = "_TauPt32-35_";
+    }
+  else if(PtBracket == 5)
+    {
+      //tau pt 30-35
+      PtBracket_Name = "_TauPt30-35_";
+    }
+  else if(PtBracket == 6)
+    {
+      //tau pt 35-40
+      PtBracket_Name = "_TauPt35-40_";
+    }
+  else if(PtBracket == 7)
+    {
+      //tau pt 40-50
+      PtBracket_Name = "_TauPt40-50_";
+    }
+  else if(PtBracket == 8)
+    {
+      //tau pt 50-60
+      PtBracket_Name = "_TauPt50-60_";
+    }
+  else if(PtBracket == 9)
+    {
+      //tau pt 60-70
+      PtBracket_Name = "_TauPt60-70_";
+    }
+  else if(PtBracket == 10)
+    {
+      //tau pt 70-100
+      PtBracket_Name = "_TauPt70-100_";
+    }
+  else if(PtBracket == 11)
+    {
+      //tau pt > 100
+      PtBracket_Name = "_TauPt100Up_";
+    }
 
-  TFile* CombineFile = new TFile(("../Distributions/"+IsoWorkingPoint+"FakeRateCombineFile.root").c_str(),"RECREATE");
+  if(EtaBracket == 1)
+    {
+      //tau eta < 1.479
+      EtaBracket_Name = "_TauEtaBarrel_";
+    }
+  else if(EtaBracket == 2)
+    {
+      //tau eta > 1.479
+      EtaBracket_Name = "_TauEtaEndcaps_";
+    }
+  FileName = IsoWorkingPoint+PtBracket_Name+EtaBracket_Name;
+  TFile* CombineFile = new TFile(("../Distributions/"+FileName+"FakeRateCombineFile.root").c_str(),"RECREATE");
   TDirectory* ZMTDirectory = CombineFile->mkdir("zmt");
   ZMTDirectory->cd();
   
@@ -317,11 +385,11 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
   ZTauTau_Pass->SetNameTitle("DYS","DYS");  
   ZTauTau_Pass->Write();
 
-  ZTauTau_TES_UP_Pass->SetNameTitle("DYS_TESUp","DYS_TESUp");
-  ZTauTau_TES_UP_Pass->Write();
+  //ZTauTau_TES_UP_Pass->SetNameTitle("DYS_TESUp","DYS_TESUp");
+  //ZTauTau_TES_UP_Pass->Write();
 
-  ZTauTau_TES_DOWN_Pass->SetNameTitle("DYS_TESDown","DYS_TESDown");
-  ZTauTau_TES_DOWN_Pass->Write();
+  //ZTauTau_TES_DOWN_Pass->SetNameTitle("DYS_TESDown","DYS_TESDown");
+  //ZTauTau_TES_DOWN_Pass->Write();
 
   ZTauTau_DM0_TES_UP_Pass->SetNameTitle("DYS_DM0TESUp","DYS_DM0TESUp");
   ZTauTau_DM0_TES_UP_Pass->Write();
@@ -361,6 +429,12 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
 				WW_Pass->GetXaxis()->GetXmax());
   DiBoson_Pass->Add(WW_Pass,WZ_Pass);
   DiBoson_Pass->Add(ZZ_Pass);
+
+  DiBoson_Pass->Add(ST_top_Pass);
+  DiBoson_Pass->Add(ST_antitop_Pass);
+  DiBoson_Pass->Add(ST_tW_top_Pass);
+  DiBoson_Pass->Add(ST_tW_antitop_Pass);
+
   DiBoson_Pass->Write();
 
   std::cout<<"Jets..."<<std::endl;
@@ -413,6 +487,10 @@ void PrepareFakeRateForCombine(string IsoWorkingPoint)
 				WW_MuMu->GetXaxis()->GetXmax());
   DiBoson_MuMu->Add(WW_MuMu,WZ_MuMu);
   DiBoson_MuMu->Add(ZZ_MuMu);
+  DiBoson_MuMu->Add(ST_top_MuMu);
+  DiBoson_MuMu->Add(ST_antitop_MuMu);
+  DiBoson_MuMu->Add(ST_tW_top_MuMu);
+  DiBoson_MuMu->Add(ST_tW_antitop_MuMu);
   DiBoson_MuMu->Write();
   // pull a temporary thing where we include a temporary "jets" into the ZMM region
   // for the sake of having the same distributions as the ZMT region
